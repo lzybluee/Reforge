@@ -1,0 +1,27 @@
+[metadata]
+Name=Manaless Dredge
+[Main]
+4 Balustrade Spy|GTC
+4 Bridge from Below|MMA
+4 Cabal Therapy|JUD
+4 Dread Return|TSP
+1 Flayer of the Hatebound|DKA
+4 Gitaxian Probe|NPH
+4 Golgari Grave-Troll|RAV
+4 Golgari Thug|RAV
+1 Greater Mossdog|MMA
+4 Ichorid|TOR
+2 Mishra's Bauble|CSP
+4 Narcomoeba|MMA
+4 Nether Shadow|5ED
+4 Phantasmagorian|PLC
+4 Shambling Shell|RAV
+4 Stinkweed Imp|MMA
+4 Street Wraith|MMA
+[Sideboard]
+4 Ashen Rider|THS
+4 Mindbreak Trap|ZEN
+1 Noxious Revival|NPH
+1 Serra Avatar|M13
+1 Sickening Shoal|BOK
+4 Surgical Extraction|NPH
