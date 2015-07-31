@@ -1,5 +1,7 @@
 package forge.ai.ability;
 
+import java.util.Iterator;
+
 import forge.ai.ComputerUtilCost;
 import forge.ai.ComputerUtilMana;
 import forge.ai.SpellAbilityAi;
@@ -10,6 +12,7 @@ import forge.game.card.CardFactoryUtil;
 import forge.game.cost.Cost;
 import forge.game.player.Player;
 import forge.game.spellability.SpellAbility;
+import forge.game.spellability.SpellAbilityStackInstance;
 import forge.game.spellability.TargetRestrictions;
 import forge.util.MyRandom;
 
@@ -119,15 +122,29 @@ public class CounterAi extends SpellAbilityAi {
             if (game.getStack().isEmpty()) {
                 return false;
             }
-            final SpellAbility topSA = game.getStack().peekAbility();
-            if (!CardFactoryUtil.isCounterableBy(topSA.getHostCard(), sa) || topSA.getActivatingPlayer() == ai) {
-                return false;
-            }
+            
+            final Iterator<SpellAbilityStackInstance> iterator = game.getStack().iterator();
 
-            sa.resetTargets();
-            if (sa.canTargetSpellAbility(topSA)) {
-                sa.getTargets().add(topSA);
-            } else {
+            boolean hasTarget = false;
+            
+            while (iterator.hasNext()) {
+                SpellAbility topSA = iterator.next().getSpellAbility(true);
+
+                if (!CardFactoryUtil.isCounterableBy(topSA.getHostCard(), sa) || topSA.getActivatingPlayer() == ai) {
+                    continue;
+                }
+
+                sa.resetTargets();
+                if (sa.canTargetSpellAbility(topSA)) {
+                    sa.getTargets().add(topSA);
+                    hasTarget = true;
+                    break;
+                } else {
+                    continue;
+                }
+            }
+            
+            if(!hasTarget) {
                 return false;
             }
 
