@@ -121,7 +121,7 @@ public abstract class GauntletWinLoseController {
 
             view.hide();
             saveOptions();
-            gd.nextRound(players, human);
+            gd.startRound(players, human);
             return true;
         }
         return false;
