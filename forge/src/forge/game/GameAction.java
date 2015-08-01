@@ -38,6 +38,7 @@ import forge.game.card.CardLists;
 import forge.game.card.CardPredicates;
 import forge.game.card.CardUtil;
 import forge.game.card.CounterType;
+import forge.game.event.EventValueChangeType;
 import forge.game.event.GameEventCardChangeZone;
 import forge.game.event.GameEventCardDestroyed;
 import forge.game.event.GameEventCardRegenerated;
@@ -46,6 +47,7 @@ import forge.game.event.GameEventCardStatsChanged;
 import forge.game.event.GameEventCardTapped;
 import forge.game.event.GameEventFlipCoin;
 import forge.game.event.GameEventGameStarted;
+import forge.game.event.GameEventZone;
 import forge.game.player.GameLossReason;
 import forge.game.player.Player;
 import forge.game.replacement.ReplacementEffect;
@@ -860,6 +862,11 @@ public class GameAction {
         game.getTriggerHandler().resetActiveTriggers();
         if (!refreeze) {
             game.getStack().unfreezeStack();
+        }
+        
+        for(Player p : game.getPlayers()) {
+        	p.updateFlashbackZoneForView();
+        	p.getGame().fireEvent(new GameEventZone(ZoneType.Flashback, p, EventValueChangeType.ComplexUpdate, null));
         }
     }
 
