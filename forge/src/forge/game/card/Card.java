@@ -3641,7 +3641,10 @@ public class Card extends GameEntity implements Comparable<Card> {
                 return false;
             }
         } else if (property.equals("NamedCard")) {
-            if (!getName().equals(source.getNamedCard())) {
+            if(source.getNamedCard().contains(" // ") && source.getNamedCard().contains(this.getName())) {
+                System.out.println("NamedCard is part of a split card");
+            }
+            else if (!this.getName().equals(source.getNamedCard())) {
                 return false;
             }
         } else if (property.equals("NamedByRememberedPlayer")) {

@@ -227,6 +227,8 @@ public final class CardUtil {
         }
         newCopy.setType(new CardType(in.getType()));
         newCopy.setToken(in.isToken());
+        newCopy.setCopiedPermanent(in.getCopiedPermanent());
+        newCopy.setCopiedSpell(in.isCopiedSpell());
         newCopy.setTriggers(in.getTriggers(), false);
         for (SpellAbility sa : in.getSpellAbilities()) {
             newCopy.addSpellAbility(sa);
