@@ -1452,7 +1452,7 @@ public class ComputerUtil {
         final AiController aic = ((PlayerControllerAi)ai.getController()).getAi();
         
         // don't mulligan when already too low
-        if (handList.size() <= aic.getIntProperty(AiProps.MULLIGAN_THRESHOLD)) {
+        if (handList.size() < aic.getIntProperty(AiProps.MULLIGAN_THRESHOLD)) {
                 return false;
         }
         
@@ -1466,6 +1466,11 @@ public class ComputerUtil {
                 return true;
             }
         });
+        
+        // mulligan when at the threshold, with a no land hand
+        if (handList.size() == aic.getIntProperty(AiProps.MULLIGAN_THRESHOLD) && !lands.isEmpty()) {
+            return false;
+        }
  
         return lands.size() < 2 ;
     }
@@ -1762,7 +1767,75 @@ public class ComputerUtil {
         return ComputerUtilCard.getBestCreatureAI(killables);
     }
 
-    public static int damageFromETB(final Player player, final Card permanent) {
+    public static int getDamageForPlaying(final Player player, final SpellAbility sa) {
+        
+        // check for bad spell cast triggers
+        int damage = 0;
+        final Game game = player.getGame();
+        final Card card = sa.getHostCard();
+        final FCollection<Trigger> theTriggers = new FCollection<Trigger>();
+
+        for (Card c : game.getCardsIn(ZoneType.Battlefield)) {
+            theTriggers.addAll(c.getTriggers());
+        }
+        for (Trigger trigger : theTriggers) {
+            Map<String, String> trigParams = trigger.getMapParams();
+            final Card source = trigger.getHostCard();
+ 
+ 
+            if (!trigger.zonesCheck(game.getZoneOf(source))) {
+                continue;
+            }
+            if (!trigger.requirementsCheck(game)) {
+                continue;
+            }
+            TriggerType mode = trigger.getMode();
+            if (mode != TriggerType.SpellCast) {
+                continue;
+            }
+            if (trigParams.containsKey("ValidCard")) {
+                if (!card.isValid(trigParams.get("ValidCard"), source.getController(), source)) {
+                    continue;
+                }
+            }
+            
+            if (trigParams.containsKey("ValidActivatingPlayer")) {
+                if (!player.isValid(trigParams.get("ValidActivatingPlayer"), source.getController(), source)) {
+                    continue;
+                }
+            }
+ 
+            String ability = source.getSVar(trigParams.get("Execute"));
+            if (ability.isEmpty()) {
+                continue;
+            }
+         
+            final Map<String, String> abilityParams = AbilityFactory.getMapParams(ability);
+            if ((abilityParams.containsKey("AB") && abilityParams.get("AB").equals("DealDamage"))
+                    || (abilityParams.containsKey("DB") && abilityParams.get("DB").equals("DealDamage"))) {
+                if (!"TriggeredActivator".equals(abilityParams.get("Defined"))) {
+                    continue;
+                }
+                if (!abilityParams.containsKey("NumDmg")) {
+                    continue;
+                }
+                damage += ComputerUtilCombat.predictDamageTo(player, AbilityUtils.calculateAmount(source, abilityParams.get("NumDmg"), null), source, false);
+            } else if ((abilityParams.containsKey("AB") && abilityParams.get("AB").equals("LoseLife"))
+                    || (abilityParams.containsKey("DB") && abilityParams.get("DB").equals("LoseLife"))) {
+                if (!"TriggeredActivator".equals(abilityParams.get("Defined"))) {
+                    continue;
+                }
+                if (!abilityParams.containsKey("LifeAmount")) {
+                    continue;
+                }
+                damage += AbilityUtils.calculateAmount(source, abilityParams.get("LifeAmount"), null);
+            }
+        }
+        
+        return damage;
+    }
+ 
+    public static int getDamageFromETB(final Player player, final Card permanent) {
         int damage = 0;
         final Game game = player.getGame();
         final FCollection<Trigger> theTriggers = new FCollection<Trigger>();
