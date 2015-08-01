@@ -70,6 +70,10 @@ public class TargetingOverlay {
             x2 = end.x;
             y2 = end.y;
         }
+        
+        public boolean equals(final Point end, final Point start) {
+        	return x1 == start.x && y1 == start.y && x2 == end.x && y2 == end.y;
+        }
     }
 
     private final Set<CardView> cardsVisualized = new HashSet<CardView>();
@@ -202,15 +206,27 @@ public class TargetingOverlay {
         if (start == null || end == null) { return; }
 
         if (connectsFoes) {
-            arcsFoe.add(new Arc(end, start));
+        	boolean alreadyAdded = false;
+        	for(Arc arc : arcsFoe) {
+        		if(arc.equals(end, start)) {
+        			alreadyAdded = true;
+        		}
+        	}
+        	if(!alreadyAdded) arcsFoe.add(new Arc(end, start));
         }
         else {
-            arcsFriend.add(new Arc(end, start));
+        	boolean alreadyAdded = false;
+        	for(Arc arc : arcsFriend) {
+        		if(arc.equals(end, start)) {
+        			alreadyAdded = true;
+        		}
+        	}
+        	if(!alreadyAdded) arcsFriend.add(new Arc(end, start));
         }
     }
 
     private void addArcsForCard(final CardView c, final Map<Integer, Point> endpoints, final CombatView combat) {
-        if (!cardsVisualized.add(c)) { return; } //don't add arcs for cards if card already visualized
+        //if (!cardsVisualized.add(c)) { return; } //don't add arcs for cards if card already visualized
 
         final CardView enchanting = c.getEnchantingCard();
         final CardView equipping = c.getEquipping();
