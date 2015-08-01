@@ -1,7 +1,9 @@
 package forge.trackable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -23,7 +25,9 @@ public class TrackableTypes {
     public static abstract class TrackableType<T> {
         private TrackableType() {
         }
-
+        
+        protected void updateObjLookup(T newObj) {
+        }
         protected void copyChangedProps(TrackableObject from, TrackableObject to, TrackableProperty prop) {
             to.set(prop, from.get(prop));
         }
@@ -37,11 +41,29 @@ public class TrackableTypes {
 
         private TrackableObjectType() {
         }
+        
+        public T lookup(T from) {
+            if (from == null) { return null; }
+            T to = objLookup.get(from.getId());
+            if (to == null) {
+                objLookup.put(from.getId(), from);
+                return from;
+            }
+            return to;
+        }
 
         public void clearLookupDictionary() {
             objLookup.clear();
         }
-
+        
+        @Override
+        protected void updateObjLookup(T newObj) {
+        	if (newObj != null && !objLookup.containsKey(newObj.getId())) {
+                objLookup.put(newObj.getId(), newObj);
+                newObj.updateObjLookup();
+            }
+        }
+        
         @Override
         protected void copyChangedProps(TrackableObject from, TrackableObject to, TrackableProperty prop) {
             T newObj = from.get(prop);
@@ -64,6 +86,17 @@ public class TrackableTypes {
 
         private TrackableCollectionType(TrackableObjectType<T> itemType0) {
             itemType = itemType0;
+        }
+              
+        @Override
+        protected void updateObjLookup(TrackableCollection<T> newCollection) {
+        	if (newCollection != null) {
+                for (T newObj : newCollection) {
+                    if (newObj != null) {
+                        itemType.updateObjLookup(newObj);
+                    }
+                }
+            }
         }
 
         @Override
@@ -397,6 +430,33 @@ public class TrackableTypes {
             ts.write(value.getColor());
         }
     };
+    public static final TrackableType<List<String>> StringListType = new TrackableType<List<String>>() {
+        @Override
+        public List<String> getDefaultValue() {
+            return null;
+        }
+ 
+        @Override
+        public List<String> deserialize(TrackableDeserializer td, List<String> oldValue) {
+            int size = td.readInt();
+            if (size > 0) {
+                List<String> set = new ArrayList<String>();
+                for (int i = 0; i < size; i++) {
+                    set.add(td.readString());
+                }
+                return set;
+            }
+            return null;
+        }
+ 
+        @Override
+        public void serialize(TrackableSerializer ts, List<String> value) {
+            ts.write(value.size());
+            for (String s : value) {
+                ts.write(s);
+            }
+        }
+    };
     public static final TrackableType<Set<String>> StringSetType = new TrackableType<Set<String>>() {
         @Override
         public Set<String> getDefaultValue() {
@@ -550,6 +610,21 @@ public class TrackableTypes {
         @Override
         protected void serialize(TrackableSerializer ts, KeywordCollectionView value) {
           //TODO
+        }
+    };
+    public static final TrackableType<Map<Object, Object>> GenericMapType = new TrackableType<Map<Object, Object>>() {
+        @Override
+        public Map<Object, Object> getDefaultValue() {
+            return null;
+        }
+ 
+        @Override
+        public Map<Object, Object> deserialize(TrackableDeserializer td, Map<Object, Object> oldValue) {
+            return null; //TODO
+        }
+ 
+        @Override
+        public void serialize(TrackableSerializer ts, Map<Object, Object> value) {
         }
     };
 }

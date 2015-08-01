@@ -1430,6 +1430,10 @@ public class ComputerUtil {
         final Zone zone = source.getZone();
         final Game game = source.getGame();
  
+        if (sa.isTrigger()) {
+            return true;
+        }
+
         if (zone.getZoneType() == ZoneType.Battlefield) {
             if (predictThreatenedObjects(ai, null).contains(source)) {
                 return true;
@@ -1442,13 +1446,28 @@ public class ComputerUtil {
         return false;
     }
 
-    // Computer mulligans if there are no cards with converted mana cost of
-    // 0 in its hand
+    // Computer mulligans if there are no cards with converted mana cost of 0 in its hand
     public static boolean wantMulligan(Player ai) {
         final CardCollectionView handList = ai.getCardsIn(ZoneType.Hand);
-        final boolean hasLittleCmc0Cards = CardLists.getValidCards(handList, "Card.cmcEQ0", ai, null).size() < 2;
         final AiController aic = ((PlayerControllerAi)ai.getController()).getAi();
-        return (handList.size() > aic.getIntProperty(AiProps.MULLIGAN_THRESHOLD)) && hasLittleCmc0Cards;
+        
+        // don't mulligan when already too low
+        if (handList.size() <= aic.getIntProperty(AiProps.MULLIGAN_THRESHOLD)) {
+                return false;
+        }
+        
+        final CardCollectionView lands = CardLists.filter(handList, new Predicate<Card>() {
+            @Override
+            public boolean apply(final Card c) {
+                if (c.getManaCost().getCMC() > 0 || c.hasSVar("NeedsToPlay") 
+                                || (!c.getType().isLand() && !c.getType().isArtifact())) {
+                    return false;
+                }
+                return true;
+            }
+        });
+ 
+        return lands.size() < 2 ;
     }
     
     public static CardCollection getPartialParisCandidates(Player ai) {
@@ -1730,6 +1749,17 @@ public class ComputerUtil {
             }
         });
         return safeCards;
+    }
+    
+    public static Card getKilledByTargeting(final SpellAbility sa, CardCollectionView validCards) {
+        CardCollection killables = new CardCollection(validCards);
+        killables = CardLists.filter(killables, new Predicate<Card>() {
+            @Override
+            public boolean apply(final Card c) {
+                return c.getController() != sa.getActivatingPlayer() && c.getSVar("Targeting").equals("Dies");
+            }
+        });
+        return ComputerUtilCard.getBestCreatureAI(killables);
     }
 
     public static int damageFromETB(final Player player, final Card permanent) {

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import forge.game.IIdentifiable;
@@ -16,6 +17,7 @@ public abstract class TrackableObject implements IIdentifiable, Serializable {
     protected final transient Tracker tracker;
     private final Map<TrackableProperty, Object> props;
     private final Set<TrackableProperty> changedProps;
+    private boolean copyingProps;
 
     protected TrackableObject(final int id0, final Tracker tracker) {
         id = id0;
@@ -56,10 +58,18 @@ public abstract class TrackableObject implements IIdentifiable, Serializable {
         if (value == null || value.equals(key.getDefaultValue())) {
             if (props.remove(key) != null) {
                 changedProps.add(key);
+                key.updateObjLookup(value);
             }
         }
         else if (!value.equals(props.put(key, value))) {
             changedProps.add(key);
+            key.updateObjLookup(value);
+        }
+    }
+    
+    public final void updateObjLookup() {
+        for (final Entry<TrackableProperty, Object> prop : props.entrySet()) {
+            prop.getKey().updateObjLookup(prop.getValue());
         }
     }
 
@@ -67,14 +77,18 @@ public abstract class TrackableObject implements IIdentifiable, Serializable {
      * Copy all change properties of another Trackable object to this object.
      */
     public final void copyChangedProps(final TrackableObject from) {
+    	if (copyingProps) { return; } //prevent infinite loop from circular reference
+        copyingProps = true;
         for (final TrackableProperty prop : from.changedProps) {
             prop.copyChangedProps(from, this);
         }
+        copyingProps = false;
     }
 
     //use when updating collection type properties with using set
     protected final void flagAsChanged(final TrackableProperty key) {
         changedProps.add(key);
+        key.updateObjLookup(props.get(key));
     }
 
     public final void serialize(final TrackableSerializer ts) {

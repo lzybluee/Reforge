@@ -61,6 +61,7 @@ import forge.game.zone.Zone;
 import forge.game.zone.ZoneType;
 import forge.item.IPaperCard;
 import forge.util.Aggregates;
+import forge.util.Expressions;
 import forge.util.collect.FCollection;
 import forge.util.Lang;
 import forge.util.MyRandom;
@@ -68,6 +69,8 @@ import forge.util.MyRandom;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentSkipListMap;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * <p>
@@ -376,14 +379,16 @@ public class Player extends GameEntity implements Comparable<Player> {
         repParams.put("Affected", this);
         repParams.put("LifeGained", toGain);
         repParams.put("Source", source);
+        
+        if (!canGainLife()) {
+            return false;
+        }
+        
         if (game.getReplacementHandler().run(repParams) != ReplacementResult.NotReplaced) {
             return false;
         }
 
         boolean newLifeSet = false;
-        if (!canGainLife()) {
-            return false;
-        }
         final int lifeGain = toGain;
 
         if (lifeGain > 0) {
@@ -1730,7 +1735,7 @@ public class Player extends GameEntity implements Comparable<Player> {
 
     @Override
     public final boolean isValid(final String restriction, final Player sourceController, final Card source) {
-        final String[] incR = restriction.split("\\.");
+        final String[] incR = restriction.split("\\.", 2);
 
         if (incR[0].equals("Opponent")) {
             if (equals(sourceController) || !isOpponentOf(sourceController)) {
@@ -1861,6 +1866,15 @@ public class Player extends GameEntity implements Comparable<Player> {
             }
         } else if (property.equals("IsPoisoned")) {
             if (getPoisonCounters() <= 0) {
+                return false;
+            }
+        } else if (property.startsWith("controls")) {
+            final String[] type = property.substring(8).split("_");
+            final CardCollectionView list = CardLists.getValidCards(getCardsIn(ZoneType.Battlefield), type[0], sourceController, source);
+            String comparator = type[1];
+            String compareTo = comparator.substring(2);
+            int y = StringUtils.isNumeric(compareTo) ? Integer.parseInt(compareTo) : 0;
+            if (!Expressions.compare(list.size(), comparator, y)) {
                 return false;
             }
         } else if (property.startsWith("withMore")) {
@@ -2518,13 +2532,13 @@ public class Player extends GameEntity implements Comparable<Player> {
 
             DetachedCardEffect eff = new DetachedCardEffect(cmd, "Commander Effect");
 
-            eff.setSVar("CommanderMoveReplacement", "DB$ ChangeZone | Origin$ Battlefield,Graveyard,Exile,Library | Destination$ Command | Defined$ ReplacedCard");
+            eff.setSVar("CommanderMoveReplacement", "DB$ ChangeZone | Origin$ Battlefield,Graveyard,Exile,Library,Hand | Destination$ Command | Defined$ ReplacedCard");
             eff.setSVar("DBCommanderIncCast","DB$ StoreSVar | SVar$ CommanderCostRaise | Type$ CountSVar | Expression$ CommanderCostRaise/Plus.2");
             eff.setSVar("CommanderCostRaise","Number$0");
 
             Trigger t = TriggerHandler.parseTrigger("Mode$ SpellCast | Static$ True | ValidCard$ Card.YouOwn+IsCommander+wasCastFromCommand | Execute$ DBCommanderIncCast", eff, true);
             eff.addTrigger(t);
-            ReplacementEffect r = ReplacementHandler.parseReplacement("Event$ Moved | Destination$ Graveyard,Exile | ValidCard$ Card.IsCommander+YouOwn | Secondary$ True | Optional$ True | OptionalDecider$ You | ReplaceWith$ CommanderMoveReplacement | Description$ If a commander would be put into its owner's graveyard or exile from anywhere, that player may put it into the command zone instead.", eff, true);
+            ReplacementEffect r = ReplacementHandler.parseReplacement("Event$ Moved | Destination$ Graveyard,Exile,Hand,Library | ValidCard$ Card.IsCommander+YouOwn | Secondary$ True | Optional$ True | OptionalDecider$ You | ReplaceWith$ CommanderMoveReplacement | Description$ If a commander would be exiled or put into hand, graveyard, or library from anywhere, that player may put it into the command zone instead.", eff, true);
             eff.addReplacementEffect(r);
             eff.addStaticAbility("Mode$ Continuous | EffectZone$ Command | AddKeyword$ May be played | Affected$ Card.YouOwn+IsCommander | AffectedZone$ Command");
             eff.addStaticAbility("Mode$ RaiseCost | EffectZone$ Command | Amount$ CommanderCostRaise | Type$ Spell | ValidCard$ Card.YouOwn+IsCommander+wasCastFromCommand | EffectZone$ All | AffectedZone$ Command,Stack");

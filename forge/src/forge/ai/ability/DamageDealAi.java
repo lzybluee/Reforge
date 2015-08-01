@@ -37,7 +37,7 @@ public class DamageDealAi extends DamageAiBase {
             dmg = ComputerUtilMana.determineLeftoverMana(sa, ai);
             source.setSVar("PayX", Integer.toString(dmg));
         }
-        if (!this.damageTargetAI(ai, sa, dmg)) {
+        if (!this.damageTargetAI(ai, sa, dmg, true)) {
             return false;
         }
         return true;
@@ -96,7 +96,7 @@ public class DamageDealAi extends DamageAiBase {
         	return false;
         }
 
-        if (!this.damageTargetAI(ai, sa, dmg)) {
+        if (!this.damageTargetAI(ai, sa, dmg, false)) {
             return false;
         }
 
@@ -170,8 +170,9 @@ public class DamageDealAi extends DamageAiBase {
         final List<Card> killables = CardLists.filter(hPlay, new Predicate<Card>() {
             @Override
             public boolean apply(final Card c) {
-                return (ComputerUtilCombat.getEnoughDamageToKill(c, d, source, false, noPrevention) <= d) && !ComputerUtil.canRegenerate(ai, c)
-                        && !(c.getSVar("SacMe").length() > 0);
+                return c.getSVar("Targeting").equals("Dies") 
+                        || (ComputerUtilCombat.getEnoughDamageToKill(c, d, source, false, noPrevention) <= d) && !ComputerUtil.canRegenerate(ai, c)
+                            && !(c.getSVar("SacMe").length() > 0);
             }
         });
 
@@ -210,7 +211,7 @@ public class DamageDealAi extends DamageAiBase {
      *            a int.
      * @return a boolean.
      */
-    private boolean damageTargetAI(final Player ai, final SpellAbility saMe, final int dmg) {
+    private boolean damageTargetAI(final Player ai, final SpellAbility saMe, final int dmg, final boolean immediately) {
         final TargetRestrictions tgt = saMe.getTargetRestrictions();
 
         if (tgt == null) {
@@ -221,7 +222,7 @@ public class DamageDealAi extends DamageAiBase {
             return false;
         }
 
-        return this.damageChoosingTargets(ai, saMe, tgt, dmg, false, false);
+        return this.damageChoosingTargets(ai, saMe, tgt, dmg, false, immediately);
     }
 
     /**
@@ -240,13 +241,15 @@ public class DamageDealAi extends DamageAiBase {
      * @return a boolean.
      */
     private boolean damageChoosingTargets(final Player ai, final SpellAbility sa, final TargetRestrictions tgt, int dmg,
-            final boolean isTrigger, final boolean mandatory) {
+    		final boolean mandatory, boolean immediately) {
         final Card source = sa.getHostCard();
         final boolean noPrevention = sa.hasParam("NoPrevention");
         final Game game = source.getGame();
         final PhaseHandler phase = game.getPhaseHandler();
         final boolean divided = sa.hasParam("DividedAsYouChoose");
         final boolean oppTargetsChoice = sa.hasParam("TargetingPlayer");
+        
+        immediately |= ComputerUtil.playImmediately(ai, sa);
 
         Player enemy = ai.getOpponent();
         
@@ -340,7 +343,7 @@ public class DamageDealAi extends DamageAiBase {
                 final Card c = this.dealDamageChooseTgtC(ai, sa, dmg, noPrevention, enemy, false);
                 if (c != null) {
                     //option to hold removal instead only applies for single targeted removal
-                    if (sa.isSpell() && tgt.getMaxTargets(sa.getHostCard(), sa) == 1 && !divided && !isTrigger) {
+                	if (sa.isSpell() && !divided && !immediately && tgt.getMaxTargets(sa.getHostCard(), sa) == 1) {
                         if (!ComputerUtilCard.useRemovalNow(sa, c, dmg, ZoneType.Graveyard)) {
                             return false;
                         }
@@ -367,9 +370,8 @@ public class DamageDealAi extends DamageAiBase {
                 // on the stack
                 // or from taking combat damage
 
-                boolean freePing = isTrigger || sa.getPayCosts() == null
-                        || sa.getTargets().getNumTargeted() > 0
-                        || ComputerUtil.playImmediately(ai, sa);
+                boolean freePing = immediately || sa.getPayCosts() == null
+                        || sa.getTargets().getNumTargeted() > 0;
 
                 if (!source.isSpell()) {
                     if (phase.is(PhaseType.END_OF_TURN) && sa.isAbility()) {
@@ -396,7 +398,7 @@ public class DamageDealAi extends DamageAiBase {
                 final Card c = this.dealDamageChooseTgtC(ai, sa, dmg, noPrevention, enemy, mandatory);
                 if (c != null) {
                     //option to hold removal instead only applies for single targeted removal
-                    if (!sa.isTrigger() && tgt.getMaxTargets(sa.getHostCard(), sa) == 1 && !divided) {
+                	if (!immediately && tgt.getMaxTargets(sa.getHostCard(), sa) == 1 && !divided) {
                         if (!ComputerUtilCard.useRemovalNow(sa, c, dmg, ZoneType.Graveyard)) {
                             return false;
                         }
@@ -428,7 +430,7 @@ public class DamageDealAi extends DamageAiBase {
             else if (sa.canTarget(enemy)) {
                 if ((phase.is(PhaseType.END_OF_TURN) && phase.getNextTurn().equals(ai))
                         || (SpellAbilityAi.isSorcerySpeed(sa) && phase.is(PhaseType.MAIN2))
-                        || sa.getPayCosts() == null || isTrigger
+                        || sa.getPayCosts() == null || immediately
                         || this.shouldTgtP(ai, sa, dmg, noPrevention)) {
                     sa.getTargets().add(enemy);
                     if (divided) {
@@ -588,7 +590,7 @@ public class DamageDealAi extends DamageAiBase {
                 return false;
             }
         } else {
-            if (!this.damageChoosingTargets(ai, sa, tgt, dmg, true, mandatory) && !mandatory) {
+        	if (!this.damageChoosingTargets(ai, sa, tgt, dmg, mandatory, true) && !mandatory) {
                 return false;
             }
 

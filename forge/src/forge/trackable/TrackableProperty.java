@@ -32,7 +32,7 @@ public enum TrackableProperty {
     AssignedDamage(TrackableTypes.IntegerType),
     ShieldCount(TrackableTypes.IntegerType),
     ChosenType(TrackableTypes.StringType),
-    ChosenColors(TrackableTypes.CardViewCollectionType),
+    ChosenColors(TrackableTypes.StringListType),
     ChosenPlayer(TrackableTypes.PlayerViewType),
     ChosenDirection(TrackableTypes.EnumType(Direction.class)),
     Remembered(TrackableTypes.StringType),
@@ -127,14 +127,15 @@ public enum TrackableProperty {
     OptionalTrigger(TrackableTypes.BooleanType),
 
     //Combat
-    AttackersWithDefenders(TrackableTypes.CardViewCollectionType, false), //TODO: change out for proper types when serialization needed
-    AttackersWithBlockers(TrackableTypes.CardViewCollectionType, false),
-    BandsWithDefenders(TrackableTypes.CardViewCollectionType, false),
-    BandsWithBlockers(TrackableTypes.CardViewCollectionType, false),
-    AttackersWithPlannedBlockers(TrackableTypes.CardViewCollectionType, false),
-    BandsWithPlannedBlockers(TrackableTypes.CardViewCollectionType, false),
+    AttackersWithDefenders(TrackableTypes.GenericMapType, false),
+    AttackersWithBlockers(TrackableTypes.GenericMapType, false),
+    BandsWithDefenders(TrackableTypes.GenericMapType, false),
+    BandsWithBlockers(TrackableTypes.GenericMapType, false),
+    AttackersWithPlannedBlockers(TrackableTypes.GenericMapType, false),
+    BandsWithPlannedBlockers(TrackableTypes.GenericMapType, false),
 
     //Game
+    Players(TrackableTypes.PlayerViewCollectionType),
     GameType(TrackableTypes.EnumType(GameType.class)),
     Title(TrackableTypes.StringType),
     Turn(TrackableTypes.IntegerType),
@@ -164,6 +165,11 @@ public enum TrackableProperty {
 
     public boolean respectFreeze() {
         return respectFreeze;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public <T> void updateObjLookup(T newObj) {
+        ((TrackableType<T>)type).updateObjLookup(newObj);
     }
 
     public void copyChangedProps(TrackableObject from, TrackableObject to) {
