@@ -113,6 +113,11 @@ public class ControlGainEffect extends SpellAbilityEffect {
             if (!tgtC.equals(sa.getHostCard()) && !sa.getHostCard().getGainControlTargets().contains(tgtC)) {
                 sa.getHostCard().addGainControlTarget(tgtC);
             }
+            
+            if (newController != tgtC.getController() && tgtC.isPaired()) {
+            	tgtC.getPairedWith().setPairedWith(null);
+            	tgtC.setPairedWith(null);
+            }
 
             long tStamp = game.getNextTimestamp();
             if (lose != null) {
