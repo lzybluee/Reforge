@@ -39,10 +39,19 @@ public class PlayerZone extends Zone {
 
     // the this is not the owner of the card
     private final class AlienCardsActivationFilter implements Predicate<Card> {
+        private Player who = null;
+
+        public AlienCardsActivationFilter(Player p) {
+            who = p;
+        }
+
         @Override
         public boolean apply(final Card c) {
             if (c.hasStartOfKeyword("May be played by your opponent")
                     || c.hasKeyword("Your opponent may look at this card.")) {
+                return true;
+            }
+            if(c.mayPlay(who) != null) {
                 return true;
             }
             return false;
@@ -112,7 +121,7 @@ public class PlayerZone extends Zone {
             cards = Iterables.limit(cards, 1);
         }
 
-        final Predicate<Card> filterPredicate = checkingForOwner ? new OwnCardsActivationFilter() : new AlienCardsActivationFilter();
+        final Predicate<Card> filterPredicate = checkingForOwner ? new OwnCardsActivationFilter() : new AlienCardsActivationFilter(who);
         return CardLists.filter(cl, filterPredicate);
     }
 }
