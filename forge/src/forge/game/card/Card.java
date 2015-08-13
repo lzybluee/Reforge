@@ -6523,7 +6523,10 @@ public class Card extends GameEntity implements Comparable<Card> {
         final List<SpellAbility> abilities = Lists.newArrayList();
         for (SpellAbility sa : getSpellAbilities()) {
             //add alternative costs as additional spell abilities
-            abilities.add(sa);
+            if(!(sa.getHostCard().getZone().is(ZoneType.Exile) && player != sa.getHostCard().getOwner()))
+            {
+                abilities.add(sa);
+            }
             abilities.addAll(GameActionUtil.getAlternativeCosts(sa, player));
         }
         final CardPlayOption playOption = mayPlay(player);
