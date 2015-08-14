@@ -9,6 +9,7 @@ S:Mode$ Continuous | MayPlay$ True | Affected$ Card.IsRemembered | AffectedZone$
 T:Mode$ ChangesZone | Origin$ Any | Destination$ Battlefield | Static$ True | ValidCard$ Card.IsRemembered | Execute$ DBForget
 T:Mode$ ChangesZone | Origin$ Any | Destination$ Graveyard | Static$ True | ValidCard$ Card.IsRemembered | Execute$ DBForget
 T:Mode$ ChangesZone | Origin$ Any | Destination$ Library | Static$ True | ValidCard$ Card.IsRemembered | Execute$ DBForget
+T:Mode$ ChangesZone | Origin$ Any | Destination$ Hand | Static$ True | ValidCard$ Card.IsRemembered | Execute$ DBForget
 SVar:DBForget:DB$ Pump | Defined$ TriggeredCard | ForgetObjects$ TriggeredCard
 T:Mode$ ChangesZone | Origin$ Battlefield | Destination$ Any | Static$ True | ValidCard$ Card.Self | Execute$ DBCleanup
 SVar:DBCleanup:DB$ Cleanup | ClearRemembered$ True
