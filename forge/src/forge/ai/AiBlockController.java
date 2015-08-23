@@ -47,7 +47,7 @@ import java.util.Map;
  * </p>
  *
  * @author Forge
- * @version $Id: AiBlockController.java 29693 2015-06-23 11:33:24Z swordshine $
+ * @version $Id: AiBlockController.java 29833 2015-07-21 11:59:53Z Sloth $
  */
 public class AiBlockController {
 
@@ -624,18 +624,18 @@ public class AiBlockController {
             // Try to use safe blockers first
             if (blockers.size() > 1) {
                 safeBlockers = getSafeBlockers(combat, attacker, blockers);
-                    for (final Card blocker : safeBlockers) {
-                        final int damageNeeded = ComputerUtilCombat.getDamageToKill(attacker)
-                                + ComputerUtilCombat.predictToughnessBonusOfAttacker(attacker, blocker, combat, false);
-                        // Add an additional blocker if the current blockers are not
-                        // enough and the new one would deal additional damage
-                        if (damageNeeded > ComputerUtilCombat.totalDamageOfBlockers(attacker, combat.getBlockers(attacker))
-                                && ComputerUtilCombat.dealsDamageAsBlocker(attacker, blocker) > 0
-                                && CombatUtil.canBlock(attacker, blocker, combat)) {
-                            combat.addBlocker(attacker, blocker);
-                        }
-                        blockers.remove(blocker); // Don't check them again next
-                    }
+	            for (final Card blocker : safeBlockers) {
+	                final int damageNeeded = ComputerUtilCombat.getDamageToKill(attacker)
+	                        + ComputerUtilCombat.predictToughnessBonusOfAttacker(attacker, blocker, combat, false);
+	                // Add an additional blocker if the current blockers are not
+	                // enough and the new one would deal additional damage
+	                if (damageNeeded > ComputerUtilCombat.totalDamageOfBlockers(attacker, combat.getBlockers(attacker))
+	                        && ComputerUtilCombat.dealsDamageAsBlocker(attacker, blocker) > 0
+	                        && CombatUtil.canBlock(attacker, blocker, combat)) {
+	                    combat.addBlocker(attacker, blocker);
+	                }
+	                blockers.remove(blocker); // Don't check them again next
+	            }
             }
 
             // Try to add blockers that could be destroyed, but are worth less than the attacker
@@ -758,32 +758,31 @@ public class AiBlockController {
         // When the AI holds some Fog effect, don't bother about lifeInDanger
         if (!ComputerUtil.hasAFogEffect(ai)) {
         	lifeInDanger = ComputerUtilCombat.lifeInDanger(ai, combat);
-            if (lifeInDanger) {
+	        if (lifeInDanger) {
 	            makeTradeBlocks(combat); // choose necessary trade blocks
 	        }
-         // if life is still in danger
-            if (lifeInDanger && ComputerUtilCombat.lifeInDanger(ai, combat)) {
+	        // if life is still in danger
+	        if (lifeInDanger && ComputerUtilCombat.lifeInDanger(ai, combat)) {
 	            makeChumpBlocks(combat); // choose necessary chump blocks
-            } else {
-                lifeInDanger = false;
-	        }
+	        } else {
+            	lifeInDanger = false;
+            }
 	        // if life is still in danger
 	        // Reinforce blockers blocking attackers with trample if life is still
 	        // in danger
-            if (lifeInDanger && ComputerUtilCombat.lifeInDanger(ai, combat)) {
+	        if (lifeInDanger && ComputerUtilCombat.lifeInDanger(ai, combat)) {
 	            reinforceBlockersAgainstTrample(combat);
-            } else {
-                lifeInDanger = false;
+	        } else {
+            	lifeInDanger = false;
             }
 	        // Support blockers not destroying the attacker with more blockers to
 	        // try to kill the attacker
-            if (!lifeInDanger) {
+	        if (!lifeInDanger) {
 	            reinforceBlockersToKill(combat);
 	        }
 
 	        // == 2. If the AI life would still be in danger make a safer approach ==
-            if (lifeInDanger && ComputerUtilCombat.lifeInDanger(ai, combat)) {
-	            lifeInDanger = true;
+	        if (lifeInDanger && ComputerUtilCombat.lifeInDanger(ai, combat)) {
 	            clearBlockers(combat, possibleBlockers); // reset every block assignment
 	            makeTradeBlocks(combat); // choose necessary trade blocks
 	            // if life is in danger
@@ -792,14 +791,14 @@ public class AiBlockController {
 	            if (ComputerUtilCombat.lifeInDanger(ai, combat)) {
 	                makeChumpBlocks(combat);
 	            } else {
-                    lifeInDanger = false;
+	            	lifeInDanger = false;
 	            }
 	            // Reinforce blockers blocking attackers with trample if life is
 	            // still in danger
 	            if (lifeInDanger && ComputerUtilCombat.lifeInDanger(ai, combat)) {
 	                reinforceBlockersAgainstTrample(combat);
 	            } else {
-                    lifeInDanger = false;
+	            	lifeInDanger = false;
 	            }
 	            makeGangBlocks(combat);
 	            reinforceBlockersToKill(combat);

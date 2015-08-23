@@ -162,7 +162,7 @@ public class CopyPermanentEffect extends SpellAbilityEffect {
                         copy.addType(type);
                     }
                     for (final String svar : svars) {
-                    	String actualsVar = hostCard.getSVar(svar);
+                        String actualsVar = hostCard.getSVar(svar);
                         String name = svar;
                         if (actualsVar.startsWith("SVar:")) {
                             actualsVar = actualsVar.split("SVar:")[1];

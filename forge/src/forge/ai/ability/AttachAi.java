@@ -188,7 +188,7 @@ public class AttachAi extends SpellAbilityAi {
         }
 
         list = CardLists.getNotType(list, type); // Filter out Basic Lands that have the same type as the changing type
-
+        
         // Don't target fetchlands
         list = CardLists.filter(list, new Predicate<Card>() {
             @Override
@@ -211,7 +211,7 @@ public class AttachAi extends SpellAbilityAi {
                 return true;
             }
         });
-        
+
         final Card c = ComputerUtilCard.getBestAI(list);
 
         // TODO Port over some of the existing code, but rewrite most of it.

@@ -25,7 +25,7 @@ public class TrackableTypes {
     public static abstract class TrackableType<T> {
         private TrackableType() {
         }
-        
+
         protected void updateObjLookup(T newObj) {
         }
         protected void copyChangedProps(TrackableObject from, TrackableObject to, TrackableProperty prop) {
@@ -41,7 +41,7 @@ public class TrackableTypes {
 
         private TrackableObjectType() {
         }
-        
+
         public T lookup(T from) {
             if (from == null) { return null; }
             T to = objLookup.get(from.getId());
@@ -55,15 +55,15 @@ public class TrackableTypes {
         public void clearLookupDictionary() {
             objLookup.clear();
         }
-        
+
         @Override
         protected void updateObjLookup(T newObj) {
-        	if (newObj != null && !objLookup.containsKey(newObj.getId())) {
+            if (newObj != null && !objLookup.containsKey(newObj.getId())) {
                 objLookup.put(newObj.getId(), newObj);
                 newObj.updateObjLookup();
             }
         }
-        
+
         @Override
         protected void copyChangedProps(TrackableObject from, TrackableObject to, TrackableProperty prop) {
             T newObj = from.get(prop);
@@ -87,10 +87,10 @@ public class TrackableTypes {
         private TrackableCollectionType(TrackableObjectType<T> itemType0) {
             itemType = itemType0;
         }
-              
+
         @Override
         protected void updateObjLookup(TrackableCollection<T> newCollection) {
-        	if (newCollection != null) {
+            if (newCollection != null) {
                 for (T newObj : newCollection) {
                     if (newObj != null) {
                         itemType.updateObjLookup(newObj);
@@ -435,7 +435,7 @@ public class TrackableTypes {
         public List<String> getDefaultValue() {
             return null;
         }
- 
+
         @Override
         public List<String> deserialize(TrackableDeserializer td, List<String> oldValue) {
             int size = td.readInt();
@@ -448,7 +448,7 @@ public class TrackableTypes {
             }
             return null;
         }
- 
+
         @Override
         public void serialize(TrackableSerializer ts, List<String> value) {
             ts.write(value.size());
@@ -617,12 +617,12 @@ public class TrackableTypes {
         public Map<Object, Object> getDefaultValue() {
             return null;
         }
- 
+
         @Override
         public Map<Object, Object> deserialize(TrackableDeserializer td, Map<Object, Object> oldValue) {
             return null; //TODO
         }
- 
+
         @Override
         public void serialize(TrackableSerializer ts, Map<Object, Object> value) {
         }

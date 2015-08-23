@@ -55,7 +55,7 @@ public abstract class TapAiBase extends SpellAbilityAi  {
             Card choice = null;
 
             if (tapList.size() == 0) {
-            	if (sa.getTargets().getNumTargeted() < tgt.getMinTargets(source, sa) || sa.getTargets().getNumTargeted() == 0) {
+                if (sa.getTargets().getNumTargeted() < tgt.getMinTargets(source, sa) || sa.getTargets().getNumTargeted() == 0) {
                     if (!mandatory) {
                         sa.resetTargets();
                     }
@@ -76,7 +76,7 @@ public abstract class TapAiBase extends SpellAbilityAi  {
             }
 
             if (choice == null) { // can't find anything left
-            	if (sa.getTargets().getNumTargeted() < tgt.getMinTargets(sa.getHostCard(), sa) || sa.getTargets().getNumTargeted() == 0) {
+                if (sa.getTargets().getNumTargeted() < tgt.getMinTargets(sa.getHostCard(), sa) || sa.getTargets().getNumTargeted() == 0) {
                     if (!mandatory) {
                         sa.resetTargets();
                     }
@@ -161,20 +161,19 @@ public abstract class TapAiBase extends SpellAbilityAi  {
         if (tapList.isEmpty()) {
         	return false;
         }
-        
-        boolean goodTargets = false;
 
+        boolean goodTargets = false;
         while (sa.getTargets().getNumTargeted() < tgt.getMaxTargets(source, sa)) {
             Card choice = null;
 
             if (tapList.isEmpty()) {
-            	if (sa.getTargets().getNumTargeted() < tgt.getMinTargets(source, sa) || sa.getTargets().getNumTargeted() == 0) {
+                if (sa.getTargets().getNumTargeted() < tgt.getMinTargets(source, sa) || sa.getTargets().getNumTargeted() == 0) {
                     if (!mandatory) {
                         sa.resetTargets();
                     }
                     return false;
                 } else {
-                	if (!goodTargets && !ComputerUtil.shouldCastLessThanMax(ai, source)) {
+                    if (!goodTargets && !ComputerUtil.shouldCastLessThanMax(ai, source)) {
                         return false;
                     }
                     break;
@@ -184,8 +183,8 @@ public abstract class TapAiBase extends SpellAbilityAi  {
             PhaseHandler phase = game.getPhaseHandler();
             Card primeTarget = ComputerUtil.getKilledByTargeting(sa, tapList);
             if (primeTarget != null) {
-                choice = primeTarget;
-                goodTargets = true;
+            	choice = primeTarget;
+            	goodTargets = true;
             } else if (phase.isPlayerTurn(ai) && phase.getPhase().isBefore(PhaseType.COMBAT_DECLARE_BLOCKERS)) {
                 // Tap creatures possible blockers before combat during AI's turn.
                 List<Card> attackers;
@@ -229,7 +228,7 @@ public abstract class TapAiBase extends SpellAbilityAi  {
             }
 
             if (choice == null) { // can't find anything left
-            	if (sa.getTargets().getNumTargeted() < tgt.getMinTargets(sa.getHostCard(), sa) || sa.getTargets().getNumTargeted() == 0) {
+                if (sa.getTargets().getNumTargeted() < tgt.getMinTargets(sa.getHostCard(), sa) || sa.getTargets().getNumTargeted() == 0) {
                     if (!mandatory) {
                         sa.resetTargets();
                     }

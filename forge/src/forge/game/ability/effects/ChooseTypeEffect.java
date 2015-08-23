@@ -6,7 +6,6 @@ import forge.game.card.Card;
 import forge.game.player.Player;
 import forge.game.spellability.SpellAbility;
 import forge.game.spellability.TargetRestrictions;
-
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,33 +36,40 @@ public class ChooseTypeEffect extends SpellAbilityEffect {
             validTypes.addAll(Arrays.asList(sa.getParam("ValidTypes").split(",")));
         }
 
-        if (type.equals("Card")) {
-            if (validTypes.isEmpty()) validTypes.addAll(CardType.getAllCardTypes());
-        } else if (type.equals("Creature")) {
-            if (validTypes.isEmpty()) validTypes.addAll(CardType.getAllCreatureTypes());
-        } else if (type.equals("Basic Land")) {
-            if (validTypes.isEmpty()) validTypes.addAll(CardType.getBasicTypes());
-        } else if (type.equals("Land")) {
-            if (validTypes.isEmpty()) validTypes.addAll(CardType.getAllLandTypes());
-        } // end if-else if
+        if (validTypes.isEmpty()) {
+            switch (type) {
+            case "Card":
+                validTypes.addAll(CardType.getAllCardTypes());
+                break;
+            case "Creature":
+                validTypes.addAll(CardType.getAllCreatureTypes());
+                break;
+            case "Basic Land":
+                validTypes.addAll(CardType.getBasicTypes());
+                break;
+            case "Land":
+                validTypes.addAll(CardType.getAllLandTypes());
+                break;
+            }
+        }
 
         for (final String s : invalidTypes) {
             validTypes.remove(s);
         }
 
-        
         final TargetRestrictions tgt = sa.getTargetRestrictions();
         final List<Player> tgtPlayers = getTargetPlayers(sa);
 
-        if( !validTypes.isEmpty()) {
+        if (!validTypes.isEmpty()) {
             for (final Player p : tgtPlayers) {
                 if ((tgt == null) || p.canBeTargetedBy(sa)) {
                     String choice = p.getController().chooseSomeType(type, sa, validTypes, invalidTypes);
                     card.setChosenType(choice);
                 }
             }
-        } else 
+        }
+        else {
             throw new InvalidParameterException(sa.getHostCard() + "'s ability resulted in no types to choose from");
+        }
     }
-
 }

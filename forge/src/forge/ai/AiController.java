@@ -96,7 +96,7 @@ import forge.util.MyRandom;
  * </p>
  * 
  * @author Forge
- * @version $Id: AiController.java 29595 2015-06-07 09:40:43Z elcnesh $
+ * @version $Id: AiController.java 29811 2015-07-19 11:38:59Z Sloth $
  */
 public class AiController {
     private final Player player;
@@ -713,7 +713,7 @@ public class AiController {
         if (sa instanceof Spell) {
             
             if (ComputerUtil.getDamageForPlaying(player, sa) >= player.getLife() 
-                        && !player.cantLoseForZeroOrLessLife() && player.canLoseLife()) {
+            		&& !player.cantLoseForZeroOrLessLife() && player.canLoseLife()) {
                 return AiPlayDecision.CurseEffects;
             }
             return canPlaySpellBasic(card);
@@ -1020,7 +1020,7 @@ public class AiController {
         if (damage >= player.getLife() && !player.cantLoseForZeroOrLessLife() && player.canLoseLife()) {
             return AiPlayDecision.CurseEffects;
         }
- 
+
         if (spell instanceof SpellApiBased) {
             boolean chance = false;
             if (withoutPayingManaCost) {

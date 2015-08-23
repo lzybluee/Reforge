@@ -51,7 +51,7 @@ import forge.util.MyRandom;
  * </p>
  * 
  * @author Forge
- * @version $Id: AiAttackController.java 29595 2015-06-07 09:40:43Z elcnesh $
+ * @version $Id: AiAttackController.java 29830 2015-07-21 09:36:56Z Sloth $
  */
 public class AiAttackController {
 

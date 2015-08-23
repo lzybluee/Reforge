@@ -58,7 +58,7 @@ public class DigAi extends SpellAbilityAi {
                 && !sa.hasParam("DestinationZone") && !ComputerUtil.castSpellInMain1(ai, sa)) {
             return false;
         }
-        
+
         final String num = sa.getParam("DigNum");
         if (num != null && num.equals("X") && host.getSVar(num).equals("Count$xPaid")) {
             // Set PayX here to maximum value.

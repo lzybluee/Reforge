@@ -159,7 +159,7 @@ public class PumpAi extends PumpAiBase {
 
         //Untargeted
         if ((sa.getTargetRestrictions() == null) || !sa.getTargetRestrictions().doesTarget()) {
-        	final List<Card> cards = AbilityUtils.getDefinedCards(sa.getHostCard(), sa.getParam("Defined"), sa);
+            final List<Card> cards = AbilityUtils.getDefinedCards(sa.getHostCard(), sa.getParam("Defined"), sa);
 
             if (cards.isEmpty()) {
                 return false;
@@ -258,7 +258,7 @@ public class PumpAi extends PumpAiBase {
     }
     
     private boolean pumpTgtAI(final Player ai, final SpellAbility sa, final int defense, final int attack, final boolean mandatory, 
-            boolean immediately) {
+    		boolean immediately) {
         final List<String> keywords = sa.hasParam("KW") ? Arrays.asList(sa.getParam("KW").split(" & ")) : new ArrayList<String>();
         final Game game = ai.getGame();
         final Card source = sa.getHostCard();
@@ -266,7 +266,7 @@ public class PumpAi extends PumpAiBase {
         immediately |= ComputerUtil.playImmediately(ai, sa);
 
         if (!mandatory
-        		&& !immediately
+                && !immediately
                 && game.getPhaseHandler().getPhase().isAfter(PhaseType.COMBAT_DECLARE_BLOCKERS)
                 && !(sa.isCurse() && defense < 0)
                 && !containsNonCombatKeyword(keywords)
@@ -312,7 +312,7 @@ public class PumpAi extends PumpAiBase {
                 ZoneType zone = tgt.getZone().get(0);
                 list = new CardCollection(game.getCardsIn(zone));
             } else {
-            	list = getPumpCreatures(ai, sa, defense, attack, keywords, immediately);
+                list = getPumpCreatures(ai, sa, defense, attack, keywords, immediately);
             }
             if (sa.canTarget(ai)) {
                 sa.getTargets().add(ai);
@@ -489,7 +489,7 @@ public class PumpAi extends PumpAiBase {
                 return true;
             }
         } else {
-        	return pumpTgtAI(ai, sa, defense, attack, mandatory, true);
+            return pumpTgtAI(ai, sa, defense, attack, mandatory, true);
         }
 
         return true;
@@ -535,7 +535,7 @@ public class PumpAi extends PumpAiBase {
             }
         } else {
             //Targeted
-        	if (!pumpTgtAI(ai, sa, defense, attack, false, true)) {
+            if (!pumpTgtAI(ai, sa, defense, attack, false, true)) {
                 return false;
             }
         }

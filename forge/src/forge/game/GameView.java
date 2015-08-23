@@ -47,7 +47,7 @@ public class GameView extends TrackableObject {
     }
 
     public FCollectionView<PlayerView> getPlayers() {
-    	return get(TrackableProperty.Players);
+        return get(TrackableProperty.Players);
     }
 
     public String getTitle() {

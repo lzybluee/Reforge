@@ -52,7 +52,6 @@ import forge.game.zone.ZoneType;
 import forge.util.Expressions;
 import forge.util.collect.FCollection;
 import forge.util.collect.FCollectionView;
-import forge.util.Lang;
 import forge.util.TextUtil;
 import forge.util.maps.MapToAmount;
 
@@ -62,7 +61,7 @@ import forge.util.maps.MapToAmount;
  * </p>
  * 
  * @author Forge
- * @version $Id: CombatUtil.java 29693 2015-06-23 11:33:24Z swordshine $
+ * @version $Id: CombatUtil.java 29890 2015-08-22 18:13:14Z drdev $
  */
 public class CombatUtil {
 
@@ -660,13 +659,13 @@ public class CombatUtil {
         // if a creature does not block but should, return false
         for (final Card blocker : defendersArmy) {
             if (blocker.getMustBlockCards() != null) {
-                final CardCollectionView blockedSoFar = combat.getAttackersBlockedBy(blocker);
-                for (Card cardToBeBlocked : blocker.getMustBlockCards()) {
-                  if (!blockedSoFar.contains(cardToBeBlocked) && CombatUtil.canBlockMoreCreatures(blocker, blockedSoFar) 
-                          && combat.isAttacking(cardToBeBlocked) && CombatUtil.canBlock(cardToBeBlocked, blocker)) {
-                      return String.format("%s must still block %s.", blocker, cardToBeBlocked);
-                  }
-                } 
+               final CardCollectionView blockedSoFar = combat.getAttackersBlockedBy(blocker);
+               for (Card cardToBeBlocked : blocker.getMustBlockCards()) {
+                 if (!blockedSoFar.contains(cardToBeBlocked) && CombatUtil.canBlockMoreCreatures(blocker, blockedSoFar) 
+                         && combat.isAttacking(cardToBeBlocked) && CombatUtil.canBlock(cardToBeBlocked, blocker)) {
+                     return String.format("%s must still block %s.", blocker, cardToBeBlocked);
+                 }
+               } 
             }
             // lure effects
             if (!blockers.contains(blocker) && CombatUtil.mustBlockAnAttacker(blocker, combat)) {

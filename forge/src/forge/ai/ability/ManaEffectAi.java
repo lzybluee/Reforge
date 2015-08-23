@@ -17,7 +17,7 @@ public class ManaEffectAi extends SpellAbilityAi {
         if (sa.getPayCosts() != null && sa.getPayCosts().hasNoManaCost() 
         		&& sa.getPayCosts().isReusuableResource() 
         		&& sa.getSubAbility() == null
-                && ComputerUtil.playImmediately(ai, sa)) {
+        		&& ComputerUtil.playImmediately(ai, sa)) {
         	return true;
         }
         return false;

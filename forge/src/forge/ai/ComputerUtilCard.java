@@ -953,10 +953,10 @@ public class ComputerUtilCard {
      * @return
      */
     public static boolean shouldPumpCard(final Player ai, final SpellAbility sa, final Card c, final int toughness,
-    		final int power, final List<String> keywords) {
+                                         final int power, final List<String> keywords) {
         return shouldPumpCard(ai, sa, c, toughness, power, keywords, false);
     }
- 
+
     public static boolean shouldPumpCard(final Player ai, final SpellAbility sa, final Card c, final int toughness,
             final int power, final List<String> keywords, boolean immediately) {
         final Game game = ai.getGame();
@@ -1085,8 +1085,8 @@ public class ComputerUtilCard {
             }
             if (survivor) {
                 for (Card o : opposing) {
-                	if (!ComputerUtilCombat.combatantWouldBeDestroyed(opp, o, combat) 
-                            && !(o.hasSVar("SacMe") && Integer.parseInt(o.getSVar("SacMe")) > 2)) {
+                    if (!ComputerUtilCombat.combatantWouldBeDestroyed(opp, o, combat) 
+                    		&& !(o.hasSVar("SacMe") && Integer.parseInt(o.getSVar("SacMe")) > 2)) {
                         if (isAttacking) {
                             if (ComputerUtilCombat.blockerWouldBeDestroyed(opp, o, pumpedCombat)) {
                                 return true;

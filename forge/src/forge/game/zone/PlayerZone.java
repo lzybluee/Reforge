@@ -39,12 +39,12 @@ public class PlayerZone extends Zone {
 
     // the this is not the owner of the card
     private final class AlienCardsActivationFilter implements Predicate<Card> {
-        private Player who = null;
+    	private Player who = null;
 
         public AlienCardsActivationFilter(Player p) {
-            who = p;
+             who = p;
         }
-
+        
         @Override
         public boolean apply(final Card c) {
             if (c.hasStartOfKeyword("May be played by your opponent")

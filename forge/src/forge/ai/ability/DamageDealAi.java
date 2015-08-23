@@ -241,15 +241,13 @@ public class DamageDealAi extends DamageAiBase {
      * @return a boolean.
      */
     private boolean damageChoosingTargets(final Player ai, final SpellAbility sa, final TargetRestrictions tgt, int dmg,
-    		final boolean mandatory, boolean immediately) {
+            final boolean mandatory, boolean immediately) {
         final Card source = sa.getHostCard();
         final boolean noPrevention = sa.hasParam("NoPrevention");
         final Game game = source.getGame();
         final PhaseHandler phase = game.getPhaseHandler();
         final boolean divided = sa.hasParam("DividedAsYouChoose");
         final boolean oppTargetsChoice = sa.hasParam("TargetingPlayer");
-        
-        immediately |= ComputerUtil.playImmediately(ai, sa);
 
         Player enemy = ai.getOpponent();
         
@@ -269,6 +267,8 @@ public class DamageDealAi extends DamageAiBase {
         if (tgt.getMaxTargets(source, sa) <= 0) {
             return false;
         }
+        
+        immediately |= ComputerUtil.playImmediately(ai, sa);
 
         if ("ChoiceBurn".equals(sa.getParam("AILogic"))) {
             // do not waste burns on player if other choices are present
@@ -339,11 +339,14 @@ public class DamageDealAi extends DamageAiBase {
                     }
                     continue;
                 }
+                if ("RoundedDown".equals(sa.getParam("DivideEvenly"))) {
+                    dmg = dmg * sa.getTargets().getNumTargeted() / (sa.getTargets().getNumTargeted() +1);
+                }
 
                 final Card c = this.dealDamageChooseTgtC(ai, sa, dmg, noPrevention, enemy, false);
                 if (c != null) {
                     //option to hold removal instead only applies for single targeted removal
-                	if (sa.isSpell() && !divided && !immediately && tgt.getMaxTargets(sa.getHostCard(), sa) == 1) {
+                    if (sa.isSpell() && !divided && !immediately && tgt.getMaxTargets(sa.getHostCard(), sa) == 1) {
                         if (!ComputerUtilCard.useRemovalNow(sa, c, dmg, ZoneType.Graveyard)) {
                             return false;
                         }
@@ -398,7 +401,7 @@ public class DamageDealAi extends DamageAiBase {
                 final Card c = this.dealDamageChooseTgtC(ai, sa, dmg, noPrevention, enemy, mandatory);
                 if (c != null) {
                     //option to hold removal instead only applies for single targeted removal
-                	if (!immediately && tgt.getMaxTargets(sa.getHostCard(), sa) == 1 && !divided) {
+                    if (!immediately && tgt.getMaxTargets(sa.getHostCard(), sa) == 1 && !divided) {
                         if (!ComputerUtilCard.useRemovalNow(sa, c, dmg, ZoneType.Graveyard)) {
                             return false;
                         }
@@ -590,7 +593,7 @@ public class DamageDealAi extends DamageAiBase {
                 return false;
             }
         } else {
-        	if (!this.damageChoosingTargets(ai, sa, tgt, dmg, mandatory, true) && !mandatory) {
+            if (!this.damageChoosingTargets(ai, sa, tgt, dmg, mandatory, true) && !mandatory) {
                 return false;
             }
 

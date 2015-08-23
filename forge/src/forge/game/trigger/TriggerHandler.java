@@ -323,7 +323,7 @@ public class TriggerHandler {
         }
         return checkStatics;
     }
-    
+
     public void clearWaitingTriggers() {
         waitingTriggers.clear();
     }
@@ -383,6 +383,15 @@ public class TriggerHandler {
         if (!regtrig.zonesCheck(game.getZoneOf(regtrig.getHostCard()))) {
             return false; // Host card isn't where it needs to be.
         }
+
+        for (Trigger t : this.activeTriggers) {
+            // If an ID that matches this ID is already active, don't add it
+            if (regtrig.getId() == t.getId()) {
+                return false;
+            }
+        }
+
+        // Check if a trigger with the same ID is already in activeTriggers
         return true;
     }
 

@@ -1,4 +1,20 @@
-Language 'java.util.PropertyResourceBundle@5b37e0d2' loaded successfully.
+Language 'java.util.PropertyResourceBundle@1cf4f579' loaded successfully.
 (ThreadUtil first call): Running on a machine with 4 cpu core(s)
-Read cards: 14747 files in 914 ms (25 parts) using thread pool
-Read decks (2204 ms): 9 constructed, 0 sealed, 2 draft, 3 cubes, 0 scheme, 0 planar, 0 commander, 0 tiny leaders.
+Read cards: 14927 files in 1126 ms (25 parts) using thread pool
+Read decks (1767 ms): 9 constructed, 0 sealed, 2 draft, 3 cubes, 0 scheme, 0 planar, 0 commander, 0 tiny leaders.
+File not found, no image created: ORI/Aegis Angel.full
+File not found, no image created: ORI/Divine Verdict.full
+File not found, no image created: ORI/Eagle of the Watch.full
+File not found, no image created: ORI/Fiery Hellhound.full
+File not found, no image created: ORI/Flesh to Dust.full
+File not found, no image created: ORI/Into the Void.full
+File not found, no image created: ORI/Mahamoti Djinn.full
+File not found, no image created: ORI/Mind Rot.full
+File not found, no image created: ORI/Nightmare.full
+File not found, no image created: ORI/Plummet.full
+File not found, no image created: ORI/Prized Unicorn.full
+File not found, no image created: ORI/Sengir Vampire.full
+File not found, no image created: ORI/Serra Angel.full
+File not found, no image created: ORI/Shivan Dragon.full
+File not found, no image created: ORI/Terra Stomper.full
+File not found, no image created: ORI/Weave Fate.full

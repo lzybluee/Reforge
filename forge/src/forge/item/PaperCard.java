@@ -122,7 +122,6 @@ public final class PaperCard implements Comparable<IPaperCard>, InventoryItemFro
     public PaperCard(final CardRules rules0, final String edition0, final CardRarity rarity0, final int artIndex0) {
         this(rules0, edition0, rarity0, artIndex0, false);
     }
-
     public PaperCard(final CardRules rules0, final String edition0, final CardRarity rarity0, final int artIndex0, final boolean foil0) {
         if (rules0 == null || edition0 == null || rarity0 == null) {
             throw new IllegalArgumentException("Cannot create card without rules, edition or rarity");

@@ -66,7 +66,7 @@ public abstract class TrackableObject implements IIdentifiable, Serializable {
             key.updateObjLookup(value);
         }
     }
-    
+
     public final void updateObjLookup() {
         for (final Entry<TrackableProperty, Object> prop : props.entrySet()) {
             prop.getKey().updateObjLookup(prop.getValue());
@@ -77,7 +77,7 @@ public abstract class TrackableObject implements IIdentifiable, Serializable {
      * Copy all change properties of another Trackable object to this object.
      */
     public final void copyChangedProps(final TrackableObject from) {
-    	if (copyingProps) { return; } //prevent infinite loop from circular reference
+        if (copyingProps) { return; } //prevent infinite loop from circular reference
         copyingProps = true;
         for (final TrackableProperty prop : from.changedProps) {
             prop.copyChangedProps(from, this);

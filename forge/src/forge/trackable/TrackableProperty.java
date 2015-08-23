@@ -166,7 +166,7 @@ public enum TrackableProperty {
     public boolean respectFreeze() {
         return respectFreeze;
     }
-    
+
     @SuppressWarnings("unchecked")
     public <T> void updateObjLookup(T newObj) {
         ((TrackableType<T>)type).updateObjLookup(newObj);

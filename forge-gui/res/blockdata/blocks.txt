@@ -58,3 +58,5 @@ Khans of Tarkir, 3/6/KTK, KTK FRF
 Dragons of Tarkir, 3/6/DTK, DTK FRF
 Tarkir, 3/6/KTK, KTK FRF DTK
 Modern Masters 2015, 3/6/M15, MM2
+Magic Origins, 3/6/ORI, ORI
+Magic Origins Prerelease, -/7/ORI, ORI ORI ORI Meta-Choose(S(ORI Prerelease Gideon)Gideon;S(ORI Prerelease Jace)Jace;S(ORI Prerelease Liliana)Liliana;S(ORI Prerelease Chandra)Chandra;S(ORI Prerelease Nissa)Nissa)Planeswalker

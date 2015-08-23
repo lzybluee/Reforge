@@ -54,10 +54,11 @@ public abstract class AbstractGuiGame implements IGuiGame, IMayViewCards {
     @Override
     public final void setCurrentPlayer(PlayerView player) {
         player = TrackableTypes.PlayerViewType.lookup(player); //ensure we use the correct player
- 
+
         if (!gameControllers.containsKey(player)) {
             throw new IllegalArgumentException();
         }
+
         currentPlayer = player;
         updateCurrentPlayer(player);
     }
@@ -70,7 +71,7 @@ public abstract class AbstractGuiGame implements IGuiGame, IMayViewCards {
     @Override
     public void setGameView(final GameView gameView0) {
         if (gameView == null || gameView0 == null) {
-        	if (gameView0 != null) {
+            if (gameView0 != null) {
                 //ensure lookup dictionaries are reset before each game
                 TrackableTypes.CardViewType.clearLookupDictionary();
                 TrackableTypes.PlayerViewType.clearLookupDictionary();
@@ -107,7 +108,7 @@ public abstract class AbstractGuiGame implements IGuiGame, IMayViewCards {
         }
 
         player = TrackableTypes.PlayerViewType.lookup(player); //ensure we use the correct player
-        
+
         final boolean doSetCurrentPlayer = originalGameControllers.isEmpty();
         originalGameControllers.put(player, gameController);
         gameControllers.put(player, gameController);
@@ -123,11 +124,12 @@ public abstract class AbstractGuiGame implements IGuiGame, IMayViewCards {
         }
 
         player = TrackableTypes.PlayerViewType.lookup(player); //ensure we use the correct player
-        
+
         if (gameController == null) {
             if (originalGameControllers.containsKey(player)) {
                 gameControllers.put(player, originalGameControllers.get(player));
-            } else {
+            }
+            else {
                 gameControllers.remove(player);
                 autoPassUntilEndOfTurn.remove(player);
                 final PlayerView currentPlayer = getCurrentPlayer();

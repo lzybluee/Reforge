@@ -49,7 +49,7 @@ import forge.util.collect.FCollectionView;
  * </p>
  * 
  * @author Forge
- * @version $Id: Combat.java 29595 2015-06-07 09:40:43Z elcnesh $
+ * @version $Id: Combat.java 29786 2015-07-17 10:54:34Z Kulnaro $
  */
 public class Combat {
     private final Player playerWhoAttacks;
@@ -260,7 +260,7 @@ public class Combat {
         }
         return false;
     }
-    
+  
     /**
      * Checks if a card is currently attacking, returns false if the card is not currently attacking, even if its LKI was.
      */

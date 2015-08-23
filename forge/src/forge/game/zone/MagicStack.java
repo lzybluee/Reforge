@@ -74,7 +74,7 @@ import forge.game.trigger.WrappedAbility;
  * </p>
  * 
  * @author Forge
- * @version $Id: MagicStack.java 29726 2015-07-04 13:32:44Z friarsol $
+ * @version $Id: MagicStack.java 29763 2015-07-10 23:42:11Z friarsol $
  */
 public class MagicStack /* extends MyObservable */ implements Iterable<SpellAbilityStackInstance> {
     private final List<SpellAbility> simultaneousStackEntryList = new ArrayList<SpellAbility>();
@@ -237,6 +237,14 @@ public class MagicStack /* extends MyObservable */ implements Iterable<SpellAbil
                 source.turnFaceDown();
             } else if (source.isFaceDown()) {
                 source.turnFaceUp();
+            }
+        }
+
+        if (sp.getApi() == ApiType.Charm) {
+            boolean remember = sp.hasParam("RememberChoice");
+            if (remember) {
+                // Remember the ChoiceName here for later handling
+                source.addRemembered(sp.getSubAbility().getParam("ChoiceName"));
             }
         }
 

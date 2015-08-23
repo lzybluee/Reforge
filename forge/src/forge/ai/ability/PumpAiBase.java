@@ -88,7 +88,11 @@ public abstract class PumpAiBase extends SpellAbilityAi {
                 List<Card> attackers = CardLists.filter(ai.getCardsIn(ZoneType.Battlefield), new Predicate<Card>() {
                     @Override
                     public boolean apply(final Card c) {
-                        return (c.isCreature() && CombatUtil.canAttack(c, human));
+                        if (c.equals(sa.getHostCard()) && sa.getPayCosts() != null && sa.getPayCosts().hasTapCost() 
+                                && !combat.isAttacking(c)) {
+                            return false;
+                        }
+                        return (c.isCreature() && CombatUtil.canAttack(c, human) || combat.isAttacking(c));
                     }
                 });
                 if (!CombatUtil.canBlockAtLeastOne(card, attackers)) {
@@ -104,7 +108,11 @@ public abstract class PumpAiBase extends SpellAbilityAi {
             List<Card> attackers = CardLists.filter(ai.getCardsIn(ZoneType.Battlefield), new Predicate<Card>() {
                 @Override
                 public boolean apply(final Card c) {
-                    return (c.isCreature() && CombatUtil.canAttack(c, human));
+                    if (c.equals(sa.getHostCard()) && sa.getPayCosts() != null && sa.getPayCosts().hasTapCost() 
+                            && !combat.isAttacking(c)) {
+                        return false;
+                    }
+                    return (c.isCreature() && CombatUtil.canAttack(c, human) || combat.isAttacking(c));
                 }
             });
             if (!CombatUtil.canBlockAtLeastOne(card, attackers)) {
@@ -434,7 +442,7 @@ public abstract class PumpAiBase extends SpellAbilityAi {
         list = CardLists.filter(list, new Predicate<Card>() {
             @Override
             public boolean apply(final Card c) {
-            	return ComputerUtilCard.shouldPumpCard(ai, sa, c, defense, attack, keywords, immediately);
+                return ComputerUtilCard.shouldPumpCard(ai, sa, c, defense, attack, keywords, immediately);
             }
         });
         return list;
@@ -468,10 +476,10 @@ public abstract class PumpAiBase extends SpellAbilityAi {
             list = CardLists.filter(list, new Predicate<Card>() {
                 @Override
                 public boolean apply(final Card c) {
-                	if (c.getSVar("Targeting").equals("Dies") || c.getNetToughness() <= -defense) {
+                    if (c.getSVar("Targeting").equals("Dies") || c.getNetToughness() <= -defense) {
                         return true; // can kill indestructible creatures
                     }
-                	return (ComputerUtilCombat.getDamageToKill(c) <= -defense && !c.hasKeyword("Indestructible"));
+                    return (ComputerUtilCombat.getDamageToKill(c) <= -defense && !c.hasKeyword("Indestructible"));
                 }
             }); // leaves all creatures that will be destroyed
         } // -X/-X end

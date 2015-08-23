@@ -38,16 +38,7 @@ import forge.game.card.CardLists;
 import forge.game.card.CardPredicates;
 import forge.game.card.CardUtil;
 import forge.game.card.CounterType;
-import forge.game.event.EventValueChangeType;
-import forge.game.event.GameEventCardChangeZone;
-import forge.game.event.GameEventCardDestroyed;
-import forge.game.event.GameEventCardRegenerated;
-import forge.game.event.GameEventCardSacrificed;
-import forge.game.event.GameEventCardStatsChanged;
-import forge.game.event.GameEventCardTapped;
-import forge.game.event.GameEventFlipCoin;
-import forge.game.event.GameEventGameStarted;
-import forge.game.event.GameEventZone;
+import forge.game.event.*;
 import forge.game.player.GameLossReason;
 import forge.game.player.Player;
 import forge.game.replacement.ReplacementEffect;
@@ -91,7 +82,7 @@ import java.util.Set;
  * Methods for common actions performed during a game.
  * 
  * @author Forge
- * @version $Id: GameAction.java 29685 2015-06-20 11:28:36Z swordshine $
+ * @version $Id: GameAction.java 29888 2015-08-21 03:38:52Z friarsol $
  */
 public class GameAction {
     private final Game game;
@@ -863,7 +854,7 @@ public class GameAction {
         if (!refreeze) {
             game.getStack().unfreezeStack();
         }
-        
+           
         for(Player p : game.getPlayers()) {
         	p.updateFlashbackZoneForView();
         	p.getGame().fireEvent(new GameEventZone(ZoneType.Flashback, p, EventValueChangeType.ComplexUpdate, null));
@@ -1599,7 +1590,15 @@ public class GameAction {
                 p.shuffle(null);
             }
         }
+
+        //Vancouver Mulligan
+        for(Player p : whoCanMulligan) {
+            if (p.getStartingHandSize() > p.getZone(ZoneType.Hand).size()) {
+                p.scry(1);
+            }
+        }
     }
+
 
     private void runOpeningHandActions(final Player first) {
         Player takesAction = first;

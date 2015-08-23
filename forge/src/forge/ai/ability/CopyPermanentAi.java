@@ -16,7 +16,6 @@ import forge.game.player.Player;
 import forge.game.player.PlayerActionConfirmMode;
 import forge.game.spellability.SpellAbility;
 import forge.game.spellability.TargetRestrictions;
-import forge.game.zone.ZoneType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,14 +34,14 @@ public class CopyPermanentAi extends SpellAbilityAi {
         if (sa.hasParam("AtEOT") && !aiPlayer.getGame().getPhaseHandler().is(PhaseType.MAIN1)) {
             return false;
         }
-        
+
         if (sa.getTargetRestrictions() != null && sa.hasParam("TargetingPlayer")) {
             sa.resetTargets();
             Player targetingPlayer = AbilityUtils.getDefinedPlayers(sa.getHostCard(), sa.getParam("TargetingPlayer"), sa).get(0);
             sa.setTargetingPlayer(targetingPlayer);
             return targetingPlayer.getController().chooseTargetsFor(sa);
         } else {
-        	return this.doTriggerAINoCost(aiPlayer, sa, false);
+            return this.doTriggerAINoCost(aiPlayer, sa, false);
         }
     }
 
@@ -57,6 +56,7 @@ public class CopyPermanentAi extends SpellAbilityAi {
 
         if (abTgt != null) {
             sa.resetTargets();
+
             CardCollection list = CardLists.getValidCards(aiPlayer.getGame().getCardsIn(abTgt.getZone()), abTgt.getValidTgts(), source.getController(), source);
             list = CardLists.getTargetableCards(list, sa);
             list = CardLists.filter(list, new Predicate<Card>() {

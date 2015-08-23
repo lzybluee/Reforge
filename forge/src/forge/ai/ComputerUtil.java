@@ -80,7 +80,7 @@ import forge.util.MyRandom;
  * </p>
  * 
  * @author Forge
- * @version $Id: ComputerUtil.java 29595 2015-06-07 09:40:43Z elcnesh $
+ * @version $Id: ComputerUtil.java 29811 2015-07-19 11:38:59Z Sloth $
  */
 public class ComputerUtil {
     public static boolean handlePlayingSpellAbility(final Player ai, final SpellAbility sa, final Game game) {
@@ -1429,9 +1429,9 @@ public class ComputerUtil {
         final Card source = sa.getHostCard();
         final Zone zone = source.getZone();
         final Game game = source.getGame();
- 
+
         if (sa.isTrigger()) {
-            return true;
+        	return true;
         }
 
         if (zone.getZoneType() == ZoneType.Battlefield) {
@@ -1453,14 +1453,14 @@ public class ComputerUtil {
         
         // don't mulligan when already too low
         if (handList.size() < aic.getIntProperty(AiProps.MULLIGAN_THRESHOLD)) {
-                return false;
+        	return false;
         }
         
         final CardCollectionView lands = CardLists.filter(handList, new Predicate<Card>() {
             @Override
             public boolean apply(final Card c) {
                 if (c.getManaCost().getCMC() > 0 || c.hasSVar("NeedsToPlay") 
-                                || (!c.getType().isLand() && !c.getType().isArtifact())) {
+                		|| (!c.getType().isLand() && !c.getType().isArtifact())) {
                     return false;
                 }
                 return true;
@@ -1469,9 +1469,9 @@ public class ComputerUtil {
         
         // mulligan when at the threshold, with a no land hand
         if (handList.size() == aic.getIntProperty(AiProps.MULLIGAN_THRESHOLD) && !lands.isEmpty()) {
-            return false;
+        	return false;
         }
- 
+
         return lands.size() < 2 ;
     }
     
@@ -1755,7 +1755,7 @@ public class ComputerUtil {
         });
         return safeCards;
     }
-    
+
     public static Card getKilledByTargeting(final SpellAbility sa, CardCollectionView validCards) {
         CardCollection killables = new CardCollection(validCards);
         killables = CardLists.filter(killables, new Predicate<Card>() {
@@ -1766,7 +1766,7 @@ public class ComputerUtil {
         });
         return ComputerUtilCard.getBestCreatureAI(killables);
     }
-
+    
     public static int getDamageForPlaying(final Player player, final SpellAbility sa) {
         
         // check for bad spell cast triggers
@@ -1781,8 +1781,8 @@ public class ComputerUtil {
         for (Trigger trigger : theTriggers) {
             Map<String, String> trigParams = trigger.getMapParams();
             final Card source = trigger.getHostCard();
- 
- 
+
+
             if (!trigger.zonesCheck(game.getZoneOf(source))) {
                 continue;
             }
@@ -1804,7 +1804,7 @@ public class ComputerUtil {
                     continue;
                 }
             }
- 
+
             String ability = source.getSVar(trigParams.get("Execute"));
             if (ability.isEmpty()) {
                 continue;
@@ -1834,7 +1834,7 @@ public class ComputerUtil {
         
         return damage;
     }
- 
+
     public static int getDamageFromETB(final Player player, final Card permanent) {
         int damage = 0;
         final Game game = player.getGame();
