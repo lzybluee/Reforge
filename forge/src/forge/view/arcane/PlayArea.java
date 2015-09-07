@@ -144,7 +144,7 @@ public class PlayArea extends CardPanelContainer implements CardPanelMouseListen
             final CardView card = panel.getCard();
             final CardStateView state = card.getCurrentState();
 
-            if (!card.isToken()) {
+            if (!card.isToken() || (card.isToken() && (card.getEquipping() != null || card.getEnchantingCard() != null || card.getFortifying() != null))) {
                 continue;
             }
 
