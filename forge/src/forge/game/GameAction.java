@@ -359,6 +359,10 @@ public class GameAction {
                 copied.setState(CardStateName.Original, true);
             }
         }
+        
+        if (c.isToken() && zoneTo.is(ZoneType.Library)) {
+            zoneTo.remove(c);
+        }
 
         return copied;
     }
