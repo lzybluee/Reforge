@@ -29,6 +29,10 @@ public abstract class TriggerReplacementBase extends CardTraitBase {
     public void setActiveZone(EnumSet<ZoneType> zones) {
         validHostZones = zones;
     }
+    
+    public EnumSet<ZoneType> getActiveZone() {
+        return validHostZones;
+    }
 
     /**
      * <p>

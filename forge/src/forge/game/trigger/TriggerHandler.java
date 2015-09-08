@@ -421,6 +421,12 @@ public class TriggerHandler {
                 // don't trigger again.
             }
         }
+        
+        if (regtrig.getActiveZone() != null && regtrig.getActiveZone().contains(ZoneType.Battlefield)) {
+            if(regtrig.getHostCard() != null && (game.getZoneOf(regtrig.getHostCard()).is(ZoneType.Library) || game.getZoneOf(regtrig.getHostCard()).is(ZoneType.Hand))) {
+            	return false;
+            }
+        }
 
         // Torpor Orb check
         if (game.getStaticEffects().getGlobalRuleChange(GlobalRuleChange.noCreatureETBTriggers)
