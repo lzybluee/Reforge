@@ -3216,6 +3216,7 @@ public class Card extends GameEntity implements Comparable<Card> {
         }
         else {
             extrinsicKeyword.add(s);
+            updateKeywords();
         }
     }
 
