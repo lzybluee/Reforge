@@ -423,7 +423,8 @@ public class TriggerHandler {
         }
         
         if (regtrig.getActiveZone() != null && regtrig.getActiveZone().contains(ZoneType.Battlefield)) {
-            if(regtrig.getHostCard() != null && (game.getZoneOf(regtrig.getHostCard()).is(ZoneType.Library) || game.getZoneOf(regtrig.getHostCard()).is(ZoneType.Hand))) {
+            if(regtrig.getHostCard() != null && (game.getZoneOf(regtrig.getHostCard()).is(ZoneType.Library)
+            		|| game.getZoneOf(regtrig.getHostCard()).is(ZoneType.Hand) || game.getZoneOf(regtrig.getHostCard()).is(ZoneType.Exile))) {
             	return false;
             }
         }
