@@ -43,7 +43,7 @@ public class CostExiledMoveToGrave extends CostPartWithList {
         final String desc = getTypeDescription() == null ? getType() : getTypeDescription();
         sb.append(Cost.convertAmountTypeToWords(i, getAmount(), desc));
 
-        sb.append(" into its owner's graveyard");
+        sb.append(" from exile into that player's graveyard");
 
         return sb.toString();
     }
@@ -71,10 +71,7 @@ public class CostExiledMoveToGrave extends CostPartWithList {
         CardCollectionView typeList = activator.getGame().getCardsIn(ZoneType.Exile);
 
         typeList = CardLists.getValidCards(typeList, getType().split(";"), activator, source);
-        if (typeList.size() < i) {
-            return false;
-        }
-        return true;
+        return typeList.size() >= i;
     }
 
     @Override
