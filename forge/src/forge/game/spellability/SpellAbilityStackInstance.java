@@ -85,11 +85,11 @@ public class SpellAbilityStackInstance implements IIdentifiable, IHasCardView {
     private final HashMap<String, Object> triggeringObjects;
     private final List<Object> triggerRemembered;
 
-    private final HashMap<String, String> storedSVars = new HashMap<String, String>();
+    private final HashMap<String, String> storedSVars = new HashMap<>();
 
     private final List<ZoneType> zonesToOpen;
     private final Map<Player, Object> playersWithValidTargets;
-    private final Set<Card> oncePerEffectTriggers = new HashSet<Card>();
+    private final Set<Card> oncePerEffectTriggers = new HashSet<>();
 
     private final StackItemView view;
 
@@ -127,7 +127,7 @@ public class SpellAbilityStackInstance implements IIdentifiable, IHasCardView {
         // Store SVars and Clear
         for (final String store : Card.getStorableSVars()) {
             final String value = source.getSVar(store);
-            if (value.length() > 0) {
+            if (!value.isEmpty()) {
                 storedSVars.put(store, value);
                 source.setSVar(store, "");
             }
@@ -139,8 +139,8 @@ public class SpellAbilityStackInstance implements IIdentifiable, IHasCardView {
             playersWithValidTargets = null;
         }
         else {
-            zonesToOpen = new ArrayList<ZoneType>();
-            playersWithValidTargets = new HashMap<Player, Object>();
+        	zonesToOpen = new ArrayList<>();
+            playersWithValidTargets = new HashMap<>();
             for (Card card : tc.getTargetCards()) {
                 ZoneType zoneType = card.getZone() != null ? card.getZone().getZoneType() : null;
                 if (zoneType != ZoneType.Battlefield) { //don't need to worry about targets on battlefield
@@ -187,7 +187,7 @@ public class SpellAbilityStackInstance implements IIdentifiable, IHasCardView {
             final Card source = ability.getHostCard();
             for (final String store : storedSVars.keySet()) {
                 final String value = storedSVars.get(store);
-                if (value.length() > 0) {
+                if (!value.isEmpty()) {
                     source.setSVar(store, value);
                 }
             }
@@ -197,7 +197,7 @@ public class SpellAbilityStackInstance implements IIdentifiable, IHasCardView {
 
     // A bit of SA shared abilities to restrict conflicts
     public final String getStackDescription() {
-        return stackDescription;
+    	return stackDescription.replaceAll("\\\\r\\\\n", "").replaceAll("\\.\u2022", ";").replaceAll("\u2022", "");
     }
 
     public final Card getSourceCard() {
@@ -254,9 +254,9 @@ public class SpellAbilityStackInstance implements IIdentifiable, IHasCardView {
             view.updateText(this);
 
             // Run BecomesTargetTrigger
-            Map<String, Object> runParams = new HashMap<String, Object>();
+            Map<String, Object> runParams = new HashMap<>();
             runParams.put("SourceSA", ability);
-            Set<Object> distinctObjects = new HashSet<Object>();
+            Set<Object> distinctObjects = new HashSet<>();
             for (final Object tgt : target.getTargets()) {
                 if (distinctObjects.contains(tgt)) {
                     continue;
