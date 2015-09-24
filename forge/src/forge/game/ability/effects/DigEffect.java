@@ -72,6 +72,15 @@ public class DigEffect extends SpellAbilityEffect {
         final boolean optional = sa.hasParam("Optional");
         final boolean noMove = sa.hasParam("NoMove");
         final boolean skipReorder = sa.hasParam("SkipReorder");
+        
+        // A hack for cards like Explorer's Scope that need to ensure that a card is revealed to the player activating the ability
+        final boolean forceRevealToController = sa.hasParam("ForceRevealToController");
+ 
+        // These parameters are used to indicate that a dialog box must be show to the player asking if the player wants to proceed
+        // with an optional ability, otherwise the optional ability is skipped.
+        final boolean mayBeSkipped = sa.hasParam("PromptToSkipOptionalAbility");
+        final String optionalAbilityPrompt = sa.hasParam("OptionalAbilityPrompt") ? sa.getParam("OptionalAbilityPrompt") : "";
+
 
         boolean changeAll = false;
         boolean allButOne = false;
@@ -189,16 +198,19 @@ public class DigEffect extends SpellAbilityEffect {
                         andOrCards = new CardCollection();
                     }
                     
-                    if (!sa.hasParam("Reveal")) {
-                        // make sure at least the controller gets to see the card
+                    if (forceRevealToController) {
+                        // Force revealing the card to the player activating the ability (e.g. Explorer's Scope)
                         game.getAction().revealTo(top, player);
                     }
+                    
+                    // Optional abilities that use a dialog box to prompt the user to skip the ability (e.g. Explorer's Scope, Quest for Ula's Temple)
+                    if (optional && mayBeSkipped && !valid.isEmpty()) {
+                        String prompt = !optionalAbilityPrompt.isEmpty() ? optionalAbilityPrompt : "Would you like to proceed with the optional ability for " + sa.getHostCard() + "?\n\n(" + sa.getDescription() + ")";
+                        if (!p.getController().confirmAction(sa, null, prompt.replace("CARDNAME", sa.getHostCard().getName()))) {
+                            return;
+                        }
+                    }
  
-                    // Optional ability
-                    String message = sa.hasParam("OptionalMessage") ? sa.getParam("OptionalMessage") : "Would you like to proceed with the optional ability for " + host.getName() + "?";
-                    if ( !valid.isEmpty() && sa.hasParam("Optional") && !p.getController().confirmAction(sa, null, message) )
-                        return;
-
                     if (changeAll) {
                         movedCards = new CardCollection(valid);
                     }
