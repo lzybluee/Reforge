@@ -814,6 +814,17 @@ public class GameAction {
                     destroy(c, null);
                 }
             }
+            
+            for (Player p : game.getPlayers()) {
+                if (p.miracleTrigger != null) {
+                	if(p.miracleTrigger.getHostCard().getZone().is(ZoneType.Hand))
+                	{
+                		game.getStack().add(p.miracleTrigger);
+                		checkAgain = true;
+                	}
+                    p.miracleTrigger = null;
+                }
+            }
 
             if (game.getTriggerHandler().runWaitingTriggers()) {
                 checkAgain = true;

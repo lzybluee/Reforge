@@ -144,6 +144,7 @@ public class Player extends GameEntity implements Comparable<Player> {
 
     private final AchievementTracker achievementTracker = new AchievementTracker();
     private final PlayerView view;
+    public Ability miracleTrigger;
 
     public Player(String name0, Game game0, final int id0) {
         super(id0);
@@ -2451,12 +2452,10 @@ public class Player extends GameEntity implements Comparable<Player> {
         playForMiracleCost.setStackDescription(card.getName() + " - Cast via Miracle");
 
         // TODO Convert this to a Trigger
-        final Ability miracleTrigger = new MiracleTrigger(card, ManaCost.ZERO, playForMiracleCost);
+        miracleTrigger = new MiracleTrigger(card, ManaCost.ZERO, playForMiracleCost);
         miracleTrigger.setStackDescription(card.getName() + " - Miracle.");
         miracleTrigger.setActivatingPlayer(card.getOwner());
         miracleTrigger.setTrigger(true);
-
-        game.getStack().add(miracleTrigger);
     }
 
     public boolean isSkippingDraw() {
