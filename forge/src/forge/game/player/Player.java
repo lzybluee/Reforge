@@ -144,7 +144,6 @@ public class Player extends GameEntity implements Comparable<Player> {
 
     private final AchievementTracker achievementTracker = new AchievementTracker();
     private final PlayerView view;
-    public Ability miracleTrigger;
 
     public Player(String name0, Game game0, final int id0) {
         super(id0);
@@ -2450,12 +2449,19 @@ public class Player extends GameEntity implements Comparable<Player> {
         final SpellAbility playForMiracleCost = card.getFirstSpellAbility().copy();
         playForMiracleCost.setPayCosts(card.getMiracleCost());
         playForMiracleCost.setStackDescription(card.getName() + " - Cast via Miracle");
+        
+        if (!getController().confirmAction(playForMiracleCost, null, "Miracle - Reveal " + card.getName())) {
+            return;
+        }
 
         // TODO Convert this to a Trigger
-        miracleTrigger = new MiracleTrigger(card, ManaCost.ZERO, playForMiracleCost);
+        Ability miracleTrigger = new MiracleTrigger(card, ManaCost.ZERO, playForMiracleCost);
         miracleTrigger.setStackDescription(card.getName() + " - Miracle.");
         miracleTrigger.setActivatingPlayer(card.getOwner());
         miracleTrigger.setTrigger(true);
+        card.setMiracle(true);
+        
+        game.getStack().add(miracleTrigger);
     }
 
     public boolean isSkippingDraw() {
@@ -2487,6 +2493,9 @@ public class Player extends GameEntity implements Comparable<Player> {
 
         @Override
         public void resolve() {
+        	if(!getHostCard().isMiracle()) {
+        		return;
+        	}
             miracle.setActivatingPlayer(getHostCard().getOwner());
             // pay miracle cost here.
             getHostCard().getOwner().getController().playMiracle(miracle, getHostCard());

@@ -153,6 +153,12 @@ public class GameAction {
             c.setZone(zoneTo);
             zoneChangedEarly = true;
         }
+        
+    	if(c.isMiracle()) {
+    		if(!zoneTo.is(ZoneType.Stack)) {
+    			c.setMiracle(false);
+    		}
+    	}
 
         // Don't copy Tokens, copy only cards leaving the battlefield
         // and returning to hand (to recreate their spell ability information)
@@ -812,17 +818,6 @@ public class GameAction {
             if (desCreats != null) {
                 for (Card c : desCreats) {
                     destroy(c, null);
-                }
-            }
-            
-            for (Player p : game.getPlayers()) {
-                if (p.miracleTrigger != null) {
-                	if(p.miracleTrigger.getHostCard().getZone().is(ZoneType.Hand))
-                	{
-                		game.getStack().add(p.miracleTrigger);
-                		checkAgain = true;
-                	}
-                    p.miracleTrigger = null;
                 }
             }
 

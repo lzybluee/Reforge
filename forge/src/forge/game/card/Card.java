@@ -252,6 +252,7 @@ public class Card extends GameEntity implements Comparable<Card> {
     private String originalText = "", text = "";
     private String echoCost = "";
     private Cost miracleCost = null;
+    private boolean isMiracle = false;
     private String chosenType = "";
     private List<String> chosenColors;
     private String namedCard = "";
@@ -3388,6 +3389,12 @@ public class Card extends GameEntity implements Comparable<Card> {
     }
     public final void setMiracleCost(final Cost cost) {
         miracleCost = cost;
+    }
+    public final boolean isMiracle() {
+        return isMiracle;
+    }
+    public final void setMiracle(final boolean miracle) {
+    	isMiracle = miracle;
     }
 
     public final boolean hasSuspend() {
