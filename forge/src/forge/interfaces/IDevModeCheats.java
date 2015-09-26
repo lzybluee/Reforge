@@ -12,7 +12,7 @@ public interface IDevModeCheats {
 
     void setupGameState();
 
-    void tutorForCard();
+    void tutorForCard(boolean sideboard);
 
     void addCountersToPermanent();
 
@@ -20,7 +20,7 @@ public interface IDevModeCheats {
 
     void untapPermanents();
 
-    void setPlayerLife();
+    void setPlayerLife(boolean maxlife);
 
     void winGame();
 
@@ -44,7 +44,7 @@ public interface IDevModeCheats {
         public void untapPermanents() {
         }
         @Override
-        public void tutorForCard() {
+        public void tutorForCard(boolean sideboard) {
         }
         @Override
         public void tapPermanents() {
@@ -56,7 +56,7 @@ public interface IDevModeCheats {
         public void setViewAllCards(final boolean canViewAll) {
         }
         @Override
-        public void setPlayerLife() {
+        public void setPlayerLife(boolean maxlife) {
         }
         @Override
         public void setCanPlayUnlimitedLands(final boolean canPlayUnlimitedLands0) {

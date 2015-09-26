@@ -1527,6 +1527,9 @@ public class AbilityUtils {
         List<SpellAbility> sas = new ArrayList<SpellAbility>();
         for (SpellAbility s : tgtCard.getBasicSpells()) {
             final Spell newSA = (Spell) s.copy();
+            if(sas.toString().startsWith("Fuse (") && tgtCard.getCastFrom() != ZoneType.Hand) {
+                continue;
+            }
             newSA.setActivatingPlayer(controller);
             SpellAbilityRestriction res = new SpellAbilityRestriction();
             // timing restrictions still apply

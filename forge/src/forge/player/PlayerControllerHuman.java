@@ -1654,16 +1654,16 @@ public class PlayerControllerHuman
          * @see forge.player.IDevModeCheats#tutorForCard()
          */
         @Override
-        public void tutorForCard() {
+        public void tutorForCard(boolean sideboard) {
             final Player pPriority = game.getPhaseHandler().getPriorityPlayer();
             if (pPriority == null) {
                 getGui().message("No player has priority at the moment, so their deck can't be tutored from.");
                 return;
             }
 
-            final CardCollection lib = (CardCollection)pPriority.getCardsIn(ZoneType.Library);
+            final CardCollection lib = (CardCollection)pPriority.getCardsIn(sideboard ? ZoneType.Sideboard : ZoneType.Library);
             final List<ZoneType> origin = new ArrayList<ZoneType>();
-            origin.add(ZoneType.Library);
+            origin.add(sideboard ? ZoneType.Sideboard : ZoneType.Library);
             final SpellAbility sa = new SpellAbility.EmptySa(new Card(-1, game));
             final Card card = chooseSingleCardForZoneChange(ZoneType.Hand, origin, sa, lib, null, "Choose a card", true, pPriority);
             if (card == null) { return; }
@@ -1742,12 +1742,17 @@ public class PlayerControllerHuman
          * @see forge.player.IDevModeCheats#setPlayerLife()
          */
         @Override
-        public void setPlayerLife() {
+        public void setPlayerLife(boolean maxlife) {
             final Player player = game.getPlayer(getGui().oneOrNone("Set life for which player?", PlayerView.getCollection(game.getPlayers())));
             if (player == null) { return; }
 
-            final Integer life = getGui().getInteger("Set life to what?", 0);
-            if (life == null) { return; }
+            Integer life = null;
+            if(maxlife) {
+            	life = 99999;
+            } else {
+                life = getGui().getInteger("Set life to what?", 0);
+                if (life == null) { return; }
+            }
 
             player.setLife(life, null);
         }

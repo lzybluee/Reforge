@@ -407,6 +407,7 @@ public final class CMatchUI
             if (updateZones) {
                 vField.updateZones();
             }
+            getFieldViewFor(owner).updateDetails();
         }
     }
 

@@ -6540,6 +6540,10 @@ public class Card extends GameEntity implements Comparable<Card> {
         // this can only be called by the Human
         final List<SpellAbility> abilities = Lists.newArrayList();
         for (SpellAbility sa : getSpellAbilities()) {
+        	if (sa.toString().startsWith("Fuse (")
+                    && player.getGame().getZoneOf(this).getZoneType() != ZoneType.Hand) {
+                continue;
+            }
             //add alternative costs as additional spell abilities
             if(!(sa.getHostCard().getZone().is(ZoneType.Exile) && player != sa.getHostCard().getOwner()))
             {
