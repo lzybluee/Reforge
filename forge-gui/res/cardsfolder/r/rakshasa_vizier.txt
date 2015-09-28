@@ -1,0 +1,9 @@
+Name:Rakshasa Vizier
+ManaCost:2 B G U
+Types:Creature Cat Demon
+PT:4/4
+T:Mode$ ChangesZone | ValidCard$ Card.YouOwn | OncePerEffect$ True | Origin$ Graveyard | Destination$ Exile | TriggerZones$ Battlefield | Execute$ DBPutCounter | TriggerDescription$ Whenever one or more cards are put into exile from your graveyard, put that many +1/+1 counters on CARDNAME.
+SVar:DBPutCounter:DB$PutCounter | Defined$ Self | CounterType$ P1P1 | CounterNum$ X
+SVar:X:TriggerCount$OnceEffectCount
+SVar:Picture:http://www.wizards.com/global/images/magic/general/rakshasa_vizier.jpg
+Oracle:Whenever one or more cards are put into exile from your graveyard, put that many +1/+1 counters on Rakshasa Vizier.

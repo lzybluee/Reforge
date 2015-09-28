@@ -275,6 +275,7 @@ public class Card extends GameEntity implements Comparable<Card> {
 
     private CardRules cardRules;
     private final CardView view;
+    private int onceEffectCount;
 
     // Enumeration for CMC request types
     public enum SplitCMCMode {
@@ -396,6 +397,7 @@ public class Card extends GameEntity implements Comparable<Card> {
 
         if (updateView) {
             view.updateState(this);
+            currentState.getView().updateColors(this);
 
             final Game game = getGame();
             if (game != null) {
@@ -946,6 +948,14 @@ public class Card extends GameEntity implements Comparable<Card> {
     
     public final void setTotalCountersToAdd(int value) {
         countersAdded = value;
+    }
+    
+    public final int getOnceEffectCount() {
+        return onceEffectCount;
+    }
+    
+    public final void setOnceEffectCount(int value) {
+    	onceEffectCount = value;
     }
 
     public final void addCounter(final CounterType counterType, final int n, final boolean applyMultiplier) {

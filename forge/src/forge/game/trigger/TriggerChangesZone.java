@@ -138,7 +138,13 @@ public class TriggerChangesZone extends Trigger {
             // card, rather than keeping track of the host card itself - but it's good enough for now - since there are
             // no cards with multiple different OncePerEffect triggers.
             SpellAbilityStackInstance si = (SpellAbilityStackInstance) runParams2.get("SpellAbilityStackInstance");
-            return si != null && si.attemptOncePerEffectTrigger(this.getHostCard());
+            if(si != null)
+            	return si.attemptOncePerEffectTrigger(this.getHostCard());
+            else {
+            	int count = this.getHostCard().getOnceEffectCount();
+            	this.getHostCard().setOnceEffectCount(count + 1);
+            	return count == 0;
+            }
         }
 
         return true;
