@@ -277,6 +277,11 @@ public class TriggerHandler {
             return false;
         }
 
+        for (final Trigger t : activeTriggers) {
+        	t.setTriggerCountAbility(null);
+        	t.resetTriggerCount();
+        }
+        
         boolean haveWaiting = false;
         for (final TriggerWaiting wt : waiting) {
             haveWaiting |= runWaitingTrigger(wt);
@@ -346,7 +351,9 @@ public class TriggerHandler {
                     }
                 }
 
-                runSingleTrigger(t, runParams);
+                if(!runSingleTrigger(t, runParams)) 
+                	continue;
+                	
                 checkStatics = true;
             }
         }
@@ -448,7 +455,17 @@ public class TriggerHandler {
     // Checks if the conditions are right for a single trigger to go off, and
     // runs it if so.
     // Return true if the trigger went off, false otherwise.
-    private void runSingleTrigger(final Trigger regtrig, final Map<String, Object> runParams) {
+    private boolean runSingleTrigger(final Trigger regtrig, final Map<String, Object> runParams) {
+  
+        if(regtrig.getMapParams().containsKey("OncePerEffect")) {
+        	if(regtrig.getTriggerCountAbility() != null) {
+        		regtrig.addTriggerCount();
+        		SpellAbility sa = regtrig.getTriggerCountAbility();
+        		sa.setTriggeringObject("OnceEffectCount", regtrig.getTriggerCount());
+        		return false;
+        	}
+        }
+        
         final Map<String, String> triggerParams = regtrig.getMapParams();
 
         regtrig.setRunParams(runParams);
@@ -485,7 +502,13 @@ public class TriggerHandler {
                 sa = AbilityFactory.getAbility(host.getSVar(triggerParams.get("Execute")), host);
             }
         }
-
+        
+        if(regtrig.getMapParams().containsKey("OncePerEffect")) {
+        	regtrig.setTriggerCountAbility(sa);
+        	regtrig.addTriggerCount();
+        	sa.setTriggeringObject("OnceEffectCount", regtrig.getTriggerCount());
+        }
+        
         sa.setHostCard(host);
         sa.setTrigger(true);
         sa.setSourceTrigger(regtrig.getId());
@@ -563,5 +586,7 @@ public class TriggerHandler {
                 regtrig.getHostCard().removeTrigger(regtrig);
             }
         }
+        
+        return true;
     }
 }

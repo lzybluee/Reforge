@@ -631,11 +631,6 @@ public class AbilityUtils {
             // pulls Integer Values from Trigger objects
             final SpellAbility root = sa.getRootAbility();
             final String[] l = calcX[1].split("/");
-            if(l[0].equals("OnceEffectCount")) {
-            	int count = card.getOnceEffectCount();
-            	card.setOnceEffectCount(0);
-            	return count;
-            }
             final String m = CardFactoryUtil.extractOperators(calcX[1]);
             final int count = (Integer) root.getTriggeringObject(l[0]);
 

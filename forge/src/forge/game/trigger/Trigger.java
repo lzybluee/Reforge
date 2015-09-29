@@ -79,6 +79,30 @@ public abstract class Trigger extends TriggerReplacementBase {
     private HashMap<String, Object> storedTriggeredObjects = null;
     
     private List<Object> triggerRemembered = new ArrayList<Object>();
+    
+    private int triggerCount;
+    private SpellAbility triggerCountAbility;
+    
+    public void addTriggerCount() {
+    	triggerCount++;
+    }
+    
+    public void resetTriggerCount() {
+    	triggerCount = 0;
+    }
+    
+    public int getTriggerCount() {
+    	return triggerCount;
+    }
+    
+    public void setTriggerCountAbility(SpellAbility ability) {
+    	triggerCountAbility = ability;
+    }
+    
+    public SpellAbility getTriggerCountAbility() {
+    	return triggerCountAbility;
+    }
+
 
     /**
      * <p>

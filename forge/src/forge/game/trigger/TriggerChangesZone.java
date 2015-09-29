@@ -129,7 +129,7 @@ public class TriggerChangesZone extends Trigger {
             }
         }
 
-        if (this.mapParams.containsKey("OncePerEffect")) {
+        /*if (this.mapParams.containsKey("OncePerEffect")) {
             // A "once per effect" trigger will only trigger once regardless of how many things the effect caused
             // to change zones. The SpellAbilityStackInstance keeps track of which host cards with "OncePerEffect"
             // triggers already fired as a result of that effect.
@@ -145,7 +145,7 @@ public class TriggerChangesZone extends Trigger {
             	this.getHostCard().setOnceEffectCount(count + 1);
             	return count == 0;
             }
-        }
+        }*/
 
         return true;
     }

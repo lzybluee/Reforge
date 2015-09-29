@@ -43,6 +43,7 @@ import forge.item.PaperCard;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -766,11 +767,9 @@ public class CardFactory {
         trig.setHostCard(sa.getHostCard());
         trig.setTrigger(true);
         trig.setSourceTrigger(t.getId());
-        t.setTriggeringObjects(trig);
-        trig.setTriggerRemembered(t.getTriggerRemembered());
-        if (t.getStoredTriggeredObjects() != null) {
-            trig.setTriggeringObjects(t.getStoredTriggeredObjects());
-        }
+        
+        trig.setTriggerRemembered(sa.getTriggerRemembered());
+        trig.setTriggeringObjects(sa.getTriggeringObjects());
 
         trig.setActivatingPlayer(sa.getActivatingPlayer());
         if (t.getMapParams().containsKey("TriggerController")) {
