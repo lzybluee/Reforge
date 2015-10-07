@@ -22,7 +22,7 @@ public interface IDevModeCheats {
 
     void setPlayerLife(boolean maxlife);
 
-    void winGame();
+    void winGame(boolean lose);
 
     void addCardToHand();
 
@@ -38,7 +38,7 @@ public interface IDevModeCheats {
      */
     public static final IDevModeCheats NO_CHEAT = new IDevModeCheats() {
         @Override
-        public void winGame() {
+        public void winGame(boolean lose) {
         }
         @Override
         public void untapPermanents() {

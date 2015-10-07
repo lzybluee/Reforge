@@ -1761,7 +1761,7 @@ public class PlayerControllerHuman
          * @see forge.player.IDevModeCheats#winGame()
          */
         @Override
-        public void winGame() {
+        public void winGame(boolean lose) {
             final Input input = inputQueue.getInput();
             if (!(input instanceof InputPassPriority)) {
                 getGui().message("You must have priority to use this feature.", "Win Game");
@@ -1772,7 +1772,7 @@ public class PlayerControllerHuman
             final LobbyPlayer guiPlayer = getLobbyPlayer();
             final FCollectionView<Player> players = game.getPlayers();
             for (final Player player : players) {
-                if (player.getLobbyPlayer() != guiPlayer) {
+                if (player.getLobbyPlayer() != guiPlayer ^ lose) {
                     player.setLife(0, null);
                 }
             }

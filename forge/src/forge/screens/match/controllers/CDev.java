@@ -173,11 +173,11 @@ public final class CDev implements ICDoc {
     private final MouseListener madWinGame = new MouseAdapter() {
         @Override
         public void mousePressed(final MouseEvent e) {
-            winGame();
+            winGame(e.getButton() == MouseEvent.BUTTON3);
         }
     };
-    public void winGame() {
-        getController().cheat().winGame();
+    public void winGame(boolean lose) {
+        getController().cheat().winGame(lose);
     }
 
     private final MouseListener madCardToBattlefield = new MouseAdapter() {

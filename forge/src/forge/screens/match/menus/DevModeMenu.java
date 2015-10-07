@@ -120,7 +120,7 @@ public class DevModeMenu implements ActionListener, IDevListener {
         case ADD_CARD_TO_HAND:     { controller.addCardToHand(); break; }
         case ADD_CARD_TO_PLAY:     { controller.addCardToBattlefield(); break; }
         case SET_PLAYER_LIFE:      { controller.setPlayerLife(false); break; }
-        case WIN_GAME:             { controller.winGame(); break; }
+        case WIN_GAME:             { controller.winGame(false); break; }
         case SETUP_GAME_STATE:     { controller.setupGameState(); break; }
         case DUMP_GAME_STATE:      { controller.dumpGameState(); break; }
         case PLAY_UNLIMITED_LANDS: { controller.togglePlayManyLandsPerTurn(); break; }
