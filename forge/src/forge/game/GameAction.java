@@ -702,6 +702,7 @@ public class GameAction {
                         c.setPairedWith(null);
                         partner.setPairedWith(null);
                         affectedCards.add(c);
+                        affectedCards.add(partner);
                     }
                 }
             }
