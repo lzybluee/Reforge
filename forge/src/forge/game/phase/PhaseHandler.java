@@ -927,6 +927,9 @@ public class PhaseHandler implements java.io.Serializable {
                     }
                     pFirstPriority = pPlayerPriority; // all opponents have to pass before stack is allowed to resolve
                     for (SpellAbility sa : chosenSa) {
+                    	if(sa.getManaPartRecursive() != null) {
+                        	sa.getManaPartRecursive().clearExpressChoice();
+                    	}
                         pPlayerPriority.getController().playChosenSpellAbility(sa);
                     }
                     loopCount++;
