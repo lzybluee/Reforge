@@ -62,7 +62,7 @@ public class HumanPlaySpellAbility {
         payment = payment0;
     }
 
-    public final void playAbility(final boolean mayChooseTargets, final boolean isFree, final boolean skipStack) {
+    public final boolean playAbility(final boolean mayChooseTargets, final boolean isFree, final boolean skipStack) {
         final Player human = ability.getActivatingPlayer();
         final Game game = ability.getActivatingPlayer().getGame();
 
@@ -129,7 +129,7 @@ public class HumanPlaySpellAbility {
                 manapool.restoreColorReplacements();
                 human.decNumManaConversion();
             }
-            return;
+            return false;
         }
 
         if (isFree || payment.isFullyPaid()) {
@@ -152,6 +152,8 @@ public class HumanPlaySpellAbility {
                 manapool.restoreColorReplacements();
             }
         }
+        
+        return true;
     }
 
     private final boolean setupTargets() {

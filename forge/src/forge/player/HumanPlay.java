@@ -80,12 +80,12 @@ public class HumanPlay {
      * @param sa
      *            a {@link forge.game.spellability.SpellAbility} object.
      */
-    public final static void playSpellAbility(final PlayerControllerHuman controller, final Player p, SpellAbility sa) {
+    public final static boolean playSpellAbility(final PlayerControllerHuman controller, final Player p, SpellAbility sa) {
         FThreads.assertExecutedByEdt(false);
 
         if (sa == controller.getGame().PLAY_LAND_SURROGATE) {
             p.playLand(sa.getHostCard(), false);
-            return;
+            return true;
         }
 
         sa.setActivatingPlayer(p);
@@ -94,7 +94,7 @@ public class HumanPlay {
 
         sa = chooseOptionalAdditionalCosts(p, sa);
         if (sa == null) {
-            return;
+            return true;
         }
 
         if (sa.getApi() == ApiType.Charm && !sa.isWrapper()) {
@@ -121,7 +121,7 @@ public class HumanPlay {
             CostPayment payment = new CostPayment(abCost, sa);
 
             final HumanPlaySpellAbility req = new HumanPlaySpellAbility(controller, sa, payment);
-            req.playAbility(true, false, false);
+            return req.playAbility(true, false, false);
         } else if (payManaCostIfNeeded(controller, p, sa)) {
             if (sa.isSpell() && !source.isCopiedSpell()) {
                 sa.setHostCard(p.getGame().getAction().moveToStack(source));
@@ -129,6 +129,8 @@ public class HumanPlay {
 
             p.getGame().getStack().add(sa);
         }
+        
+        return true;
     }
 
     /**
