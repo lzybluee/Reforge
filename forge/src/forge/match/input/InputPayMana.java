@@ -289,7 +289,7 @@ public abstract class InputPayMana extends InputSyncronizedBase {
                     onManaAbilityPaid();
                     onStateChanged();
                 } else {
-                	chosen.getManaPartRecursive().setExpressChoice("");
+                	chosen.getManaPartRecursive().clearExpressChoice();
                 }
             }
         });
