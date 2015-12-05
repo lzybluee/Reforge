@@ -131,6 +131,9 @@ public class PlayerControllerHuman
      */
     private boolean mayLookAtAllCards = false;
     private boolean disableAutoYields = false;
+    
+    private IPaperCard lastCardAddedToHand = null;
+    private IPaperCard lastCardAddedToBattlefield = null;
 
     private IGuiGame gui;
 
@@ -1789,21 +1792,25 @@ public class PlayerControllerHuman
          * @see forge.player.IDevModeCheats#addCardToHand()
          */
         @Override
-        public void addCardToHand() {
+        public void addCardToHand(boolean lastAdded) {
             final Player p = game.getPlayer(getGui().oneOrNone("Put card in hand for which player?", PlayerView.getCollection(game.getPlayers())));
             if (p == null) {
                 return;
             }
 
-            final List<PaperCard> cards =  Lists.newArrayList(FModel.getMagicDb().getCommonCards().getUniqueCards());
-            Collections.sort(cards);
+            if(!lastAdded || lastCardAddedToHand == null) {
+                final List<PaperCard> cards =  Lists.newArrayList(FModel.getMagicDb().getCommonCards().getUniqueCards());
+                Collections.sort(cards);
 
-            // use standard forge's list selection dialog
-            final IPaperCard c = getGui().oneOrNone("Name the card", cards);
-            if (c == null) {
-                return;
+                // use standard forge's list selection dialog
+                lastCardAddedToHand = getGui().oneOrNone("Name the card", cards);
+                if (lastCardAddedToHand == null) {
+                    return;
+                }
             }
-
+            
+            final IPaperCard c = lastCardAddedToHand;
+            
             game.getAction().invoke(new Runnable() { @Override public void run() {
                 game.getAction().moveToHand(Card.fromPaperCard(c, p));
             }});
@@ -1813,20 +1820,24 @@ public class PlayerControllerHuman
          * @see forge.player.IDevModeCheats#addCardToBattlefield()
          */
         @Override
-        public void addCardToBattlefield() {
+        public void addCardToBattlefield(boolean lastAdded) {
             final Player p = game.getPlayer(getGui().oneOrNone("Put card in play for which player?", PlayerView.getCollection(game.getPlayers())));
             if (p == null) {
                 return;
             }
+            
+            if(!lastAdded || lastCardAddedToBattlefield == null) {
+                final List<PaperCard> cards =  Lists.newArrayList(FModel.getMagicDb().getCommonCards().getUniqueCards());
+                Collections.sort(cards);
 
-            final List<PaperCard> cards =  Lists.newArrayList(FModel.getMagicDb().getCommonCards().getUniqueCards());
-            Collections.sort(cards);
-
-            // use standard forge's list selection dialog
-            final IPaperCard c = getGui().oneOrNone("Name the card", cards);
-            if (c == null) {
-                return;
+                // use standard forge's list selection dialog
+                lastCardAddedToBattlefield = getGui().oneOrNone("Name the card", cards);
+                if (lastCardAddedToBattlefield == null) {
+                    return;
+                }
             }
+
+            final IPaperCard c = lastCardAddedToBattlefield;
 
             game.getAction().invoke(new Runnable() {
                 @Override public void run() {

@@ -117,8 +117,8 @@ public class DevModeMenu implements ActionListener, IDevListener {
         switch (DevMenuItem.getValue(e.getActionCommand())) {
         case GENERATE_MANA:        { controller.generateMana(false); break; }
         case TUTOR_FOR_CARD:       { controller.tutorForCard(false); break; }
-        case ADD_CARD_TO_HAND:     { controller.addCardToHand(); break; }
-        case ADD_CARD_TO_PLAY:     { controller.addCardToBattlefield(); break; }
+        case ADD_CARD_TO_HAND:     { controller.addCardToHand(false); break; }
+        case ADD_CARD_TO_PLAY:     { controller.addCardToBattlefield(false); break; }
         case SET_PLAYER_LIFE:      { controller.setPlayerLife(false); break; }
         case WIN_GAME:             { controller.winGame(false); break; }
         case SETUP_GAME_STATE:     { controller.setupGameState(); break; }

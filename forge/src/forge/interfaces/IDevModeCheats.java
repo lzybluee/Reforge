@@ -24,9 +24,9 @@ public interface IDevModeCheats {
 
     void winGame(boolean lose);
 
-    void addCardToHand();
+    void addCardToHand(boolean lastAdded);
 
-    void addCardToBattlefield();
+    void addCardToBattlefield(boolean lastAdded);
 
     void riggedPlanarRoll();
 
@@ -77,10 +77,10 @@ public interface IDevModeCheats {
         public void addCountersToPermanent() {
         }
         @Override
-        public void addCardToHand() {
+        public void addCardToHand(boolean lastAdded) {
         }
         @Override
-        public void addCardToBattlefield() {
+        public void addCardToBattlefield(boolean lastAdded) {
         }
     };
 

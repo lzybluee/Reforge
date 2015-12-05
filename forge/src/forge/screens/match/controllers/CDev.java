@@ -123,11 +123,11 @@ public final class CDev implements ICDoc {
     private final MouseListener madCardToHand = new MouseAdapter() {
         @Override
         public void mousePressed(final MouseEvent e) {
-            addCardToHand();
+            addCardToHand(e.getButton() == MouseEvent.BUTTON3);
         }
     };
-    public void addCardToHand() {
-        getController().cheat().addCardToHand();
+    public void addCardToHand(boolean lastAdded) {
+        getController().cheat().addCardToHand(lastAdded);
     }
 
     private final MouseListener madCounter = new MouseAdapter() {
@@ -183,11 +183,11 @@ public final class CDev implements ICDoc {
     private final MouseListener madCardToBattlefield = new MouseAdapter() {
         @Override
         public void mousePressed(final MouseEvent e) {
-            addCardToBattlefield();
+            addCardToBattlefield(e.getButton() == MouseEvent.BUTTON3);
         }
     };
-    public void addCardToBattlefield() {
-        getController().cheat().addCardToBattlefield();
+    public void addCardToBattlefield(boolean lastAdded) {
+        getController().cheat().addCardToBattlefield(lastAdded);
     }
 
     private final MouseListener madRiggedRoll = new MouseAdapter() {
