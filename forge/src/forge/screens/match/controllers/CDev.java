@@ -83,11 +83,11 @@ public final class CDev implements ICDoc {
     private final MouseListener madMana = new MouseAdapter() {
         @Override
         public void mousePressed(final MouseEvent e) {
-            generateMana();
+            generateMana(e.getButton() == MouseEvent.BUTTON3);
         }
     };
-    public void generateMana() {
-        getController().cheat().generateMana();
+    public void generateMana(boolean empty) {
+        getController().cheat().generateMana(empty);
     }
 
     private final MouseListener madSetup = new MouseAdapter() {

@@ -6,7 +6,7 @@ public interface IDevModeCheats {
 
     void setViewAllCards(boolean canViewAll);
 
-    void generateMana();
+    void generateMana(boolean empty);
 
     void dumpGameState();
 
@@ -68,7 +68,7 @@ public interface IDevModeCheats {
         public void planeswalkTo() {
         }
         @Override
-        public void generateMana() {
+        public void generateMana(boolean empty) {
         }
         @Override
         public void dumpGameState() {

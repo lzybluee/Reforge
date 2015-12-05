@@ -1564,21 +1564,25 @@ public class PlayerControllerHuman
          * @see forge.player.IDevModeCheats#generateMana()
          */
         @Override
-        public void generateMana() {
+        public void generateMana(boolean empty) {
             final Player pPriority = game.getPhaseHandler().getPriorityPlayer();
             if (pPriority == null) {
                 getGui().message("No player has priority at the moment, so mana cannot be added to their pool.");
                 return;
             }
 
-            final Card dummy = new Card(-777777, game);
-            dummy.setOwner(pPriority);
-            final Map<String, String> produced = new HashMap<String, String>();
-            produced.put("Produced", "W W W W W W W U U U U U U U B B B B B B B G G G G G G G R R R R R R R 7");
-            final AbilityManaPart abMana = new AbilityManaPart(dummy, produced);
-            game.getAction().invoke(new Runnable() {
-                @Override public void run() { abMana.produceMana(null); }
-            });
+            if(empty) {
+            	pPriority.getManaPool().clearPool(false);
+            } else {
+                final Card dummy = new Card(-777777, game);
+                dummy.setOwner(pPriority);
+                final Map<String, String> produced = new HashMap<String, String>();
+                produced.put("Produced", "W W W W W W W U U U U U U U B B B B B B B G G G G G G G R R R R R R R 7");
+                final AbilityManaPart abMana = new AbilityManaPart(dummy, produced);
+                game.getAction().invoke(new Runnable() {
+                    @Override public void run() { abMana.produceMana(null); }
+                });
+            }
         }
 
         private GameState createGameStateObject() {
