@@ -9,6 +9,7 @@ import forge.player.PlayerControllerHuman;
 public abstract class InputSyncronizedBase extends InputBase implements InputSynchronized {
     private static final long serialVersionUID = 8756177361251703052L;
     private final CountDownLatch cdlDone;
+    private boolean stoped = false;
 
     public InputSyncronizedBase(final PlayerControllerHuman controller) {
         super(controller);
@@ -36,6 +37,12 @@ public abstract class InputSyncronizedBase extends InputBase implements InputSyn
     }
 
     protected final void stop() {
+    	if(!stoped) {
+    		stoped = true;
+    	} else {
+    		System.err.println("Already stopped! " + InputSyncronizedBase.this);
+    		return;
+    	}
         onStop();
 
         // ensure input won't accept any user actions.
@@ -47,7 +54,7 @@ public abstract class InputSyncronizedBase extends InputBase implements InputSyn
         });
 
         // thread irrelevant
-        if (getController().getInputQueue().getInput() != null) {
+        if (getController().getInputQueue().getInput() != null && getController().getInputQueue().getInput() == InputSyncronizedBase.this) {
             getController().getInputQueue().removeInput(InputSyncronizedBase.this);
         }
         cdlDone.countDown();
