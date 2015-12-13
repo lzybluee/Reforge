@@ -126,8 +126,8 @@ public class DevModeMenu implements ActionListener, IDevListener {
         case PLAY_UNLIMITED_LANDS: { controller.togglePlayManyLandsPerTurn(); break; }
         case VIEW_ALL:             { controller.toggleViewAllCards(); break; }
         case ADD_COUNTER:          { controller.addCounterToPermanent(); break; }
-        case TAP_PERMANENT:        { controller.tapPermanent(); break; }
-        case UNTAP_PERMANENT:      { controller.untapPermanent(); break; }
+        case TAP_PERMANENT:        { controller.tapPermanent(false); break; }
+        case UNTAP_PERMANENT:      { controller.untapPermanent(false); break; }
         case RIGGED_PLANAR_ROLL:   { controller.riggedPlanerRoll(); break; }
         case PLANESWALK_TO:        { controller.planeswalkTo(); break; }
         case DEV_CORNER:           { openDevForumInBrowser(); break; }

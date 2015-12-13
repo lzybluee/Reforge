@@ -143,21 +143,21 @@ public final class CDev implements ICDoc {
     private final MouseListener madTap = new MouseAdapter() {
         @Override
         public void mousePressed(final MouseEvent e) {
-            tapPermanent();
+            tapPermanent(e.getButton() == MouseEvent.BUTTON3);
         }
     };
-    public void tapPermanent() {
-        getController().cheat().tapPermanents();
+    public void tapPermanent(boolean all) {
+        getController().cheat().tapPermanents(all);
     }
 
     private final MouseListener madUntap = new MouseAdapter() {
         @Override
         public void mousePressed(final MouseEvent e) {
-            untapPermanent();
+            untapPermanent(e.getButton() == MouseEvent.BUTTON3);
         }
     };
-    public void untapPermanent() {
-        getController().cheat().untapPermanents();
+    public void untapPermanent(boolean all) {
+        getController().cheat().untapPermanents(all);
     }
 
     private final MouseListener madLife = new MouseAdapter() {

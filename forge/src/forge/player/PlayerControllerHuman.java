@@ -1705,18 +1705,27 @@ public class PlayerControllerHuman
          * @see forge.player.IDevModeCheats#tapPermanents()
          */
         @Override
-        public void tapPermanents() {
+        public void tapPermanents(final boolean all) {
             game.getAction().invoke(new Runnable() {
                 @Override
                 public void run() {
                     final CardCollectionView untapped = CardLists.filter(game.getCardsIn(ZoneType.Battlefield), Predicates.not(CardPredicates.Presets.TAPPED));
-                    final InputSelectCardsFromList inp = new InputSelectCardsFromList(PlayerControllerHuman.this, 0, Integer.MAX_VALUE, untapped);
-                    inp.setCancelAllowed(true);
-                    inp.setMessage("Choose permanents to tap");
-                    inp.showAndWait();
-                    if (!inp.hasCancelled()) {
-                        for (final Card c : inp.getSelected()) {
+                    if(all) {
+                    	final FCollection<Player> otherPlayers = new FCollection<Player>(game.getPlayers());
+                        otherPlayers.remove(game.getPhaseHandler().getPriorityPlayer());
+                        final CardCollectionView theirUntapped = CardLists.filter(untapped, CardPredicates.isControlledByAnyOf(otherPlayers));
+                    	for (final Card c : theirUntapped) {
                             c.tap();
+                        }
+                    } else {
+                        final InputSelectCardsFromList inp = new InputSelectCardsFromList(PlayerControllerHuman.this, 0, Integer.MAX_VALUE, untapped);
+                        inp.setCancelAllowed(true);
+                        inp.setMessage("Choose permanents to tap");
+                        inp.showAndWait();
+                        if (!inp.hasCancelled()) {
+                            for (final Card c : inp.getSelected()) {
+                                c.tap();
+                            }
                         }
                     }
                 }
@@ -1727,18 +1736,25 @@ public class PlayerControllerHuman
          * @see forge.player.IDevModeCheats#untapPermanents()
          */
         @Override
-        public void untapPermanents() {
+        public void untapPermanents(final boolean all) {
             game.getAction().invoke(new Runnable() {
                 @Override
                 public void run() {
                     final CardCollectionView tapped = CardLists.filter(game.getCardsIn(ZoneType.Battlefield), CardPredicates.Presets.TAPPED);
-                    final InputSelectCardsFromList inp = new InputSelectCardsFromList(PlayerControllerHuman.this, 0, Integer.MAX_VALUE, tapped);
-                    inp.setCancelAllowed(true);
-                    inp.setMessage("Choose permanents to untap");
-                    inp.showAndWait();
-                    if (!inp.hasCancelled()) {
-                        for (final Card c : inp.getSelected()) {
+                    if(all) {
+                    	final CardCollectionView myTapped = CardLists.filter(tapped, CardPredicates.isController(game.getPhaseHandler().getPriorityPlayer())); 
+                    	for (final Card c : myTapped) {
                             c.untap();
+                        }
+                    } else {
+                        final InputSelectCardsFromList inp = new InputSelectCardsFromList(PlayerControllerHuman.this, 0, Integer.MAX_VALUE, tapped);
+                        inp.setCancelAllowed(true);
+                        inp.setMessage("Choose permanents to untap");
+                        inp.showAndWait();
+                        if (!inp.hasCancelled()) {
+                            for (final Card c : inp.getSelected()) {
+                                c.untap();
+                            }
                         }
                     }
                 }

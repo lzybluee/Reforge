@@ -16,9 +16,9 @@ public interface IDevModeCheats {
 
     void addCountersToPermanent();
 
-    void tapPermanents();
+    void tapPermanents(boolean all);
 
-    void untapPermanents();
+    void untapPermanents(boolean all);
 
     void setPlayerLife(boolean maxlife);
 
@@ -41,13 +41,13 @@ public interface IDevModeCheats {
         public void winGame(boolean lose) {
         }
         @Override
-        public void untapPermanents() {
+        public void untapPermanents(boolean all) {
         }
         @Override
         public void tutorForCard(boolean sideboard) {
         }
         @Override
-        public void tapPermanents() {
+        public void tapPermanents(boolean all) {
         }
         @Override
         public void setupGameState() {
