@@ -1687,18 +1687,40 @@ public class PlayerControllerHuman
          * @see forge.player.IDevModeCheats#addCountersToPermanent()
          */
         @Override
-        public void addCountersToPermanent() {
-            final CardCollectionView cards = game.getCardsIn(ZoneType.Battlefield);
-            final Card card = game.getCard(getGui().oneOrNone("Add counters to which card?", CardView.getCollection(cards)));
-            if (card == null) { return; }
-
-            final CounterType counter = getGui().oneOrNone("Which type of counter?", CounterType.values);
-            if (counter == null) { return; }
-
-            final Integer count = getGui().getInteger("How many counters?", 1, Integer.MAX_VALUE, 10);
-            if (count == null) { return; }
-
-            card.addCounter(counter, count, false);
+        public void addCountersToPermanent(final boolean auto) {
+        	game.getAction().invoke(new Runnable() {
+                @Override
+                public void run() {
+                	if(auto) {
+                		final CardCollectionView myCreatures = CardLists.filter(game.getCardsIn(ZoneType.Battlefield), 
+                			Predicates.and(CardPredicates.Presets.CREATURES, CardPredicates.isController(game.getPhaseHandler().getPriorityPlayer())));
+                    	for (final Card c : myCreatures) {
+                            c.addCounter(CounterType.P1P1, 1, false);
+                        }
+                    } else {
+                        final CounterType counter = getGui().oneOrNone("Which type of counter?", CounterType.values);
+                        if (counter == null) { return; }
+                        
+                        final Integer count = getGui().getInteger("How many counters?", 0, Integer.MAX_VALUE, 10);
+                        if (count == null) { return; }
+                        
+	                	final CardCollectionView cards = game.getCardsIn(ZoneType.Battlefield);
+	                    final InputSelectCardsFromList inp = new InputSelectCardsFromList(PlayerControllerHuman.this, 0, Integer.MAX_VALUE, cards);
+	                    inp.setCancelAllowed(true);
+	                    inp.setMessage("Add counters to which card?");
+	                    inp.showAndWait();
+	                    if (!inp.hasCancelled()) {
+	                        for (final Card c : inp.getSelected()) {
+	                        	if(count > 0) {
+	                            	c.addCounter(counter, count, false);
+	                        	} else {
+	                        		c.clearCounters();
+	                        	}
+	                        }
+	                    }
+                    }
+                }
+        	});
         }
 
         /* (non-Javadoc)

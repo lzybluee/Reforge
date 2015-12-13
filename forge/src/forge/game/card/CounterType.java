@@ -28,8 +28,10 @@ import com.google.common.collect.ImmutableList;
  */
 public enum CounterType {
 
-    M1M1("-1/-1"),
     P1P1("+1/+1"),
+    
+    M1M1("-1/-1"),
+    
     LOYALTY,
 
     AGE(),
@@ -297,6 +299,10 @@ public enum CounterType {
      * @return a {@link java.lang.String} object.
      */
     public String getName() {
+        return this.name;
+    }
+    
+    public String toString() {
         return this.name;
     }
 
