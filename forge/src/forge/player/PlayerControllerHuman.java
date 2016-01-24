@@ -132,8 +132,7 @@ public class PlayerControllerHuman
     private boolean mayLookAtAllCards = false;
     private boolean disableAutoYields = false;
     
-    private IPaperCard lastCardAddedToHand = null;
-    private IPaperCard lastCardAddedToBattlefield = null;
+    static private IPaperCard lastCardAdded = null;
 
     private IGuiGame gui;
 
@@ -1836,18 +1835,18 @@ public class PlayerControllerHuman
                 return;
             }
 
-            if(!lastAdded || lastCardAddedToHand == null) {
+            if(!lastAdded || lastCardAdded == null) {
                 final List<PaperCard> cards =  Lists.newArrayList(FModel.getMagicDb().getCommonCards().getUniqueCards());
                 Collections.sort(cards);
 
                 // use standard forge's list selection dialog
-                lastCardAddedToHand = getGui().oneOrNone("Name the card", cards);
-                if (lastCardAddedToHand == null) {
+                lastCardAdded = getGui().oneOrNone("Name the card", cards);
+                if (lastCardAdded == null) {
                     return;
                 }
             }
             
-            final IPaperCard c = lastCardAddedToHand;
+            final IPaperCard c = lastCardAdded;
             
             game.getAction().invoke(new Runnable() { @Override public void run() {
                 game.getAction().moveToHand(Card.fromPaperCard(c, p));
@@ -1864,18 +1863,18 @@ public class PlayerControllerHuman
                 return;
             }
             
-            if(!lastAdded || lastCardAddedToBattlefield == null) {
+            if(!lastAdded || lastCardAdded == null) {
                 final List<PaperCard> cards =  Lists.newArrayList(FModel.getMagicDb().getCommonCards().getUniqueCards());
                 Collections.sort(cards);
 
                 // use standard forge's list selection dialog
-                lastCardAddedToBattlefield = getGui().oneOrNone("Name the card", cards);
-                if (lastCardAddedToBattlefield == null) {
+                lastCardAdded = getGui().oneOrNone("Name the card", cards);
+                if (lastCardAdded == null) {
                     return;
                 }
             }
 
-            final IPaperCard c = lastCardAddedToBattlefield;
+            final IPaperCard c = lastCardAdded;
 
             game.getAction().invoke(new Runnable() {
                 @Override public void run() {
