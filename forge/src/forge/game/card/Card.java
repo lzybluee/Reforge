@@ -2694,6 +2694,11 @@ public class Card extends GameEntity implements Comparable<Card> {
 
         return Pair.of(latestPower, latestToughness);
     }
+    
+    public final void updatePT() {
+        currentState.getView().updatePower(this);
+        currentState.getView().updateToughness(this);
+    }
 
     public final void addNewPT(final int power, final int toughness, final long timestamp) {
         newPT.add(new CardPowerToughness(power, toughness, timestamp));

@@ -84,6 +84,7 @@ public class PumpAllEffect extends SpellAbilityEffect {
                             tgtC.removeHiddenExtrinsicKeyword(kw);
                         }
 
+                        tgtC.updatePT();
                         game.fireEvent(new GameEventCardStatsChanged(tgtC));
                     }
                 };
@@ -101,6 +102,7 @@ public class PumpAllEffect extends SpellAbilityEffect {
                 }
             }
 
+            tgtC.updatePT();
             game.fireEvent(new GameEventCardStatsChanged(tgtC));
         }
     }

@@ -72,6 +72,7 @@ public class PumpEffect extends SpellAbilityEffect {
                         applyTo.removeChangedCardKeywords(timestamp);
                     }
 
+                    applyTo.updatePT();
                     game.fireEvent(new GameEventCardStatsChanged(applyTo));
                 }
             };
@@ -95,6 +96,7 @@ public class PumpEffect extends SpellAbilityEffect {
                 game.getEndOfTurn().addUntil(untilEOT);
             }
         }
+        applyTo.updatePT();
         game.fireEvent(new GameEventCardStatsChanged(applyTo));
     }
 
