@@ -88,6 +88,15 @@ public class CardPanel extends SkinnedPanel implements CardContainer, IDisposabl
     private boolean isAnimationPanel;
     private int cardXOffset, cardYOffset, cardWidth, cardHeight;
     private boolean isSelected;
+    private boolean inFlashbackZone = false;
+    
+    public boolean isInFlashbackZone() {
+    	return inFlashbackZone;
+    }
+    
+    public void setInFlashbackZone(boolean b) {
+    	inFlashbackZone = b;
+    }
 
     public CardPanel(final CMatchUI matchUI, final CardView card0) {
         this.matchUI = matchUI;
