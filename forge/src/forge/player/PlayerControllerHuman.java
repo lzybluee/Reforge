@@ -16,6 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Vector;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang3.Range;
@@ -1086,6 +1087,11 @@ public class PlayerControllerHuman
     @Override
     public List<AbilitySub> chooseModeForAbility(final SpellAbility sa, final int min, final int num) {
         final List<AbilitySub> choices = CharmEffect.makePossibleOptions(sa);
+        final Vector<AbilitySub> allChoices = new Vector<AbilitySub>();
+        for(AbilitySub sub : choices) {
+        	allChoices.add(sub);
+        }
+
         final String modeTitle = String.format("%s activated %s - Choose a mode", sa.getActivatingPlayer(), sa.getHostCard());
         final List<AbilitySub> chosen = Lists.newArrayListWithCapacity(num);
         for (int i = 0; i < num; i++) {
@@ -1103,7 +1109,14 @@ public class PlayerControllerHuman
             choices.remove(a);
             chosen.add(a);
         }
-        return chosen;
+        
+        final List<AbilitySub> orderedChosen = Lists.newArrayListWithCapacity(chosen.size());
+        for(AbilitySub sub : allChoices) {
+        	if(chosen.contains(sub)) {
+        		orderedChosen.add(sub);
+        	}
+        }
+        return orderedChosen;
     }
 
     @Override
