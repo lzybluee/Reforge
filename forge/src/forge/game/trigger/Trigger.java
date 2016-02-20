@@ -465,6 +465,10 @@ public abstract class Trigger extends TriggerReplacementBase {
     public boolean isStatic() {
         return this.mapParams.containsKey("Static"); // && params.get("Static").equals("True") [always true if present]
     }
+    
+    public boolean isDragonPresence() {
+        return this.mapParams.containsKey("DragonPresence");
+    }
 
     public void setTriggerPhases(List<PhaseType> phases) {
         validPhases = phases;
