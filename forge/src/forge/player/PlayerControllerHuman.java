@@ -1404,9 +1404,14 @@ public class PlayerControllerHuman
             final GameEntityView result = getGui().chooseSingleEntityForEffect(selectPrompt, GameEntityView.getEntityCollection(optionList), delayedReveal, isOptional);
             endTempShowCards();
 
+            boolean redo = false;
         	if(result == null) {
-        		if (optionList.isEmpty() || confirmAction(sa, PlayerActionConfirmMode.ChangeZoneGeneral, selectPrompt)) {
+        		if (optionList.isEmpty()) {
         			break;
+        		} else if(confirmAction(sa, PlayerActionConfirmMode.ChangeZoneGeneral, "Cancel?")) {
+        			break;
+        		} else {
+        			redo = true;
         		}
             } else {
 				if (result instanceof CardView) {
@@ -1414,7 +1419,8 @@ public class PlayerControllerHuman
 					optionList.remove(game.getCard((CardView)result));
 				}
             }
-        	i++;
+        	if(!redo)
+        		i++;
         } while (i < changeNum);
 
         return collection;
