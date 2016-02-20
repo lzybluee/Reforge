@@ -467,7 +467,7 @@ public abstract class Trigger extends TriggerReplacementBase {
     }
     
     public boolean isDragonPresence() {
-        return this.mapParams.containsKey("DragonPresence");
+        return this.mapParams.containsKey("IsDragonPresence");
     }
 
     public void setTriggerPhases(List<PhaseType> phases) {
