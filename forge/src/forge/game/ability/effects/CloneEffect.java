@@ -74,6 +74,9 @@ public class CloneEffect extends SpellAbilityEffect {
         if (cardToCopy == null) {
             return;
         }
+        if(cardToCopy.originalCard != null) {
+            cardToCopy = cardToCopy.originalCard;
+        }
 
         final boolean optional = sa.hasParam("Optional");
         if (optional && !host.getController().getController().confirmAction(sa, null, "Do you want to copy " + cardToCopy + "?")) {

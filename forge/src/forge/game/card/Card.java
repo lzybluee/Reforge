@@ -276,6 +276,9 @@ public class Card extends GameEntity implements Comparable<Card> {
     private CardRules cardRules;
     private final CardView view;
     private int onceEffectCount;
+    
+    private boolean isCardFlag;
+    public Card originalCard;
 
     // Enumeration for CMC request types
     public enum SplitCMCMode {
@@ -3633,15 +3636,34 @@ public class Card extends GameEntity implements Comparable<Card> {
             return testFailed; // Check for wrong type
         }
 
+        isCardFlag = false;
         if (incR.length > 1) {
             final String excR = incR[1];
             final String[] exR = excR.split("\\+"); // Exclusive Restrictions are ...
+            for(String str : exR) {
+                if(str.equals("IsCard")) {
+                    isCardFlag = true;
+                    if(this.isToken()) {
+                        return testFailed;
+                    }
+                    if(this.originalCard != null) {
+                        if(!incR[0].equals("Card") && !this.originalCard.getType().hasStringType(incR[0])) {
+                            return testFailed;
+                        }
+                    }
+                }
+            }
             for (int j = 0; j < exR.length; j++) {
-                if (!hasProperty(exR[j], sourceController, source)) {
+                if(exR[j].equals("IsCard")) {
+                    continue;
+                }
+                if (!this.hasProperty(exR[j], sourceController, source)) {
                     return testFailed;
                 }
             }
         }
+        isCardFlag = false;
+
         return !testFailed;
     } 
 
@@ -3710,7 +3732,12 @@ public class Card extends GameEntity implements Comparable<Card> {
                 || property.contains("Red") || property.contains("Green")) {
             boolean mustHave = !property.startsWith("non");
             int desiredColor = MagicColor.fromName(mustHave ? property : property.substring(3));
-            boolean hasColor = CardUtil.getColors(this).hasAnyColor(desiredColor);
+            boolean hasColor = false;
+            if(isCardFlag && this.originalCard != null) {
+                hasColor = CardUtil.getColors(this.originalCard).hasAnyColor(desiredColor);
+            } else {
+                hasColor = CardUtil.getColors(this).hasAnyColor(desiredColor);
+            }
             if (mustHave != hasColor)
                 return false;
 

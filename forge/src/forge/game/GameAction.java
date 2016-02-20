@@ -199,6 +199,10 @@ public class GameAction {
                 copied = c;
             }
         }
+        
+        if (lastKnownInfo != copied) {
+            lastKnownInfo.originalCard = copied;
+        }
 
         if (!suppress) {
             if (zoneFrom == null) {
