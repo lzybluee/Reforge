@@ -83,6 +83,7 @@ import forge.game.spellability.SpellAbilityStackInstance;
 import forge.game.spellability.SpellAbilityView;
 import forge.game.spellability.TargetChoices;
 import forge.game.trigger.Trigger;
+import forge.game.trigger.TriggerType;
 import forge.game.trigger.WrappedAbility;
 import forge.game.zone.MagicStack;
 import forge.game.zone.PlayerZone;
@@ -1215,11 +1216,14 @@ public class PlayerControllerHuman
         	ArrayList<SpellAbility> sas = new ArrayList<SpellAbility>();
         	for(int i = 0; i < activePlayerSAs.size(); i++) {
         		SpellAbility sa = activePlayerSAs.get(i);
-        		if(sa.getHostCard() != null) {
-        			if(sa.getHostCard().getName().equals("Renegade Krasis") && sa.toString().startsWith("Evolve")) {
-        				sas.add(sa);
-        				orderedSAs.remove(i);
-        			}
+        		if(sa.hasParam("Evolve") && sa.getHostCard() != null) {
+    				for(final Trigger trigger : sa.getHostCard().getTriggers()) {
+		                if (trigger.getMode() == TriggerType.Evolved) {
+	        				sas.add(sa);
+	        				orderedSAs.remove(sa);
+		                    break;
+		                }
+    				}
         		}
         	}
         	for(SpellAbility sa : sas) {
