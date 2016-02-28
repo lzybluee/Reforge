@@ -1211,11 +1211,11 @@ public class PlayerControllerHuman
 
     @Override
     public void orderAndPlaySimultaneousSa(final List<SpellAbility> activePlayerSAs) {
-        List<SpellAbility> orderedSAs = activePlayerSAs;
+        List<SpellAbility> orderedSAs = new ArrayList<SpellAbility>(activePlayerSAs);
         if (activePlayerSAs.size() > 1) { // give a dual list form to create instead of needing to do it one at a time
+
         	ArrayList<SpellAbility> sas = new ArrayList<SpellAbility>();
-        	for(int i = 0; i < activePlayerSAs.size(); i++) {
-        		SpellAbility sa = activePlayerSAs.get(i);
+        	for(SpellAbility sa : activePlayerSAs) {
         		if(sa.hasParam("Evolve") && sa.getHostCard() != null) {
     				for(final Trigger trigger : sa.getHostCard().getTriggers()) {
 		                if (trigger.getMode() == TriggerType.Evolved) {
@@ -1226,9 +1226,25 @@ public class PlayerControllerHuman
     				}
         		}
         	}
+
+        	Collections.sort(sas, new Comparator<SpellAbility>() {
+
+				@Override
+				public int compare(SpellAbility sa1, SpellAbility sa2) {
+					if(sa1.getHostCard().isCreature() && sa2.getHostCard().isCreature()) {
+						int power = sa2.getHostCard().getNetPower() - sa1.getHostCard().getNetPower();
+						if(power != 0)
+							return power;
+						return sa2.getHostCard().getNetToughness() - sa1.getHostCard().getNetToughness();
+					}
+					return 0;
+				}
+			});
+
         	for(SpellAbility sa : sas) {
         		orderedSAs.add(sa);
         	}
+
             final String firstStr = orderedSAs.get(0).toString();
             for (int i = 1; i < orderedSAs.size(); i++) { //don't prompt user if all options are the same
                 if (!orderedSAs.get(i).toString().equals(firstStr)) {
