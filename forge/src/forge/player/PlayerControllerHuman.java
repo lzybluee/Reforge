@@ -1212,6 +1212,19 @@ public class PlayerControllerHuman
     public void orderAndPlaySimultaneousSa(final List<SpellAbility> activePlayerSAs) {
         List<SpellAbility> orderedSAs = activePlayerSAs;
         if (activePlayerSAs.size() > 1) { // give a dual list form to create instead of needing to do it one at a time
+        	ArrayList<SpellAbility> sas = new ArrayList<SpellAbility>();
+        	for(int i = 0; i < activePlayerSAs.size(); i++) {
+        		SpellAbility sa = activePlayerSAs.get(i);
+        		if(sa.getHostCard() != null) {
+        			if(sa.getHostCard().getName().equals("Renegade Krasis") && sa.toString().startsWith("Evolve")) {
+        				sas.add(sa);
+        				orderedSAs.remove(i);
+        			}
+        		}
+        	}
+        	for(SpellAbility sa : sas) {
+        		orderedSAs.add(sa);
+        	}
             final String firstStr = orderedSAs.get(0).toString();
             for (int i = 1; i < orderedSAs.size(); i++) { //don't prompt user if all options are the same
                 if (!orderedSAs.get(i).toString().equals(firstStr)) {
