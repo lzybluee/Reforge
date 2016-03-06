@@ -60,6 +60,8 @@ public class TargetingOverlay {
     private final List<CardPanel> cardPanels = new ArrayList<CardPanel>();
     private final List<Arc> arcsFoe = new ArrayList<Arc>();
     private final List<Arc> arcsFriend = new ArrayList<Arc>();
+    private final ArrayList<Arc> lastArcsFoe = new ArrayList<Arc>();
+    private final ArrayList<Arc> lastArcsFriend = new ArrayList<Arc>();
 
     private static class Arc {
         private final int x1, y1, x2, y2;
@@ -71,8 +73,19 @@ public class TargetingOverlay {
             y2 = end.y;
         }
         
+        private Arc(int x1, int y1, int x2, int y2) {
+            this.x1 = x1;
+            this.y1 = y1;
+            this.x2 = x2;
+            this.y2 = y2;
+        }
+        
         public boolean equals(final Point end, final Point start) {
         	return x1 == start.x && y1 == start.y && x2 == end.x && y2 == end.y;
+        }
+        
+        public String toString() {
+        	return "(" + x1 + "," + y1 + "," + x2 + "," + y2 + ")";
         }
     }
 
@@ -376,6 +389,36 @@ public class TargetingOverlay {
                 drawArrow(g2d, arc.x1, arc.y1, arc.x2, arc.y2, color);
             }
         }
+        
+        private boolean compareArcsList(List<Arc> now, ArrayList<Arc> last) {
+        	boolean isSame = true;
+        	
+    		if(now.size() != last.size()) {
+    			isSame = false;
+    		} else {
+    			for(int i = 0; i < now.size(); i++) {
+    				Arc arc1 = now.get(i);
+    				Arc arc2 = last.get(i);
+    				if(arc1.x1 != arc2.x1 || arc1.y1 != arc2.y1 || arc1.x2 != arc2.x2 || arc1.y2 != arc2.y2) {
+    					isSame = false;
+    					break;
+    				}
+    			}
+    		}
+    		
+    		if(!isSame) {
+    			last.clear();
+    			for(Arc arc : now) {
+    				last.add(new Arc(arc.x1, arc.y1, arc.x2, arc.y2));
+    			}
+    		}
+
+        	return isSame;
+        }
+        
+        private boolean compareLastArcs(List<Arc> friend, List<Arc> foe) {
+        	return compareArcsList(friend, lastArcsFriend) & compareArcsList(foe, lastArcsFoe);
+        }
 
         /**
          * For some reason, the alpha channel background doesn't work properly on
@@ -423,7 +466,9 @@ public class TargetingOverlay {
             drawArcs(g2d, colorOther, arcsFriend);
             drawArcs(g2d, colorCombat, arcsFoe);
 
-            FView.SINGLETON_INSTANCE.getFrame().repaint(); // repaint the match UI
+            if(!compareLastArcs(arcsFriend, arcsFoe)) {	
+            	FView.SINGLETON_INSTANCE.getFrame().repaint(); // repaint the match UI
+            }
         }
     }
 }
