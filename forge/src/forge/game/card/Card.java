@@ -5848,9 +5848,37 @@ public class Card extends GameEntity implements Comparable<Card> {
     }
 
     public final void addDamage(final Map<Card, Integer> sourcesMap) {
+    	int allCombatDamage = 0;
+    	Card source = null;
+    	boolean triggerOnce = false;
+    	
+    	if(this.isPlaneswalker() && !this.isCreature()) {  // Vraska
+    		triggerOnce = false;
+    	} else {
+    		triggerOnce = true;
+    	}
+    	
         for (final Entry<Card, Integer> entry : sourcesMap.entrySet()) {
             // damage prevention is already checked!
-            addDamageAfterPrevention(entry.getValue(), entry.getKey(), true);
+        	
+            addDamageAfterPrevention(entry.getValue(), entry.getKey(), true, triggerOnce);
+            
+            if(entry.getValue() > 0) {
+                allCombatDamage += entry.getValue();
+                source = entry.getKey();
+            }
+        }
+        
+        if(allCombatDamage > 0 && triggerOnce) {
+            // Run triggers
+            final Map<String, Object> runParams = new TreeMap<String, Object>();
+            runParams.put("DamageSource", source);
+            runParams.put("DamageTarget", this);
+            runParams.put("DamageAmount", allCombatDamage);
+            runParams.put("IsCombatDamage", true);
+            // Defending player at the time the damage was dealt
+            runParams.put("DefendingPlayer", game.getCombat() != null ? game.getCombat().getDefendingPlayerRelatedTo(source) : null);
+            getGame().getTriggerHandler().runTrigger(TriggerType.DamageDone, runParams, false);
         }
     }
 
@@ -5859,7 +5887,7 @@ public class Card extends GameEntity implements Comparable<Card> {
      * applied.
      */
     @Override
-    public final boolean addDamageAfterPrevention(final int damageIn, final Card source, final boolean isCombat) {
+    public final boolean addDamageAfterPrevention(final int damageIn, final Card source, final boolean isCombat, boolean triggerCombatOnce) {
         final int damageToAdd = damageIn;
 
         if (damageToAdd == 0) {
@@ -5876,15 +5904,17 @@ public class Card extends GameEntity implements Comparable<Card> {
             source.getController().gainLife(damageToAdd, source);
         }
 
-        // Run triggers
-        final Map<String, Object> runParams = new TreeMap<String, Object>();
-        runParams.put("DamageSource", source);
-        runParams.put("DamageTarget", this);
-        runParams.put("DamageAmount", damageToAdd);
-        runParams.put("IsCombatDamage", isCombat);
-        // Defending player at the time the damage was dealt
-        runParams.put("DefendingPlayer", game.getCombat() != null ? game.getCombat().getDefendingPlayerRelatedTo(source) : null);
-        getGame().getTriggerHandler().runTrigger(TriggerType.DamageDone, runParams, false);
+        if(!triggerCombatOnce) {
+        	// Run triggers
+            final Map<String, Object> runParams = new TreeMap<String, Object>();
+            runParams.put("DamageSource", source);
+            runParams.put("DamageTarget", this);
+            runParams.put("DamageAmount", damageToAdd);
+            runParams.put("IsCombatDamage", isCombat);
+            // Defending player at the time the damage was dealt
+            runParams.put("DefendingPlayer", game.getCombat() != null ? game.getCombat().getDefendingPlayerRelatedTo(source) : null);
+            getGame().getTriggerHandler().runTrigger(TriggerType.DamageDone, runParams, false);
+        }
 
         GameEventCardDamaged.DamageType damageType = DamageType.Normal;
         if (isPlaneswalker()) {

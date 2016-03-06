@@ -58,16 +58,16 @@ public abstract class GameEntity extends GameObject implements IIdentifiable {
         damageToDo = replaceDamage(damageToDo, source, false);
         damageToDo = preventDamage(damageToDo, source, false);
 
-        return addDamageAfterPrevention(damageToDo, source, false);
+        return addDamageAfterPrevention(damageToDo, source, false, false);
     }
 
     public boolean addDamageWithoutPrevention(final int damage, final Card source) {
         int damageToDo = replaceDamage(damage, source, false);
-        return addDamageAfterPrevention(damageToDo, source, false);
+        return addDamageAfterPrevention(damageToDo, source, false, false);
     }
 
     // This function handles damage after replacement and prevention effects are applied
-    public abstract boolean addDamageAfterPrevention(final int damage, final Card source, final boolean isCombat);
+    public abstract boolean addDamageAfterPrevention(final int damage, final Card source, final boolean isCombat, boolean triggerCombatOnce);
 
     // This should be also usable by the AI to forecast an effect (so it must
     // not change the game state)

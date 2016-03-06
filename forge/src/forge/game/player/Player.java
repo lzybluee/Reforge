@@ -486,7 +486,7 @@ public class Player extends GameEntity implements Comparable<Player> {
 
     // This function handles damage after replacement and prevention effects are applied
     @Override
-    public final boolean addDamageAfterPrevention(final int amount, final Card source, final boolean isCombat) {
+    public final boolean addDamageAfterPrevention(final int amount, final Card source, final boolean isCombat, boolean triggerCombatOnce) {
         if (amount <= 0) {
             return false;
         }
@@ -839,7 +839,7 @@ public class Player extends GameEntity implements Comparable<Player> {
         damageToDo = replaceDamage(damageToDo, source, true);
         damageToDo = preventDamage(damageToDo, source, true);
 
-        addDamageAfterPrevention(damageToDo, source, true); // damage prevention is already checked
+        addDamageAfterPrevention(damageToDo, source, true, false); // damage prevention is already checked
 
         if (damageToDo > 0) {
             GameActionUtil.executeCombatDamageToPlayerEffects(this, source, damageToDo);
