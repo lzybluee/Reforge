@@ -448,8 +448,6 @@ public class TargetingOverlay {
                 assembleArcs(gameView.getCombat());
             }
 
-            if (arcsFoe.isEmpty() && arcsFriend.isEmpty()) { return; }
-
             Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
@@ -466,7 +464,7 @@ public class TargetingOverlay {
             drawArcs(g2d, colorOther, arcsFriend);
             drawArcs(g2d, colorCombat, arcsFoe);
 
-            if(!compareLastArcs(arcsFriend, arcsFoe)) {	
+            if(!compareLastArcs(arcsFriend, arcsFoe)) {
             	FView.SINGLETON_INSTANCE.getFrame().repaint(); // repaint the match UI
             }
         }
