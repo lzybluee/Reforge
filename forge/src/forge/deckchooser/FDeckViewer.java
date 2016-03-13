@@ -14,6 +14,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import net.miginfocom.swing.MigLayout;
+import forge.ImageCache;
 import forge.deck.CardPool;
 import forge.deck.Deck;
 import forge.deck.DeckSection;
@@ -47,6 +48,7 @@ public class FDeckViewer extends FDialog {
     public static void show(final Deck deck) {
         if (deck == null) { return; }
 
+        ImageCache.clear();
         final FDeckViewer deckViewer = new FDeckViewer(deck);
         deckViewer.setVisible(true);
         deckViewer.dispose();

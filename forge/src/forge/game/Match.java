@@ -17,6 +17,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multiset;
 
+import forge.ImageCache;
 import forge.LobbyPlayer;
 import forge.deck.CardPool;
 import forge.deck.Deck;
@@ -82,6 +83,7 @@ public class Match {
 
     public void startGame(final Game game) {
         prepareAllZones(game);
+        ImageCache.clear();
         if (rules.useAnte()) {  // Deciding which cards go to ante
             Multimap<Player, Card> list = game.chooseCardsForAnte(rules.getMatchAnteRarity());
             for (Entry<Player, Card> kv : list.entries()) {

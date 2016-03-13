@@ -77,6 +77,7 @@ public class ImageCache {
     public static void clear() {
         _CACHE.invalidateAll();
         _missingIconKeys.clear();
+        System.gc();
     }
 
     /**

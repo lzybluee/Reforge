@@ -22,6 +22,7 @@ import java.util.Iterator;
 import com.google.common.collect.Iterators;
 import com.google.common.primitives.Ints;
 
+import forge.ImageCache;
 import forge.Singletons;
 import forge.UiCommand;
 import forge.assets.FSkinProp;
@@ -101,7 +102,7 @@ public class CDock implements ICDoc {
     /** Toggle targeting overlay painting. */
     public void toggleTargeting() {
         arcState = arcStateIterator.next();
-
+        ImageCache.clear();
         refreshArcStateDisplay();
         Singletons.getView().getFrame().repaint(); // repaint the match UI
     }
