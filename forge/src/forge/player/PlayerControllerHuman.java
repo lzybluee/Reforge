@@ -1453,7 +1453,8 @@ public class PlayerControllerHuman
             if (delayedReveal != null) {
                 tempShow(delayedReveal.getCards());
             }
-            final GameEntityView result = getGui().chooseSingleEntityForEffect(selectPrompt, GameEntityView.getEntityCollection(optionList), delayedReveal, isOptional);
+            final GameEntityView result = getGui().chooseSingleEntityForEffect("[" + (i+1) + "] " + selectPrompt, GameEntityView.getEntityCollection(optionList), 
+            		i == 0 ? delayedReveal : null, isOptional);
             endTempShowCards();
 
             boolean redo = false;
