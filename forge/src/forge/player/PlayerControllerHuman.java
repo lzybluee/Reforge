@@ -1212,22 +1212,37 @@ public class PlayerControllerHuman
     @Override
     public void orderAndPlaySimultaneousSa(final List<SpellAbility> activePlayerSAs) {
         List<SpellAbility> orderedSAs = new ArrayList<SpellAbility>(activePlayerSAs);
+        List<SpellAbility> playSAs = new ArrayList<SpellAbility>(activePlayerSAs);
         if (activePlayerSAs.size() > 1) { // give a dual list form to create instead of needing to do it one at a time
 
-        	ArrayList<SpellAbility> sas = new ArrayList<SpellAbility>();
+        	ArrayList<SpellAbility> lastAbs = new ArrayList<SpellAbility>();
+        	ArrayList<SpellAbility> firstAbs = new ArrayList<SpellAbility>();
         	for(SpellAbility sa : activePlayerSAs) {
         		if(sa.hasParam("Evolve") && sa.getHostCard() != null) {
     				for(final Trigger trigger : sa.getHostCard().getTriggers()) {
 		                if (trigger.getMode() == TriggerType.Evolved) {
-	        				sas.add(sa);
+		                	lastAbs.add(sa);
 	        				orderedSAs.remove(sa);
 		                    break;
 		                }
     				}
         		}
         	}
+        	
+        	for(SpellAbility sa : activePlayerSAs) {
+        		if(lastAbs.contains(sa)) {
+        			continue;
+        		}
+                String ab = sa.getParam("AB");
+                if(ab != null && ab.equals("Token")) {
+                	firstAbs.add(sa);
+                	orderedSAs.remove(sa);
+                }
+        	}
+        	
+        	orderedSAs.addAll(0, firstAbs);
 
-        	Collections.sort(sas, new Comparator<SpellAbility>() {
+        	Collections.sort(lastAbs, new Comparator<SpellAbility>() {
 
 				@Override
 				public int compare(SpellAbility sa1, SpellAbility sa2) {
@@ -1241,21 +1256,25 @@ public class PlayerControllerHuman
 				}
 			});
 
-        	for(SpellAbility sa : sas) {
-        		orderedSAs.add(sa);
-        	}
+        	orderedSAs.addAll(lastAbs);
 
+        	boolean reordered = false;
             final String firstStr = orderedSAs.get(0).toString();
             for (int i = 1; i < orderedSAs.size(); i++) { //don't prompt user if all options are the same
                 if (!orderedSAs.get(i).toString().equals(firstStr)) {
-                    orderedSAs = getGui().order("Select order for simultaneous abilities", "Resolve first", activePlayerSAs, null);
+                	playSAs = getGui().order("Select order for simultaneous abilities", "Resolve first", orderedSAs, null);
+                	reordered = true;
                     break;
                 }
             }
+            
+            if(!reordered) {
+            	playSAs = orderedSAs;
+            }
         }
-        final int size = orderedSAs.size();
+        final int size = playSAs.size();
         for (int i = size - 1; i >= 0; i--) {
-            final SpellAbility next = orderedSAs.get(i);
+            final SpellAbility next = playSAs.get(i);
             if (next.isTrigger()) {
                 HumanPlay.playSpellAbility(this, player, next);
             }
