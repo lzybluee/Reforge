@@ -195,7 +195,7 @@ public class GuiChoose {
         try {
             return future.get();
         } catch (final Exception e) { // should be no exception here
-            e.printStackTrace();
+            //e.printStackTrace(); //if message == null
         }
         return null;
     }
