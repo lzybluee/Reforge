@@ -86,9 +86,27 @@ import java.util.Set;
  */
 public class GameAction {
     private final Game game;
+    private CardCollection  simultaneousEtbCards;
 
     public GameAction(Game game0) {
         game = game0;
+    }
+    
+    public void setSimultaneousEtbCards(CardCollection cards) {
+    	if(cards != null && cards.size() > 1) {
+    		simultaneousEtbCards = new CardCollection();
+    		simultaneousEtbCards.addAll(cards);
+    	}
+    }
+    
+    public void clearSimultaneousEtbCards(CardCollection cards) {
+    	if(simultaneousEtbCards == cards) {
+    		simultaneousEtbCards = null;
+    	}
+    }
+    
+    public CardCollection getSimultaneousEtbCards() {
+    	return simultaneousEtbCards;
     }
 
     public final void resetActivationsPerTurn() {
