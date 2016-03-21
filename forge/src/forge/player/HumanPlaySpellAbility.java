@@ -151,6 +151,7 @@ public class HumanPlaySpellAbility {
             if (manaConversion) {
                 manapool.restoreColorReplacements();
             }
+            ability.getPayingManaAbilities().clear();
         }
         
         return true;
