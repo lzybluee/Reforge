@@ -49,11 +49,32 @@ public final class GameMenu {
         menu.add(getMenuItem_AutoYields());
         menu.addSeparator();
         menu.add(getMenuItem_ViewDeckList());
+        menu.add(getMenuItem_SimpleStack());
         menu.addSeparator();
         menu.add(getMenuItem_GameSoundEffects());
         return menu;
     }
 
+    private static SkinnedCheckBoxMenuItem getMenuItem_SimpleStack() {
+        SkinnedCheckBoxMenuItem menuItem = new SkinnedCheckBoxMenuItem("Simple Stack");
+        menuItem.setState(prefs.getPrefBoolean(FPref.UI_SIMPLE_STACK));
+        menuItem.addActionListener(getSimpleStackAction());
+        return menuItem;
+    }
+    private static ActionListener getSimpleStackAction() {
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                toggleSimpleStack();
+            }
+        };
+    }
+    private static void toggleSimpleStack() {
+        final boolean isSimpleStack = !prefs.getPrefBoolean(FPref.UI_SIMPLE_STACK);
+        prefs.setPref(FPref.UI_SIMPLE_STACK, isSimpleStack);
+        prefs.save();
+    }
+    
     private static SkinnedCheckBoxMenuItem getMenuItem_GameSoundEffects() {
         SkinnedCheckBoxMenuItem menuItem = new SkinnedCheckBoxMenuItem("Sound Effects");
         menuItem.setState(prefs.getPrefBoolean(FPref.UI_ENABLE_SOUNDS));

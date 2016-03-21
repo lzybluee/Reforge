@@ -25,6 +25,7 @@ import forge.game.card.Card;
 import forge.game.card.CardView;
 import forge.game.card.CardView.CardStateView;
 import forge.game.spellability.SpellAbilityView;
+import forge.game.trigger.WrappedAbility;
 import forge.item.IPaperCard;
 import forge.item.PaperCard;
 import forge.screens.match.CMatchUI;
@@ -336,6 +337,13 @@ public class DualListBox<T> extends FDialog {
             card = ((SpellAbilityView) obj).getHostCard();
         } else if (obj instanceof PaperCard) {
             card = Card.getCardForUi((IPaperCard) obj).getView();
+        } else if (obj instanceof WrappedAbility) {
+        	Card c = ((WrappedAbility) obj).getHostCard();
+            if(c != null) {
+            	card = c.getView();
+            } else {
+            	card = null;
+            }
         } else {
             card = null;
         }

@@ -1258,19 +1258,22 @@ public class PlayerControllerHuman
 
         	orderedSAs.addAll(lastAbs);
 
-        	boolean reordered = false;
-            final String firstStr = orderedSAs.get(0).toString();
-            for (int i = 1; i < orderedSAs.size(); i++) { //don't prompt user if all options are the same
-                if (!orderedSAs.get(i).toString().equals(firstStr)) {
-                	playSAs = getGui().order("Select order for simultaneous abilities", "Resolve first", orderedSAs, null);
-                	reordered = true;
-                    break;
+        	if(FModel.getPreferences().getPrefBoolean(FPref.UI_SIMPLE_STACK)) {
+        		boolean reordered = false;
+                final String firstStr = orderedSAs.get(0).toString();
+                for (int i = 1; i < orderedSAs.size(); i++) { //don't prompt user if all options are the same
+                    if (!orderedSAs.get(i).toString().equals(firstStr)) {
+                    	playSAs = getGui().order("Select order for simultaneous abilities", "Resolve first", orderedSAs, null);
+                    	reordered = true;
+                        break;
+                    }
                 }
-            }
-            
-            if(!reordered) {
-            	playSAs = orderedSAs;
-            }
+                if(!reordered) {
+                	playSAs = orderedSAs;
+                }
+        	} else {
+        		playSAs = getGui().order("Select order for simultaneous abilities", "Resolve first", activePlayerSAs, null);
+        	}
         }
         final int size = playSAs.size();
         for (int i = size - 1; i >= 0; i--) {
