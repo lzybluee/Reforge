@@ -47,9 +47,9 @@ public final class GameMenu {
         menu.add(getMenuItem_TargetingArcs());
         menu.add(new CardOverlaysMenu(matchUI).getMenu());
         menu.add(getMenuItem_AutoYields());
+        menu.add(getMenuItem_SimpleStack());
         menu.addSeparator();
         menu.add(getMenuItem_ViewDeckList());
-        menu.add(getMenuItem_SimpleStack());
         menu.addSeparator();
         menu.add(getMenuItem_GameSoundEffects());
         return menu;
