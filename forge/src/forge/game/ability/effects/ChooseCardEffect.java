@@ -93,7 +93,7 @@ public class ChooseCardEffect extends SpellAbilityEffect {
                 } else {
                 	CardCollection collection = new CardCollection();
                 	CardCollection etbCards = game.getAction().getSimultaneousEtbCards();
-                	if(etbCards != null) {
+                	if(etbCards != null && etbCards.contains(host)) {
                         for(Card c : choices) {
                     		if(!etbCards.contains(c)) {
                     			collection.add(c);
