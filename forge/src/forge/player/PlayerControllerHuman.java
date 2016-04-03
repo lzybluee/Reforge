@@ -1208,6 +1208,19 @@ public class PlayerControllerHuman
         // if it's paid by the AI already the human can pay, but it won't change anything
         return HumanPlay.payCostDuringAbilityResolve(this, player, sa.getHostCard(), cost, sa, null);
     }
+    
+    private boolean compareTriggers(String trg1, String trg2) {
+    	if(trg1 == null || trg2 == null || trg1.isEmpty() || trg2.isEmpty()) {
+    		return false;
+    	}
+    	if(trg1.contains(" - Exalted for attacker")) {
+    		trg1 = trg1.substring(trg1.indexOf(" - ") + 3);
+    	}
+    	if(trg2.contains(" - Exalted for attacker")) {
+    		trg2 = trg2.substring(trg2.indexOf(" - ") + 3);
+    	}
+    	return trg1.equals(trg2);
+    }
 
     @Override
     public void orderAndPlaySimultaneousSa(final List<SpellAbility> activePlayerSAs) {
@@ -1262,7 +1275,7 @@ public class PlayerControllerHuman
         		boolean reordered = false;
                 final String firstStr = orderedSAs.get(0).toString();
                 for (int i = 1; i < orderedSAs.size(); i++) { //don't prompt user if all options are the same
-                    if (!orderedSAs.get(i).toString().equals(firstStr)) {
+                    if (!compareTriggers(orderedSAs.get(i).toString(), firstStr)) {
                     	playSAs = getGui().order("Select order for simultaneous abilities", "Resolve first", orderedSAs, null);
                     	reordered = true;
                         break;
