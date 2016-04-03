@@ -8,8 +8,8 @@ Name=Boros
 2 Firemane Avenger|GTC
 4 Frontline Medic|GTC
 2 Legion Loyalist|GTC
-6 Mountain|RTR
-6 Plains|RTR
+6 Mountain|RTR|1
+6 Plains|RTR|1
 4 Sacred Foundry|GTC
 1 Tajic, Blade of the Legion|DGM
 2 Viashino Firstblade|DGM
@@ -22,37 +22,37 @@ Name=Boros
 4 Blaze Commando|DGM
 4 Bomber Corps|GTC
 4 Boros Battleshaper|DGM
+4 Boros Charm|GTC
 4 Boros Cluestone|DGM
-1 Boros Elite|GTC
+4 Boros Elite|GTC
 4 Boros Guildgate|DGM
 4 Boros Guildgate|GTC
 4 Boros Keyrune|GTC
 4 Boros Mastiff|DGM
-1 Boros Reckoner|GTC
+4 Boros Reckoner|GTC
 4 Catch // Release|DGM
 4 Daring Skyjek|GTC
-2 Firefist Striker|GTC
-2 Firemane Avenger|GTC
+4 Firefist Striker|GTC
+4 Firemane Avenger|GTC
 4 Fortress Cyclops|GTC
 4 Foundry Champion|GTC
+4 Frontline Medic|GTC
 4 Gleam of Battle|DGM
-8 Island|RTR
-2 Legion Loyalist|GTC
+4 Legion Loyalist|GTC
 4 Legion's Initiative|DGM
 4 Martial Glory|GTC
-43 Mountain|RTR
 4 Nav Squad Commandos|GTC
 4 Ordruun Veteran|GTC
-51 Plains|RTR
+4 Sacred Foundry|GTC
 4 Shattering Blow|GTC
 4 Skyknight Legionnaire|GTC
 4 Spark Trooper|GTC
 4 Sunhome Guildmage|GTC
-3 Tajic, Blade of the Legion|DGM
+4 Tajic, Blade of the Legion|DGM
 4 Towering Thunderfist|GTC
 4 Truefire Paladin|GTC
-2 Viashino Firstblade|DGM
-3 Warleader's Helix|DGM
+4 Viashino Firstblade|DGM
+4 Warleader's Helix|DGM
 4 Warmind Infantry|GTC
 4 Wear // Tear|DGM
 4 Wojek Halberdiers|GTC
