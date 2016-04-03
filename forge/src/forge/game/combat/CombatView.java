@@ -140,7 +140,7 @@ public class CombatView extends TrackableObject {
         }
         final FCollection<CardView> views = new FCollection<CardView>();
         for (final Entry<CardView, GameEntityView> entry : attackersWithDefenders) {
-            if (entry.getValue().equals(defender)) {
+            if (defender != null && entry.getValue().equals(defender)) {
                 views.add(entry.getKey());
             }
         }
@@ -153,7 +153,7 @@ public class CombatView extends TrackableObject {
         }
         final List<FCollection<CardView>> views = new ArrayList<FCollection<CardView>>();
         for (final Entry<FCollection<CardView>, GameEntityView> entry : bandsWithDefenders) {
-            if (entry.getValue().equals(defender)) {
+            if (defender != null && entry.getValue().equals(defender)) {
                 views.add(entry.getKey());
             }
         }
