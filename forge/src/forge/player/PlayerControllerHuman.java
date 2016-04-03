@@ -1224,9 +1224,41 @@ public class PlayerControllerHuman
 
     @Override
     public void orderAndPlaySimultaneousSa(final List<SpellAbility> activePlayerSAs) {
-        List<SpellAbility> orderedSAs = new ArrayList<SpellAbility>(activePlayerSAs);
+        
         List<SpellAbility> playSAs = new ArrayList<SpellAbility>(activePlayerSAs);
         if (activePlayerSAs.size() > 1) { // give a dual list form to create instead of needing to do it one at a time
+
+        	ArrayList<SpellAbility> orderedSAs = new ArrayList<SpellAbility>();
+        	ArrayList<Card> cardList = new ArrayList<Card>();
+        	ArrayList<SpellAbility> restList = new ArrayList<SpellAbility>();
+        	HashMap<Card, ArrayList<SpellAbility>> abliltyMap = new HashMap<Card, ArrayList<SpellAbility>>();
+        	
+        	for(SpellAbility sa : activePlayerSAs) {
+        		Card c = sa.getHostCard();
+        		if(c != null) {
+        			if(cardList.contains(c)) {
+        				abliltyMap.get(c).add(sa);
+        			} else {
+        				cardList.add(c);
+        				ArrayList<SpellAbility> list = new ArrayList<SpellAbility>();
+        				list.add(sa);
+        				abliltyMap.put(c, list);
+        			}
+        		} else {
+        			restList.add(sa);
+        		}
+        	}
+        	
+        	for(Card c : cardList) {
+        		ArrayList<SpellAbility> list = abliltyMap.get(c);
+        		for(SpellAbility sa : list) {
+        			orderedSAs.add(sa);
+        		}
+        	}
+        	
+        	for(SpellAbility sa : restList) {
+        		orderedSAs.add(sa);
+        	}
 
         	ArrayList<SpellAbility> lastAbs = new ArrayList<SpellAbility>();
         	ArrayList<SpellAbility> firstAbs = new ArrayList<SpellAbility>();
