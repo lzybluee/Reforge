@@ -106,13 +106,19 @@ public class HumanPlaySpellAbility {
         }
         // This line makes use of short-circuit evaluation of boolean values, that is each subsequent argument
         // is only executed or evaluated if the first argument does not suffice to determine the value of the expression
-        final boolean prerequisitesMet = announceValuesLikeX()
+        boolean prerequisitesMet = announceValuesLikeX()
                 && announceType()
-                && (!mayChooseTargets || setupTargets()) // if you can choose targets, then do choose them.
-                && (isFree || payment.payCost(new HumanCostDecision(controller, human, ability, ability.getHostCard())));
+                && (!mayChooseTargets || setupTargets()); // if you can choose targets, then do choose them.
+        
+        boolean payCost = payment.payCost(new HumanCostDecision(controller, human, ability, ability.getHostCard()));
+        
+        prerequisitesMet = (prerequisitesMet && (isFree || payCost));
 
         if (!prerequisitesMet) {
-            if (!ability.isTrigger()) {
+        	if (ability.isTrigger() && !payCost) {
+        		payment.refundPayment();	
+        	}
+        	if (!ability.isTrigger()) {
                 rollbackAbility(fromZone, fromState, zonePosition);
                 if (ability.getHostCard().isMadness()) {
                     // if a player failed to play madness cost, move the card to graveyard
