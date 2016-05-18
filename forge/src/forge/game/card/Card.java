@@ -279,6 +279,8 @@ public class Card extends GameEntity implements Comparable<Card> {
     
     private boolean isCardFlag;
     public Card originalCard;
+    
+    GameCommand delayedTriggerToRemove = null;
 
     // Enumeration for CMC request types
     public enum SplitCMCMode {
@@ -2173,6 +2175,11 @@ public class Card extends GameEntity implements Comparable<Card> {
         for (final GameCommand c : leavePlayCommandList) {
             c.run();
         }
+        if(delayedTriggerToRemove != null) {
+        	untapCommandList.remove(delayedTriggerToRemove);
+        	leavePlayCommandList.remove(delayedTriggerToRemove);
+        	delayedTriggerToRemove = null;
+        }
     }
 
     public final void addUntapCommand(final GameCommand c) {
@@ -2186,6 +2193,11 @@ public class Card extends GameEntity implements Comparable<Card> {
     public final void runChangeControllerCommands() {
         for (final GameCommand c : changeControllerCommandList) {
             c.run();
+        }
+        if(delayedTriggerToRemove != null) {
+        	untapCommandList.remove(delayedTriggerToRemove);
+        	leavePlayCommandList.remove(delayedTriggerToRemove);
+        	delayedTriggerToRemove = null;
         }
     }
 
@@ -2949,6 +2961,11 @@ public class Card extends GameEntity implements Comparable<Card> {
 
         for (final GameCommand var : untapCommandList) {
             var.run();
+        }
+        if(delayedTriggerToRemove != null) {
+        	untapCommandList.remove(delayedTriggerToRemove);
+        	leavePlayCommandList.remove(delayedTriggerToRemove);
+        	delayedTriggerToRemove = null;
         }
         setTapped(false);
         getGame().fireEvent(new GameEventCardTapped(this, false));
@@ -6791,5 +6808,9 @@ public class Card extends GameEntity implements Comparable<Card> {
         for (Entry<Long, KeywordsChange> entry : changedCardKeywords.entrySet()) {
             this.changedCardKeywords.put(entry.getKey(), entry.getValue());
         }
+    }
+    
+    public void setDelayedTriggerToRemove(GameCommand command) {
+    	delayedTriggerToRemove = command;
     }
 }
