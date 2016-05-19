@@ -143,38 +143,36 @@ public class ControlGainEffect extends SpellAbilityEffect {
             if (forget && sa.getHostCard().isRemembered(tgtC)) {
                 sa.getHostCard().removeRemembered(tgtC);
             }
-            
-            GameCommand destroyCommand = null;
-            
-            if (destroyOn != null) {
-            	destroyCommand = getDestroyCommand(tgtC, source, bNoRegen);
-                if (destroyOn.contains("LeavesPlay")) {
-                    sa.getHostCard().addLeavesPlayCommand(destroyCommand);
-                }
-                if (destroyOn.contains("Untap")) {
-                    sa.getHostCard().addUntapCommand(destroyCommand);
-                }
-            }
 
             if (lose != null) {
                 if (lose.contains("LeavesPlay")) {
-                    sa.getHostCard().addLeavesPlayCommand(getLoseControlCommand(tgtC, tStamp, bTapOnLose, source, kws, null));
+                    sa.getHostCard().addLeavesPlayCommand(getLoseControlCommand(tgtC, tStamp, bTapOnLose, source, kws));
                 }
                 if (lose.contains("Untap")) {
-                    sa.getHostCard().addUntapCommand(getLoseControlCommand(tgtC, tStamp, bTapOnLose, source, kws, null));
+                    sa.getHostCard().addUntapCommand(getLoseControlCommand(tgtC, tStamp, bTapOnLose, source, kws));
                 }
                 if (lose.contains("LoseControl")) {
-                    sa.getHostCard().addChangeControllerCommand(getLoseControlCommand(tgtC, tStamp, bTapOnLose, source, kws, destroyCommand));
+                    sa.getHostCard().addChangeControllerCommand(getLoseControlCommand(tgtC, tStamp, bTapOnLose, source, kws));
                 }
                 if (lose.contains("EOT")) {
-                    game.getEndOfTurn().addUntil(getLoseControlCommand(tgtC, tStamp, bTapOnLose, source, kws, null));
+                    game.getEndOfTurn().addUntil(getLoseControlCommand(tgtC, tStamp, bTapOnLose, source, kws));
                     tgtC.setSVar("SacMe", "6");
                 }
                 if (lose.contains("StaticCommandCheck")) {
                     String leftVar = sa.getSVar(sa.getParam("StaticCommandCheckSVar"));
                     String rightVar = sa.getParam("StaticCommandSVarCompare");
                     sa.getHostCard().addStaticCommandList(new Object[]{leftVar, rightVar, tgtC,
-                            getLoseControlCommand(tgtC, tStamp, bTapOnLose, source, kws, null)});
+                            getLoseControlCommand(tgtC, tStamp, bTapOnLose, source, kws)});
+                }
+            }
+            
+            if (destroyOn != null) {
+            	GameCommand destroyCommand = getDestroyCommand(tgtC, source, bNoRegen);
+                if (destroyOn.contains("LeavesPlay")) {
+                    sa.getHostCard().addLeavesPlayCommand(destroyCommand);
+                }
+                if (destroyOn.contains("Untap")) {
+                    sa.getHostCard().addUntapCommand(destroyCommand);
                 }
             }
 
@@ -215,10 +213,11 @@ public class ControlGainEffect extends SpellAbilityEffect {
                     sb.append("  It can't be regenerated.");
                 }
                 ability.setStackDescription(sb.toString());
+                ability.setDescription(sb.toString());
 
                 game.getStack().addSimultaneousStackEntry(ability);
                 
-                hostCard.setDelayedTriggerToRemove(this);
+                hostCard.addDelayedTriggerToRemove(this);
             }
 
         };
@@ -238,7 +237,7 @@ public class ControlGainEffect extends SpellAbilityEffect {
      */
     private static GameCommand getLoseControlCommand(final Card c,
             final long tStamp, final boolean bTapOnLose, final Card hostCard,
-            final List<String> kws, final GameCommand command) {
+            final List<String> kws) {
         final GameCommand loseControl = new GameCommand() {
             private static final long serialVersionUID = 878543373519872418L;
 
@@ -246,9 +245,6 @@ public class ControlGainEffect extends SpellAbilityEffect {
             public void run() { 
                 doLoseControl(c, hostCard, bTapOnLose, kws, tStamp);
                 c.getSVars().remove("SacMe");
-                if(command != null) {
-                	hostCard.setDelayedTriggerToRemove(command);
-                }
             }
         };
 

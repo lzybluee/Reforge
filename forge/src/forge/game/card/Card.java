@@ -265,6 +265,7 @@ public class Card extends GameEntity implements Comparable<Card> {
     private final List<GameCommand> untapCommandList = new ArrayList<GameCommand>();
     private final List<GameCommand> changeControllerCommandList = new ArrayList<GameCommand>();
     private final List<Object[]> staticCommandList = new ArrayList<Object[]>();
+    private final List<GameCommand> delayedTriggerToRemove = new ArrayList<GameCommand>();
 
     private final static ImmutableList<String> storableSVars = ImmutableList.of("ChosenX");
 
@@ -279,8 +280,6 @@ public class Card extends GameEntity implements Comparable<Card> {
     
     private boolean isCardFlag;
     public Card originalCard;
-    
-    GameCommand delayedTriggerToRemove = null;
 
     // Enumeration for CMC request types
     public enum SplitCMCMode {
@@ -2175,11 +2174,7 @@ public class Card extends GameEntity implements Comparable<Card> {
         for (final GameCommand c : leavePlayCommandList) {
             c.run();
         }
-        if(delayedTriggerToRemove != null) {
-        	untapCommandList.remove(delayedTriggerToRemove);
-        	leavePlayCommandList.remove(delayedTriggerToRemove);
-        	delayedTriggerToRemove = null;
-        }
+        removeDelayedTrigger();
     }
 
     public final void addUntapCommand(final GameCommand c) {
@@ -2193,11 +2188,6 @@ public class Card extends GameEntity implements Comparable<Card> {
     public final void runChangeControllerCommands() {
         for (final GameCommand c : changeControllerCommandList) {
             c.run();
-        }
-        if(delayedTriggerToRemove != null) {
-        	untapCommandList.remove(delayedTriggerToRemove);
-        	leavePlayCommandList.remove(delayedTriggerToRemove);
-        	delayedTriggerToRemove = null;
         }
     }
 
@@ -2962,11 +2952,8 @@ public class Card extends GameEntity implements Comparable<Card> {
         for (final GameCommand var : untapCommandList) {
             var.run();
         }
-        if(delayedTriggerToRemove != null) {
-        	untapCommandList.remove(delayedTriggerToRemove);
-        	leavePlayCommandList.remove(delayedTriggerToRemove);
-        	delayedTriggerToRemove = null;
-        }
+        removeDelayedTrigger();
+        
         setTapped(false);
         getGame().fireEvent(new GameEventCardTapped(this, false));
     }
@@ -6810,7 +6797,18 @@ public class Card extends GameEntity implements Comparable<Card> {
         }
     }
     
-    public void setDelayedTriggerToRemove(GameCommand command) {
-    	delayedTriggerToRemove = command;
+    public void addDelayedTriggerToRemove(GameCommand command) {
+    	delayedTriggerToRemove.add(command);
+    }
+    
+    public void removeDelayedTrigger() {
+    	ArrayList<GameCommand> list = new ArrayList<GameCommand>(delayedTriggerToRemove);
+    	for(GameCommand command : list) {
+    		if(untapCommandList.contains(command) || leavePlayCommandList.remove(command)) {
+    			untapCommandList.remove(command);
+    			leavePlayCommandList.remove(command);
+    			delayedTriggerToRemove.remove(command);
+    		}
+    	}
     }
 }
