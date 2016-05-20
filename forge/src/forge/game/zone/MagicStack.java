@@ -718,6 +718,16 @@ public class MagicStack /* extends MyObservable */ implements Iterable<SpellAbil
         }
         return null;
     }
+    
+    public final SpellAbilityStackInstance getInstanceFromSpellAbilityForFizzle(final SpellAbility sa) {
+        // TODO: Confirm this works!
+        for (final SpellAbilityStackInstance si : stack) {
+            if (si.compareToSpellAbilityForFizzle(sa)) {
+                return si;
+            }
+        }
+        return null;
+    }
 
     public final boolean hasSimultaneousStackEntries() {
         return !simultaneousStackEntryList.isEmpty();
