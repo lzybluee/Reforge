@@ -295,17 +295,6 @@ public class SpellAbilityStackInstance implements IIdentifiable, IHasCardView {
         return true;
     }
 
-    public boolean compareToSpellAbilityForFizzle(SpellAbility sa) {
-        SpellAbility compare = sa;
-        SpellAbilityStackInstance sub = this;
-
-        if (!compare.equals(sub.ability)){
-            return false;
-        }
-
-        return true;
-    }
-
     public Player getActivatingPlayer() {
         return activatingPlayer;
     }

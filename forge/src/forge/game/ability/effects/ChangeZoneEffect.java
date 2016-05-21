@@ -549,7 +549,7 @@ public class ChangeZoneEffect extends SpellAbilityEffect {
                         final FCollectionView<SpellAbility> spells = tgtC.getSpellAbilities();
                         for (SpellAbility spell : spells) {
                         	if (tgtC.isInZone(ZoneType.Exile) || tgtC.isInZone(ZoneType.Hand) || tgtC.isInZone(ZoneType.Stack)) {
-                                final SpellAbilityStackInstance si = game.getStack().getInstanceFromSpellAbilityForFizzle(spell);
+                                final SpellAbilityStackInstance si = game.getStack().getInstanceFromSpellAbility(spell);
                                 if (si != null) { 
                                     game.getStack().remove(si);
                                 }

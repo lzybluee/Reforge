@@ -154,7 +154,7 @@ public class HumanPlaySpellAbility {
 
             // no worries here. The same thread must resolve, and by this moment ability will have been resolved already
             // Triggers haven't resolved yet ??
-            if (mayChooseTargets) {
+            if (skipStack && mayChooseTargets) {
                 clearTargets(ability);
             }
             if (manaConversion) {
