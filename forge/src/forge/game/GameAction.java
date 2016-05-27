@@ -306,12 +306,12 @@ public class GameAction {
         runParams.put("Destination", zoneTo.getZoneType().name());
         runParams.put("SpellAbilityStackInstance", game.stack.peek());
         game.getTriggerHandler().runTrigger(TriggerType.ChangesZone, runParams, false);
-        if (zoneFrom != null && zoneFrom.is(ZoneType.Battlefield)) {
+        /*if (zoneFrom != null && zoneFrom.is(ZoneType.Battlefield)) {
             final HashMap<String, Object> runParams2 = new HashMap<String, Object>();
             runParams2.put("Card", lastKnownInfo);
             runParams2.put("OriginalController", zoneFrom.getPlayer());
             game.getTriggerHandler().runTrigger(TriggerType.ChangesController, runParams2, false);
-        }
+        }*/
         // AllZone.getStack().chooseOrderOfSimultaneousStackEntryAll();
 
         if (suppress) {
