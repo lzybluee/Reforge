@@ -108,6 +108,16 @@ public class Game {
     private final GameView view; 
     private final Tracker tracker = new Tracker();
 
+    private boolean rollback = false;
+    
+    public void setRollback(boolean back) {
+    	rollback = back;
+    }
+    
+    public boolean isRollback() {
+    	return rollback;
+    }
+
     public final Ability PLAY_LAND_SURROGATE = new Ability(null, (Cost) null) {
         @Override
         public boolean canPlay() {

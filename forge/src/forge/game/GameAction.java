@@ -234,17 +234,19 @@ public class GameAction {
             repParams.put("Origin", zoneFrom != null ? zoneFrom.getZoneType() : null);
             repParams.put("Destination", zoneTo.getZoneType());
 
-            ReplacementResult repres = game.getReplacementHandler().run(repParams);
-            if (repres != ReplacementResult.NotReplaced) {
-                if (zoneChangedEarly) {
-                    c.setZone(originalZone); // TODO: part of a workaround for bounced suspend-cast cards 
+            if(!game.isRollback()) {
+                ReplacementResult repres = game.getReplacementHandler().run(repParams);
+                if (repres != ReplacementResult.NotReplaced) {
+                    if (zoneChangedEarly) {
+                        c.setZone(originalZone); // TODO: part of a workaround for bounced suspend-cast cards 
+                    }
+                    if (game.getStack().isResolving(c) && !zoneTo.is(ZoneType.Graveyard) && repres == ReplacementResult.Prevented) {
+                    	copied.getOwner().removeInboundToken(copied);
+                    	return moveToGraveyard(c);
+                    }
+                    copied.getOwner().removeInboundToken(copied);
+                    return c;
                 }
-                if (game.getStack().isResolving(c) && !zoneTo.is(ZoneType.Graveyard) && repres == ReplacementResult.Prevented) {
-                	copied.getOwner().removeInboundToken(copied);
-                	return moveToGraveyard(c);
-                }
-                copied.getOwner().removeInboundToken(copied);
-                return c;
             }
 
             if (c.isUnearthed() && (zoneTo.is(ZoneType.Graveyard) || zoneTo.is(ZoneType.Hand) || zoneTo.is(ZoneType.Library))) {
