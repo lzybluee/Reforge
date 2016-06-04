@@ -2449,7 +2449,7 @@ public class Player extends GameEntity implements Comparable<Player> {
 
         final SpellAbility playForMiracleCost = card.getFirstSpellAbility().copy();
         playForMiracleCost.setPayCosts(card.getMiracleCost());
-        playForMiracleCost.setStackDescription(card.getName() + " - Cast via Miracle");
+        playForMiracleCost.setStackDescription(card.getName() + " - Cast via Miracle.\n" + card.getAbilityText());
         
         if (!getController().confirmAction(playForMiracleCost, null, "Miracle - Reveal " + card.getName())) {
             return;
@@ -2457,7 +2457,7 @@ public class Player extends GameEntity implements Comparable<Player> {
 
         // TODO Convert this to a Trigger
         Ability miracleTrigger = new MiracleTrigger(card, ManaCost.ZERO, playForMiracleCost);
-        miracleTrigger.setStackDescription(card.getName() + " - Miracle.");
+        miracleTrigger.setStackDescription(card.getName() + " - Miracle.\n" + card.getAbilityText());
         miracleTrigger.setActivatingPlayer(card.getOwner());
         miracleTrigger.setTrigger(true);
         card.setMiracle(true);
