@@ -78,6 +78,7 @@ import forge.game.card.CardPredicates.Presets;
 import forge.game.combat.AttackingBand;
 import forge.game.combat.Combat;
 import forge.game.cost.Cost;
+import forge.game.event.EventValueChangeType;
 import forge.game.event.GameEventCardAttachment;
 import forge.game.event.GameEventCardAttachment.AttachMethod;
 import forge.game.event.GameEventCardCounters;
@@ -86,6 +87,7 @@ import forge.game.event.GameEventCardDamaged.DamageType;
 import forge.game.event.GameEventCardPhased;
 import forge.game.event.GameEventCardStatsChanged;
 import forge.game.event.GameEventCardTapped;
+import forge.game.event.GameEventZone;
 import forge.game.keyword.KeywordsChange;
 import forge.game.player.Player;
 import forge.game.replacement.ReplaceMoved;
@@ -1016,6 +1018,9 @@ public class Card extends GameEntity implements Comparable<Card> {
     
                 // play the Add Counter sound
                 getGame().fireEvent(new GameEventCardCounters(this, counterType, oldValue == null ? 0 : oldValue.intValue(), newValue));
+                for(Player p : game.getPlayers()) {
+                    getGame().fireEvent(new GameEventZone(ZoneType.Battlefield, p, EventValueChangeType.ComplexUpdate, null));
+                }
             }
 
             // Run triggers
@@ -1089,6 +1094,9 @@ public class Card extends GameEntity implements Comparable<Card> {
 
         // Play the Subtract Counter sound
         getGame().fireEvent(new GameEventCardCounters(this, counterName, oldValue == null ? 0 : oldValue.intValue(), newValue));
+        for(Player p : game.getPlayers()) {
+            getGame().fireEvent(new GameEventZone(ZoneType.Battlefield, p, EventValueChangeType.ComplexUpdate, null));
+        }
 
         // Run triggers
         int curCounters = oldValue == null ? 0 : oldValue.intValue();
