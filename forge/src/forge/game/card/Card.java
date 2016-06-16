@@ -362,7 +362,10 @@ public class Card extends GameEntity implements Comparable<Card> {
                 }
             }
             else if (isFlipCard() && currentStateName != CardStateName.Flipped) {
-                return states.get(CardStateName.Flipped);
+            	if(isFaceDown())
+            		return states.get(CardStateName.Original);
+            	else
+            		return states.get(CardStateName.Flipped);
             }
             else if (isDoubleFaced() && currentStateName != CardStateName.Transformed) {
             	if(isFaceDown())
