@@ -2461,7 +2461,9 @@ public class Player extends GameEntity implements Comparable<Player> {
         miracleTrigger.setActivatingPlayer(card.getOwner());
         miracleTrigger.setTrigger(true);
         card.setMiracle(true);
-        
+
+        game.getAction().reveal(new CardCollection(card), card.getOwner());
+
         game.getStack().add(miracleTrigger);
     }
 
