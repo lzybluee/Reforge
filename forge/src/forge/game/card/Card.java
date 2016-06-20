@@ -574,6 +574,10 @@ public class Card extends GameEntity implements Comparable<Card> {
     public int getHiddenId() {
         return view.getHiddenId();
     }
+    
+    public String getHiddenIdString() {
+        return view.getHiddenIdString();
+    }
 
     public void updateAttackingForView() {
         view.updateAttacking(this);

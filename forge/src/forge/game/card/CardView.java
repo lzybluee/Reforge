@@ -283,6 +283,12 @@ public class CardView extends GameEntityView {
                 if (card.isFaceDown()) {
                     sb.append("Face Down");
                     // face-down cards don't show unique number to avoid cheating
+                    String id = card.getHiddenIdString();
+                    if(!id.isEmpty()) {
+                    	sb.append(" (");
+                        sb.append("H" + id);
+                        sb.append(")");
+                    }
                 } else {
                     sb.append(card.getName());
                     sb.append(" (");
@@ -714,6 +720,14 @@ public class CardView extends GameEntityView {
             return getId();
         }
         return hiddenId.intValue();
+    }
+    public String getHiddenIdString() {
+        final Integer hiddenId = get(TrackableProperty.HiddenId);
+        if (hiddenId == null) {
+            return "";
+        }
+        int value = hiddenId.intValue();
+        return value > 0 ? hiddenId.intValue() + "" : "";
     }
     void updateHiddenId(final int hiddenId) {
         set(TrackableProperty.HiddenId, hiddenId);
