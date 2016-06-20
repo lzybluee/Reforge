@@ -268,13 +268,28 @@ public class HumanPlaySpellAbility {
 
         if (needX && manaCost != null && manaCost.getAmountOfX() > 0) {
             final String sVar = ability.getSVar("X"); //only prompt for new X value if card doesn't determine it another way
-            if ("Count$xPaid".equals(sVar) || sVar.isEmpty()) {
-                final Integer value = controller.announceRequirements(ability, "X", allowZero && manaCost.canXbe0());
-                if (value == null) {
-                    return false;
+            
+            boolean noNeedToChooseX = false;
+        	String tgtType = ability.getParam("TargetType");
+        	if(sVar.isEmpty() && "Spell".equals(tgtType)) {
+        		Card host = ability.getHostCard();
+        		if(host != null) {
+        			String v = ability.getHostCard().getSVar("X");
+        			if("Targeted$CardManaCost".equals(v)) {
+        				noNeedToChooseX = true;
+        			}
+        		}
+        	}
+        	
+        	if(!noNeedToChooseX) {
+                if ("Count$xPaid".equals(sVar) || sVar.isEmpty()) {
+                    final Integer value = controller.announceRequirements(ability, "X", allowZero && manaCost.canXbe0());
+                    if (value == null) {
+                        return false;
+                    }
+                    card.setXManaCostPaid(value);
                 }
-                card.setXManaCostPaid(value);
-            }
+        	}
         }
         return true;
     }
