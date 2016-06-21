@@ -1,7 +1,7 @@
 Name:Disturbing Plot
 ManaCost:1 B
 Types:Sorcery
-A:SP$ ChangeZone | Cost$ 1 B | ValidTgts$ Creature | TgtPrompt$ Select target creature in a graveyard to return | Origin$ Graveyard | Destination$ Hand| SpellDescription$ Return target creature card from a graveyard to its owner's hand.
+A:SP$ ChangeZone | Cost$ 1 B | ValidTgts$ Creature | TgtPrompt$ Select target creature in a graveyard to return | Origin$ Graveyard | Destination$ Hand | SpellDescription$ Return target creature card from a graveyard to its owner's hand.
 K:Conspire
 T:Mode$ SpellCast | ValidCard$ Card.Self | Conspire$ True | Execute$ Conspire | Secondary$ True | TriggerDescription$ Copy CARDNAME if its conspire cost was paid
 SVar:Conspire:AB$ CopySpellAbility | Cost$ 0 | Defined$ TriggeredSpellAbility | Amount$ 1
