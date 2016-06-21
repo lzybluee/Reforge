@@ -24,6 +24,8 @@ public class RevealEffect extends SpellAbilityEffect {
         int cnt = sa.hasParam("NumCards") ? AbilityUtils.calculateAmount(host, sa.getParam("NumCards"), sa) : 1;
 
         final TargetRestrictions tgt = sa.getTargetRestrictions();
+        
+        boolean forceReveal = false;
 
         for (final Player p : getTargetPlayers(sa)) {
             final Game game = p.getGame();
@@ -45,7 +47,7 @@ public class RevealEffect extends SpellAbilityEffect {
                     } else {
                         revealed.add(Aggregates.random(cardsInHand));
                     }
-                    
+                    forceReveal = true;
                 } else if (sa.hasParam("RevealDefined")) {
                     revealed.addAll(AbilityUtils.getDefinedCards(sa.getHostCard(), sa.getParam("RevealDefined"), sa));
                 } else {
@@ -70,7 +72,10 @@ public class RevealEffect extends SpellAbilityEffect {
                     revealed.addAll(p.getController().chooseCardsToRevealFromHand(min, cnt, valid));
                 }
 
-                game.getAction().reveal(revealed, p);
+                if(forceReveal)
+                	game.getAction().reveal(revealed, p, false);
+                else
+                	game.getAction().reveal(revealed, p);
 
                 if (sa.hasParam("RememberRevealed")) {
                     for (final Card rem : revealed) {
