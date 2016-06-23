@@ -164,7 +164,7 @@ public abstract class Trigger extends TriggerReplacementBase {
     public final String toString() {
         if (this.mapParams.containsKey("TriggerDescription") && !this.isSuppressed()) {
             StringBuilder sb = new StringBuilder();
-            sb.append(this.mapParams.get("TriggerDescription").replace("CARDNAME", this.getHostCard().getName()));
+            sb.append(this.mapParams.get("TriggerDescription").replaceAll("CARDNAME", this.getHostCard().getName()));
             if (!this.triggerRemembered.isEmpty()) {
                 sb.append(" (").append(this.triggerRemembered).append(")");
             }

@@ -167,7 +167,7 @@ public class StaticAbility extends CardTraitBase {
     @Override
     public final String toString() {
         if (this.mapParams.containsKey("Description") && !this.isSuppressed()) {
-            return this.mapParams.get("Description").replace("CARDNAME", this.hostCard.getName());
+            return this.mapParams.get("Description").replaceAll("CARDNAME", this.hostCard.getName());
         } else {
             return "";
         }

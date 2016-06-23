@@ -523,7 +523,7 @@ public class PlayerControllerHuman
         if (!FModel.getPreferences().getPrefBoolean(FPref.UI_COMPACT_PROMPT)) {
             //append trigger description unless prompt is compact
             buildQuestion.append("\n(");
-            buildQuestion.append(triggerParams.get("TriggerDescription").replace("CARDNAME", regtrig.getHostCard().getName()));
+            buildQuestion.append(triggerParams.get("TriggerDescription").replaceAll("CARDNAME", regtrig.getHostCard().getName()));
             buildQuestion.append(")");
         }
         final Map<String, Object> tos = sa.getTriggeringObjects();
