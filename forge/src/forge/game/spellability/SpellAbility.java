@@ -1300,4 +1300,14 @@ public abstract class SpellAbility extends CardTraitBase implements ISpellAbilit
         view.updatePromptIfOnlyPossibleAbility(this);
         return view;
     }
+    
+    private boolean isHauntTrigger = false;
+    
+	public void setHauntTrigger() {
+		isHauntTrigger = true;
+	}
+    
+	public boolean isHauntTrigger() {
+		return isHauntTrigger;
+	}
 }

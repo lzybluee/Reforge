@@ -1323,7 +1323,7 @@ public class PlayerControllerHuman
         final int size = playSAs.size();
         for (int i = size - 1; i >= 0; i--) {
             final SpellAbility next = playSAs.get(i);
-            if (next.isTrigger()) {
+            if (next.isTrigger() && !next.isHauntTrigger()) {
                 HumanPlay.playSpellAbility(this, player, next);
             }
             else {

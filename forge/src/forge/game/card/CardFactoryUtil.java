@@ -2869,6 +2869,8 @@ public class CardFactoryUtil {
                 card.getGame().getAction().exile(card);
             }
         };
+        haunterDiesWork.setTrigger(true);
+        haunterDiesWork.setHauntTrigger();
         haunterDiesWork.setDescription("When CARDNAME dies, exile it haunting target creature.");
         haunterDiesWork.setTargetRestrictions(new TargetRestrictions(null, new String[]{"Creature"}, "1", "1")); // not null to make stack preserve targets set
 
