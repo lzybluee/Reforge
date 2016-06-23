@@ -571,8 +571,6 @@ public class TriggerHandler {
 
         if (regtrig.isStatic()) {
             wrapperAbility.getActivatingPlayer().getController().playTrigger(host, wrapperAbility, isMandatory);
-            if(regtrig.isDragonPresence())
-            	game.getStack().unfreezeStack();
         }
         else {
             game.getStack().addSimultaneousStackEntry(wrapperAbility);

@@ -2858,7 +2858,7 @@ public class CardFactoryUtil {
         final StringBuilder sbHaunter = new StringBuilder();
         sbHaunter.append("Mode$ ChangesZone | Origin$ Battlefield | ");
         sbHaunter.append("Destination$ Graveyard | ValidCard$ Card.Self | ");
-        sbHaunter.append("Static$ True | Secondary$ True | TriggerDescription$ Blank");
+        sbHaunter.append("Static$ True | Secondary$ True | TriggerDescription$ Haunt");
 
         final Trigger haunterDies = TriggerHandler.parseTrigger(sbHaunter.toString(), card, true);
 
@@ -2869,7 +2869,7 @@ public class CardFactoryUtil {
                 card.getGame().getAction().exile(card);
             }
         };
-        haunterDiesWork.setDescription(hauntDescription);
+        haunterDiesWork.setDescription("When CARDNAME dies, exile it haunting target creature.");
         haunterDiesWork.setTargetRestrictions(new TargetRestrictions(null, new String[]{"Creature"}, "1", "1")); // not null to make stack preserve targets set
 
         final Ability haunterDiesSetup = new Ability(card, ManaCost.ZERO) {
@@ -2884,10 +2884,12 @@ public class CardFactoryUtil {
                     return;
                 }
 
-                final Card toHaunt = card.getController().getController().chooseSingleEntityForEffect(creats, new SpellAbility.EmptySa(ApiType.InternalHaunt, card), "Choose target creature to haunt.");
+                final Card toHaunt = card.getController().getController().chooseSingleEntityForEffect(creats, new SpellAbility.EmptySa(ApiType.InternalHaunt, card), card + " - Choose target creature to haunt.");
                 haunterDiesWork.setTargetCard(toHaunt);
                 haunterDiesWork.setActivatingPlayer(card.getController());
-                game.getStack().add(haunterDiesWork);
+                String description = haunterDiesWork.getStackDescription();
+                haunterDiesWork.setStackDescription("When CARDNAME dies, exile it haunting target creature.\n"  + description);
+                game.getStack().addSimultaneousStackEntry(haunterDiesWork);
             }
         };
 
