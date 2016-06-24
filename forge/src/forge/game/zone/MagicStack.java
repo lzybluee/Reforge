@@ -162,21 +162,6 @@ public class MagicStack /* extends MyObservable */ implements Iterable<SpellAbil
         }
         // Add all waiting triggers onto the stack
         game.getTriggerHandler().runWaitingTriggers();
-        
-        if(!frozenStack.isEmpty()) {
-            frozen = false;
-
-            // Add all Frozen Abilities onto the stack AGAIN
-            while (!frozenStack.isEmpty()) {
-                final SpellAbility sa = frozenStack.pop().getSpellAbility(true);
-                add(sa);
-            }
-        }
-        
-        while (hasSimultaneousStackEntries()) {
-        	frozen = false;
-        	game.getStack().addAllTriggeredAbilitiesToStack();
-        }
     }
 
     public final void clearFrozen() {

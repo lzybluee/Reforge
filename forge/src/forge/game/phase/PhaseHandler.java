@@ -904,6 +904,7 @@ public class PhaseHandler implements java.io.Serializable {
                         if (game.isGameOver()) {
                             return; // state-based effects check could lead to game over
                         }
+                        game.getStack().setFrozen(false);
                     } while (game.getStack().addAllTriggeredAbilitiesToStack()); //loop so long as something was added to stack
 
                     if (!allAffectedCards.isEmpty()) {
