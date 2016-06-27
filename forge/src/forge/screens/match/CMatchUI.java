@@ -98,6 +98,7 @@ import forge.trackable.TrackableCollection;
 import forge.util.collect.FCollection;
 import forge.util.collect.FCollectionView;
 import forge.util.ITriggerEvent;
+import forge.util.MessageUtil;
 import forge.util.gui.SOptionPane;
 import forge.view.FView;
 import forge.view.arcane.CardPanel;
@@ -872,7 +873,15 @@ public final class CMatchUI
     @Override
     public GameEntityView chooseSingleEntityForEffect(final String title, final List<? extends GameEntityView> optionList, final DelayedReveal delayedReveal, final boolean isOptional) {
         if (delayedReveal != null) {
-            reveal(delayedReveal.getMessagePrefix(), delayedReveal.getCards()); //TODO: Merge this into search dialog
+        	String message = "";
+        	if(delayedReveal.getMessagePrefix() != null) {
+        		message = delayedReveal.getMessagePrefix();
+        	}
+            if (message.endsWith(" - Looking at cards in ")) {
+                message += "{player's} " + delayedReveal.getZone().name().toLowerCase();
+                message = MessageUtil.formatMessage(message, delayedReveal.getOwner(), delayedReveal.getOwner());
+            }
+            reveal(message, delayedReveal.getCards()); //TODO: Merge this into search dialog
         }
         if (isOptional) {
             return oneOrNone(title, optionList);
