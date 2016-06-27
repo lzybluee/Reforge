@@ -72,7 +72,7 @@ public class ChangeZoneAllEffect extends SpellAbilityEffect {
             if (!libCardsYouOwn.isEmpty()) { // Only searching one's own library would fire Archive Trap's altcost
                 sa.getActivatingPlayer().incLibrarySearched();
             }
-            sa.getActivatingPlayer().getController().reveal(libCards, ZoneType.Library, sa.getActivatingPlayer());
+            sa.getActivatingPlayer().getController().reveal(libCards, ZoneType.Library, tgtPlayers.size() > 0 ? tgtPlayers.get(0) : sa.getActivatingPlayer());
             final HashMap<String, Object> runParams = new HashMap<String, Object>();
             runParams.put("Player", sa.getActivatingPlayer());
             runParams.put("Target", tgtPlayers);

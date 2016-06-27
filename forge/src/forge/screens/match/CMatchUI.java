@@ -871,7 +871,7 @@ public final class CMatchUI
     }
 
     @Override
-    public GameEntityView chooseSingleEntityForEffect(final String title, final List<? extends GameEntityView> optionList, final DelayedReveal delayedReveal, final boolean isOptional) {
+    public GameEntityView chooseSingleEntityForEffect(final String title, final List<? extends GameEntityView> optionList, final DelayedReveal delayedReveal, final boolean isOptional, PlayerView view) {
         if (delayedReveal != null) {
         	String message = "";
         	if(delayedReveal.getMessagePrefix() != null) {
@@ -879,7 +879,7 @@ public final class CMatchUI
         	}
             if (message.endsWith(" - Looking at cards in ")) {
                 message += "{player's} " + delayedReveal.getZone().name().toLowerCase();
-                message = MessageUtil.formatMessage(message, delayedReveal.getOwner(), delayedReveal.getOwner());
+                message = MessageUtil.formatMessage(message, view, delayedReveal.getOwner());
             }
             reveal(message, delayedReveal.getCards()); //TODO: Merge this into search dialog
         }
