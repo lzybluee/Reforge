@@ -21,6 +21,8 @@ public class DamageAllEffect extends SpellAbilityEffect {
         String desc = "";
         if (sa.hasParam("ValidDescription")) {
             desc = sa.getParam("ValidDescription");
+        } else if (sa.hasParam("ValidCards")) {
+        	desc = "each " + sa.getParam("ValidCards").toLowerCase();
         }
 
         final String damage = sa.getParam("NumDmg");
@@ -38,7 +40,7 @@ public class DamageAllEffect extends SpellAbilityEffect {
 
         sb.append(" ").append(dmg).append(" damage to ").append(desc);
 
-            return sb.toString();
+        return sb.toString();
     }
 
     @Override
