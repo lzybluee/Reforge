@@ -259,9 +259,14 @@ public class TargetSelection {
                 final Object madeChoice = controller.getGui().oneOrNone(message, selectOptions);
                 if (madeChoice == null) {
                     return false;
+                } else {
+                	selectOptions.remove(madeChoice);
                 }
                 if (madeChoice instanceof SpellAbilityStackInstance) {
                     ability.getTargets().add(((SpellAbilityStackInstance)madeChoice).getSpellAbility(true));
+                    if(selectOptions.isEmpty()) {
+                    	bTargetingDone = true;
+                    }
                 }
                 else {// 'FINISH TARGETING' chosen 
                     bTargetingDone = true;
