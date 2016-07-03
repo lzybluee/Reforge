@@ -17,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.collect.Iterables;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ManaEffect extends SpellAbilityEffect {
@@ -57,7 +58,40 @@ public class ManaEffect extends SpellAbilityEffect {
                     }
                     for (int nMana = 1; nMana <= amount; nMana++) {
                         String choice = "";
-                        byte chosenColor = activator.getController().chooseColor("Select Mana to Produce", sa, colorOptions);
+                        byte chosenColor = 0;
+                        
+                        if(sa.getUsedToPayMana() != null) {
+                        	String usedToPayMana = sa.getUsedToPayMana().toString();
+                        	ArrayList<String> new_colors = new ArrayList<>();
+                        	
+                    		if(colorOptions.hasWhite() && (usedToPayMana.contains("{W") || usedToPayMana.contains("W}"))) {
+                    			new_colors.add("white");
+                    		}
+                    		if(colorOptions.hasBlue() && (usedToPayMana.contains("{U") || usedToPayMana.contains("U}"))) {
+                    			new_colors.add("blue");
+                    		}
+                    		if(colorOptions.hasBlack() && (usedToPayMana.contains("{B") || usedToPayMana.contains("B}"))) {
+                    			new_colors.add("black");
+                    		}
+                    		if(colorOptions.hasRed() && (usedToPayMana.contains("{R") || usedToPayMana.contains("R}"))) {
+                    			new_colors.add("red");
+                    		}
+                    		if(colorOptions.hasGreen() && (usedToPayMana.contains("{G") || usedToPayMana.contains("G}"))) {
+                    			new_colors.add("green");
+                    		}
+                        	
+                        	if(new_colors.size() == 1) {
+                        		chosenColor = MagicColor.fromName(new_colors.iterator().next());
+                        	} else if(new_colors.size() > 0) {
+                        		chosenColor = activator.getController().chooseColor("Select Mana to Produce", sa, ColorSet.fromNames(new_colors));
+                        	} else {
+                        		chosenColor = activator.getController().chooseColor("Select Mana to Produce", sa, colorOptions);
+                        	}
+                        }
+                        else {
+                        	chosenColor = activator.getController().chooseColor("Select Mana to Produce", sa, colorOptions);
+                        }
+
                         if (chosenColor == 0)
                             throw new RuntimeException("ManaEffect::resolve() /*combo mana*/ - " + activator + " color mana choice is empty for " + card.getName());
 

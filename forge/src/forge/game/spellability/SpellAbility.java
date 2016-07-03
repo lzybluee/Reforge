@@ -34,6 +34,7 @@ import forge.game.card.CardCollectionView;
 import forge.game.cost.Cost;
 import forge.game.cost.CostPartMana;
 import forge.game.mana.Mana;
+import forge.game.mana.ManaCostBeingPaid;
 import forge.game.player.Player;
 import forge.game.trigger.TriggerType;
 import forge.game.trigger.WrappedAbility;
@@ -1309,5 +1310,15 @@ public abstract class SpellAbility extends CardTraitBase implements ISpellAbilit
     
 	public boolean isHauntTrigger() {
 		return isHauntTrigger;
+	}
+	
+	private ManaCostBeingPaid usedToPayMana = null;
+	
+	public void setUsedToPayMana(ManaCostBeingPaid mana) {
+		usedToPayMana = mana;
+	}
+	
+	public ManaCostBeingPaid getUsedToPayMana() {
+		return usedToPayMana;
 	}
 }
