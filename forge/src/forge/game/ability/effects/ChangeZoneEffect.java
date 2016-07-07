@@ -166,6 +166,18 @@ public class ChangeZoneEffect extends SpellAbilityEffect {
                 if (destination.equals("Graveyard")) {
                     sb.append("into its owners's graveyard.");
                 }
+                if (destination.equals("Library")) {
+                    final int libraryPos = sa.hasParam("LibraryPosition") ? AbilityUtils.calculateAmount(host, sa.getParam("LibraryPosition"), sa) : 0;
+
+                    if (libraryPos == 0) {
+                        sb.append("on top");
+                    }
+                    if (libraryPos == -1) {
+                        sb.append("on the bottom");
+                    }
+
+                    sb.append(" of ").append(fetchPlayer).append("'s library.");
+                }
             }
             sb.append(" Then shuffle that library.");
         } else if (origin.equals("Hand")) {
