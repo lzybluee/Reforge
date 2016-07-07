@@ -171,9 +171,10 @@ public class ChangeZoneEffect extends SpellAbilityEffect {
 
                     if (libraryPos == 0) {
                         sb.append("on top");
-                    }
-                    if (libraryPos == -1) {
+                    } else if (libraryPos == -1) {
                         sb.append("on the bottom");
+                    } else {
+                    	sb.append((libraryPos + 1) + " from the top");
                     }
 
                     sb.append(" of ").append(fetchPlayer).append("'s library.");
@@ -206,9 +207,10 @@ public class ChangeZoneEffect extends SpellAbilityEffect {
 
                 if (libraryPos == 0) {
                     sb.append(" on top");
-                }
-                if (libraryPos == -1) {
+                } else if (libraryPos == -1) {
                     sb.append(" on the bottom");
+                } else {
+                	sb.append(" " + (libraryPos + 1) + " from the top");
                 }
 
                 sb.append(" of ").append(fetchPlayer).append("'s library");
