@@ -901,6 +901,7 @@ public class GameAction {
         for(Player p : game.getPlayers()) {
         	p.updateFlashbackZoneForView();
         	p.getGame().fireEvent(new GameEventZone(ZoneType.Flashback, p, EventValueChangeType.ComplexUpdate, null));
+        	p.getGame().fireEvent(new GameEventZone(ZoneType.Battlefield, p, EventValueChangeType.ComplexUpdate, null));
         }
     }
 
