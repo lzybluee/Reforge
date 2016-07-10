@@ -264,7 +264,7 @@ public class DigEffect extends SpellAbilityEffect {
                             // let user get choice
                             Card chosen = null;
                             if (!valid.isEmpty()) {
-                                chosen = chooser.getController().chooseSingleEntityForEffect(valid, delayedReveal, sa, prompt, anyNumber || optional, p);
+                                chosen = chooser.getController().chooseSingleEntityForEffect(valid, j == 0 ? delayedReveal : null, sa, "[" + (j+1) + "] " + prompt, anyNumber || optional, p);
                             }
                             else {
                                 chooser.getController().notifyOfValue(sa, null, "No valid cards");
