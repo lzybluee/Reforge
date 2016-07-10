@@ -208,8 +208,12 @@ public abstract class InputPayMana extends InputSyncronizedBase {
             if (!abilityProducesManaColor(ma, m, colorCanUse))              { continue; }
             if (ma.isAbility() && ma.getRestrictions().isInstantSpeed())    { continue; }
             if (!m.meetsManaRestrictions(saPaidFor))                        { continue; }
-
-            abilities.add(ma);
+            
+            if(m.getManaRestrictions() == null || m.getManaRestrictions().isEmpty()) {
+            	abilities.add(ma);
+            } else {
+            	abilities.add(0, ma);
+            }
 
             // skip express mana if the ability is not undoable or reusable
             if (!ma.isUndoable() || !ma.getPayCosts().isRenewableResource() || ma.getSubAbility() != null) {
