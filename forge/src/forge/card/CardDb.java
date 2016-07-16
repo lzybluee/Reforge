@@ -190,8 +190,15 @@ public final class CardDb implements ICardDatabase, IDeckGenPool {
         uniqueCardsByName.clear();
         allCards.clear();
         for (Entry<String, Collection<PaperCard>> kv : allCardsByName.asMap().entrySet()) {
-            uniqueCardsByName.put(kv.getKey(), getFirstWithImage(kv.getValue()));
-            allCards.addAll(kv.getValue());
+        	PaperCard paper = getFirstWithImage(kv.getValue());
+        	if(!uniqueCardsByName.containsValue(paper)) {
+        		uniqueCardsByName.put(kv.getKey(), paper);
+        	}
+        	for(PaperCard c : kv.getValue()) {
+        		if(!allCards.contains(c)) {
+        			allCards.add(c);
+        		}
+        	}
         }
     }
 
@@ -213,7 +220,9 @@ public final class CardDb implements ICardDatabase, IDeckGenPool {
         PaperCard pc = tryGetCard(request);
         if (pc != null) {
             artPrefs.put(cardName, preferredArt);
-            uniqueCardsByName.put(cardName, pc);
+        	if(!uniqueCardsByName.containsValue(pc)) {
+        		uniqueCardsByName.put(cardName, pc);
+        	}
             return true;
         }
         return false;
