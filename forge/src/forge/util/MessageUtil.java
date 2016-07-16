@@ -52,7 +52,12 @@ public class MessageUtil {
                 String chooser = StringUtils.capitalize(mayBeYou(player, target));
                 return String.format("%s %s %s", chooser, Lang.joinVerb(chooser, "vote"), value);
             default:
-                return String.format("%s effect's value for %s is %s", sa.getHostCard().getName(), mayBeYou(player, target), value);
+            	String text = mayBeYou(player, target);
+            	if(text.equals("(null)")) {
+            		return String.format("%s effect's value is %s", sa.getHostCard().getName(), value);
+            	} else {
+            		return String.format("%s effect's value for %s is %s", sa.getHostCard().getName(), text, value);
+            	}
         }
     }
 
