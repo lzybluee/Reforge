@@ -106,7 +106,17 @@ public class ManaCostAdjustment {
                 }
             }
             else if (sa.getHostCard().hasKeyword("Convoke")) {
-                adjustCostByConvoke(cost, sa, test);
+            	boolean canConvoke = false;
+            	final CardCollection cards = new CardCollection(sa.getActivatingPlayer().getCardsIn(ZoneType.Battlefield));
+            	for(Card c : cards) {
+            		if(c.isCreature() && c.isUntapped()) {
+            			canConvoke = true;
+            			break;
+            		}
+            	}
+            	if(canConvoke) {
+            		adjustCostByConvoke(cost, sa, test);
+            	}
             }
         } // isSpell
         
