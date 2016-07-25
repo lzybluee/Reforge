@@ -1,0 +1,259 @@
+[metadata]
+Name=Eternal Masters
+Code=EMA
+Date=2016-06-10
+Type=Reprint
+BoosterCovers=3
+Booster=11 Common, 3 Uncommon, 1 RareMythic
+FoilChanceInBooster=100
+
+[cards]
+C Aven Riftwatcher
+M Balance
+C Ballynock Cohort
+C Benevolent Bodyguard
+U Calciderm
+C Coalition Honor Guard
+R Eight-and-a-Half-Tails
+C Elite Vanguard
+R Enlightened Tutor
+U Faith's Fetters
+U Field of Souls
+U Glimmerpoint Stag
+U Honden of Cleansing Fire
+C Humble
+U Intangible Virtue
+R Jareth, Leonine Titan
+R Karmic Guide
+C Kor Hookmaster
+U Mesa Enchantress
+C Mistral Charger
+C Monk Idealist
+R Mother of Runes
+C Pacifism
+C Raise the Alarm
+C Rally the Peasants
+C Seal of Cleansing
+C Second Thoughts
+U Serra Angel
+C Shelter
+U Soulcatcher
+C Squadron Hawk
+U Swords to Plowshares
+R Unexpectedly Absent
+U Wall of Omens
+U War Priest of Thune
+C Welkin Guide
+C Whitemane Lion
+R Wrath of God
+R Arcanis the Omnipotent
+U Brainstorm
+C Cephalid Sage
+R Control Magic
+C Counterspell
+U Daze
+C Deep Analysis
+R Diminishing Returns
+C Dream Twist
+U Fact or Fiction
+M Force of Will
+R Future Sight
+C Gaseous Form
+C Giant Tortoise
+C Glacial Wall
+U Honden of Seeing Winds
+U Hydroblast
+R Inkwell Leviathan
+M Jace, the Mind Sculptor
+U Jetting Glasskite
+C Man-o'-War
+C Memory Lapse
+U Merfolk Looter
+R Mystical Tutor
+C Oona's Grace
+C Peregrine Drake
+C Phantom Monster
+U Phyrexian Ingester
+U Prodigal Sorcerer
+U Quiet Speculation
+C Screeching Skaab
+R Serendib Efreet
+C Shoreline Ranger
+C Silent Departure
+U Sprite Noble
+C Stupefying Touch
+C Tidal Wave
+C Warden of Evos Isle
+U Wonder
+U Animate Dead
+U Annihilate
+C Blightsoil Druid
+U Blood Artist
+R Braids, Cabal Minion
+U Cabal Therapy
+C Carrion Feeder
+C Deadbridge Shaman
+C Duress
+R Entomb
+C Eyeblight's Ending
+C Gravedigger
+U Havoc Demon
+U Honden of Night's Reach
+U Hymn to Tourach
+R Ichorid
+C Innocent Blood
+U Lys Alana Scarblade
+R Malicious Affliction
+C Nausea
+M Necropotence
+U Nekrataal
+C Night's Whisper
+U Phyrexian Gargantua
+C Phyrexian Rager
+C Plague Witch
+C Prowling Pangolin
+U Sengir Autocrat
+R Sinkhole
+C Skulking Ghost
+R Toxic Deluge
+C Tragic Slip
+C Twisted Abomination
+C Urborg Uprising
+M Vampiric Tutor
+U Victimize
+R Visara the Dreadful
+C Wake of Vultures
+C Wakedancer
+C Avarax
+U Battle Squadron
+U Beetleback Chief
+C Borderland Marauder
+U Burning Vengeance
+C Carbonize
+U Chain Lightning
+R Crater Hellion
+C Desperate Ravings
+C Dragon Egg
+R Dualcaster Mage
+C Faithless Looting
+C Fervent Cathar
+C Firebolt
+U Flame Jab
+R Gamble
+U Ghitu Slinger
+U Honden of Infinite Rage
+U Keldon Champion
+C Keldon Marauders
+C Kird Ape
+C Mogg Fanatic
+C Mogg War Marshal
+C Orcish Oriflamme
+U Price of Progress
+U Pyroblast
+R Pyrokinesis
+C Reckless Charge
+R Rorix Bladewing
+C Seismic Stomp
+R Siege-Gang Commander
+M Sneak Attack
+C Stingscourger
+R Sulfuric Vortex
+U Tooth and Claw
+C Undying Rage
+C Wildfire Emissary
+M Worldgorger Dragon
+U Young Pyromancer
+C Abundant Growth
+U Ancestral Mask
+M Argothian Enchantress
+U Brawn
+U Centaur Chieftain
+C Civic Wayfinder
+C Commune with the Gods
+C Elephant Guide
+C Elvish Vanguard
+C Emperor Crocodile
+U Flinthoof Boar
+C Fog
+U Gaea's Blessing
+R Green Sun's Zenith
+U Harmonize
+R Heritage Druid
+U Honden of Life's Web
+R Imperious Perfect
+U Invigorate
+C Llanowar Elves
+C Lys Alana Huntmaster
+M Natural Order
+C Nature's Claim
+C Nimble Mongoose
+U Rancor
+R Regal Force
+U Roar of the Wurm
+C Roots
+C Seal of Strength
+C Sentinel Spider
+R Silvos, Rogue Elemental
+R Sylvan Library
+C Sylvan Might
+C Thornweald Archer
+U Timberwatch Elf
+C Werebear
+U Wirewood Symbiote
+R Xantid Swarm
+C Yavimaya Enchantress
+U Armadillo Cloak
+R Baleful Strix
+U Bloodbraid Elf
+R Brago, King Eternal
+M Dack Fayden
+U Extract from Darkness
+U Flame-Kin Zealot
+R Glare of Subdual
+R Goblin Trenches
+M Maelstrom Wanderer
+U Shaman of the Pack
+R Shardless Agent
+M Sphinx of the Steel Wind
+U Thunderclap Wyvern
+U Trygon Predator
+R Vindicate
+R Void
+U Wee Dragonauts
+U Zealous Persecution
+R Call the Skybreaker
+R Deathrite Shaman
+R Giant Solifuge
+U Torrent of Souls
+U Ashnod's Altar
+M Chrome Mox
+R Duplicant
+U Emmessi Tome
+R Goblin Charbelcher
+R Isochron Scepter
+U Juggernaut
+M Mana Crypt
+U Millikin
+U Mindless Automaton
+R Nevinyrral's Disk
+C Pilgrim's Eye
+U Prismatic Lens
+U Relic of Progenitus
+R Sensei's Divining Top
+U Ticking Gnomes
+R Winter Orb
+U Worn Powerstone
+C Bloodfell Caves
+C Blossoming Sands
+C Dismal Backwater
+C Jungle Hollow
+M Karakas
+R Maze of Ith
+U Mishra's Factory
+C Rugged Highlands
+C Scoured Barrens
+C Swiftwater Cliffs
+C Thornwood Falls
+C Tranquil Cove
+R Wasteland
+C Wind-Scarred Crag
