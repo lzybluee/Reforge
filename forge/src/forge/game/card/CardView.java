@@ -620,15 +620,15 @@ public class CardView extends GameEntityView {
             sb.append("]\r\n");
         }
 
-        /*Iterable<CardView> hauntedBy = getHauntedBy();
+        Iterable<CardView> hauntedBy = getHauntedBy();
         if (hauntedBy != null) {
-            sb.append("Haunted by: ");
+            sb.append("\r\nHaunted by: ");
             boolean needDelim = false;
             for (final CardView c : hauntedBy) {
                 if (needDelim) {
-                    sb.append(",");
+                    sb.append(", ");
                 }
-                else { needDelim = false; }
+                else { needDelim = true; }
                 sb.append(c);
             }
             sb.append("\r\n");
@@ -636,9 +636,23 @@ public class CardView extends GameEntityView {
 
         CardView haunting = getHaunting();
         if (haunting != null) {
-            sb.append("Haunting: ").append(haunting);
+            sb.append("\r\nHaunting: ").append(haunting);
             sb.append("\r\n");
-        }*/
+        }
+        
+        Iterable<CardView> encodedCards = getEncodedCards();
+        if (getEncodedCards() != null) {
+            sb.append("\r\nEncoded: ");
+            boolean needDelim = false;
+            for (final CardView c : encodedCards) {
+                if (needDelim) {
+                    sb.append(", ");
+                }
+                else { needDelim = true; }
+                sb.append(c);
+            }
+            sb.append("\r\n");
+        }
 
         CardView pairedWith = getPairedWith();
         if (pairedWith != null) {

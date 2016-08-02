@@ -537,34 +537,6 @@ public class CardDetailUtil {
             }
         }
 
-        // Haunt
-        if (card.getHauntedBy() != null) {
-            if (area.length() != 0) {
-                area.append("\n");
-            }
-            area.append("Haunted by: ");
-            for (final Iterator<CardView> it = card.getHauntedBy().iterator(); it.hasNext();) {
-                area.append(it.next());
-                if (it.hasNext()) {
-                    area.append(", ");
-                }
-            }
-        }
-        if (card.getHaunting() != null) {
-            if (area.length() != 0) {
-                area.append("\n");
-            }
-            area.append("Haunting " + card.getHaunting());
-        }
-
-        // Cipher
-        if (card.getEncodedCards() != null) {
-            if (area.length() != 0) {
-                area.append("\n");
-            }
-            area.append("Encoded: " + card.getEncodedCards());
-        }
-
         // must block
         if (card.getMustBlockCards() != null) {
             if (area.length() != 0) {
