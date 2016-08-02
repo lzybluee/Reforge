@@ -2,8 +2,8 @@ package forge.deck;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -32,7 +32,7 @@ public class DeckImportController {
     }
 
     private void fillDateDropdowns() {
-        DateFormatSymbols dfs = new DateFormatSymbols();
+        DateFormatSymbols dfs = new DateFormatSymbols(Locale.ENGLISH);
         monthDropdown.removeAllItems();
         String[] months = dfs.getMonths();
         for (String monthName : months) {
@@ -40,7 +40,7 @@ public class DeckImportController {
                 monthDropdown.addItem(monthName);
             }
         }
-        int yearNow = Calendar.getInstance().get(Calendar.YEAR);
+        int yearNow = 2016;
         for (int i = yearNow; i >= 1993; i--) {
             yearDropdown.addItem(Integer.valueOf(i));
         }
