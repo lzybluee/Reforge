@@ -146,9 +146,16 @@ public class CardFactory {
      * @param bCopyDetails
      *            a boolean.
      */
-    public final static SpellAbility copySpellAbilityAndSrcCard(final Card source, final Card original, final SpellAbility sa, final boolean bCopyDetails) {
-        //Player originalController = original.getController();
-        Player controller = sa.getActivatingPlayer();
+    public final static SpellAbility copySpellAbilityAndSrcCard(final Card source, final Card original, final SpellAbility sa, final boolean bCopyDetails, Player controller) {
+
+    	if(controller == null) {
+        	controller = sa.getActivatingPlayer();
+        	if(controller == null) {
+        		System.err.println("copySpellAbilityAndSrcCard controller==null!");
+        		controller = source.getController();
+        	}
+    	}
+
         final Card c = copyCard(original, true);
 
         // change the color of the copy (eg: Fork)

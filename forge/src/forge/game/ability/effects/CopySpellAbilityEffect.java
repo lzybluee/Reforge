@@ -78,7 +78,7 @@ public class CopySpellAbilityEffect extends SpellAbilityEffect {
             for (int multi = 0; multi < spellCount && !tgtSpells.isEmpty(); multi++) {
                 String prompt = "Select " + Lang.getOrdinal(multi) + " spell to copy to stack";
                 SpellAbility chosen = controller.getController().chooseSingleSpellForEffect(tgtSpells, sa, prompt);
-                SpellAbility copiedSpell = CardFactory.copySpellAbilityAndSrcCard(card, chosen.getHostCard(), chosen, true);
+                SpellAbility copiedSpell = CardFactory.copySpellAbilityAndSrcCard(card, chosen.getHostCard(), chosen, true, controller);
                 copiedSpell.setActivatingPlayer(controller);
                 copies.add(copiedSpell);
                 tgtSpells.remove(chosen);
@@ -107,7 +107,7 @@ public class CopySpellAbilityEffect extends SpellAbilityEffect {
                 
                 mayChoseNewTargets = false;
                 for (GameEntity o : candidates) {
-                    SpellAbility copy = CardFactory.copySpellAbilityAndSrcCard(card, chosenSA.getHostCard(), chosenSA, true);
+                    SpellAbility copy = CardFactory.copySpellAbilityAndSrcCard(card, chosenSA.getHostCard(), chosenSA, true, null);
                     resetFirstTargetOnCopy(copy, o, targetedSA);
                     copies.add(copy);
                 }
@@ -124,7 +124,7 @@ public class CopySpellAbilityEffect extends SpellAbilityEffect {
                 valid.remove(originalTarget);
                 mayChoseNewTargets = false;
                 for (Card c : valid) {
-                    SpellAbility copy = CardFactory.copySpellAbilityAndSrcCard(card, chosenSA.getHostCard(), chosenSA, true);
+                    SpellAbility copy = CardFactory.copySpellAbilityAndSrcCard(card, chosenSA.getHostCard(), chosenSA, true, null);
                     resetFirstTargetOnCopy(copy, c, targetedSA);
                     copies.add(copy);
                 }
@@ -134,7 +134,7 @@ public class CopySpellAbilityEffect extends SpellAbilityEffect {
             SpellAbility chosenSA = controller.getController().chooseSingleSpellForEffect(tgtSpells, sa, "Select a spell to copy");
             chosenSA.setActivatingPlayer(controller);
             for (int i = 0; i < amount; i++) {
-                copies.add(CardFactory.copySpellAbilityAndSrcCard(card, chosenSA.getHostCard(), chosenSA, true));
+                copies.add(CardFactory.copySpellAbilityAndSrcCard(card, chosenSA.getHostCard(), chosenSA, true, null));
             }
         }
         
