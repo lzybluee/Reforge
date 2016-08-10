@@ -186,7 +186,7 @@ public class Match {
         for (final Entry<PaperCard, Integer> stackOfCards : section) {
             final PaperCard cp = stackOfCards.getKey();
             for (int i = 0; i < stackOfCards.getValue(); i++) {
-                final Card card = Card.fromPaperCard(cp, player); 
+                final Card card = Card.fromPaperCard(cp, player);
 
                 // Assign card-specific foiling or random foiling on approximately 1:20 cards if enabled
                 if (cp.isFoil() || (canRandomFoil && MyRandom.percentTrue(5))) {

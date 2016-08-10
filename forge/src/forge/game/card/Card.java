@@ -2052,6 +2052,10 @@ public class Card extends GameEntity implements Comparable<Card> {
         currentState.getView().updateAbilityText(this, currentState);
     }
 
+    public final void updateAbilityText() {
+    	currentState.getView().updateAbilityText(this, currentState);
+    }
+
     public final FCollectionView<SpellAbility> getSpellAbilities() {
         return currentState.getSpellAbilities();
     }

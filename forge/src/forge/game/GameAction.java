@@ -687,7 +687,7 @@ public class GameAction {
             }
         }
 
-        final CardCollection lands = CardLists.filter(game.getCardsIn(ZoneType.Battlefield), CardPredicates.Presets.LANDS);
+        final CardCollection lands = CardLists.filter(game.getCardsInGame(), CardPredicates.Presets.LANDS);
         GameActionUtil.grantBasicLandsManaAbilities(lands);
 
         for (final Card c : staticList) {
