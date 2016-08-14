@@ -432,7 +432,14 @@ public class TargetRestrictions {
             return true;
         } else {
             for (final Card c : game.getCardsIn(this.tgtZone)) {
-                if (!c.isValid(this.validTgts, srcCard.getController(), srcCard)) {
+            	if(sa.getActivatingPlayer() != srcCard.getController()) {
+            		System.out.println("activator is different from controller : " + sa.getActivatingPlayer() + " VS " + srcCard.getController());
+            	}
+            	Player player = sa.getActivatingPlayer();
+            	if(player == null) {
+            		player = srcCard.getController();
+            	}
+                if (!c.isValid(this.validTgts, player, srcCard)) {
                     continue;
                 }
                 if (isTargeted && !sa.canTarget(c)) {
