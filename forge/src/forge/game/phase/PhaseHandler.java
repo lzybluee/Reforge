@@ -174,6 +174,7 @@ public class PhaseHandler implements java.io.Serializable {
             for (final Card c : list) {
                 if (playerTurn.getTurn() > 0 || !c.isStartsGameInPlay()) {
                     c.setSickness(false);
+                    game.fireEvent(new GameEventCardStatsChanged(c));
                 }
             }
             playerTurn.incrementTurn();
@@ -182,8 +183,6 @@ public class PhaseHandler implements java.io.Serializable {
 
             final List<Card> lands = CardLists.filter(playerTurn.getLandsInPlay(), Presets.UNTAPPED);
             playerTurn.setNumPowerSurgeLands(lands.size());
-            
-            game.fireEvent(new GameEventZone(ZoneType.Battlefield, playerTurn, EventValueChangeType.ComplexUpdate, null));
         }
 
         game.fireEvent(new GameEventTurnPhase(playerTurn, phase, phaseType));

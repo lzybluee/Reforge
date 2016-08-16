@@ -69,6 +69,8 @@ import forge.game.combat.CombatUtil;
 import forge.game.cost.Cost;
 import forge.game.cost.CostPart;
 import forge.game.cost.CostPartMana;
+import forge.game.event.EventValueChangeType;
+import forge.game.event.GameEventZone;
 import forge.game.mana.Mana;
 import forge.game.player.DelayedReveal;
 import forge.game.player.Player;
@@ -931,6 +933,12 @@ public class PlayerControllerHuman
                 return null;
             }
         }
+
+		for(Player p : game.getPlayers()) {
+		 	p.updateFlashbackZoneForView();
+		 	p.getGame().fireEvent(new GameEventZone(ZoneType.Flashback, p, EventValueChangeType.ComplexUpdate, null));
+		 	p.getGame().fireEvent(new GameEventZone(ZoneType.Battlefield, p, EventValueChangeType.ComplexUpdate, null));
+		}
 
         final InputPassPriority defaultInput = new InputPassPriority(this);
         defaultInput.showAndWait();
