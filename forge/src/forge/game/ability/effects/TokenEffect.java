@@ -349,6 +349,10 @@ public class TokenEffect extends SpellAbilityEffect {
                         }
                     }
                 }
+                
+                for (final Card c : tokens) {
+                	c.updateKeywords();
+                }
 
                 if (combatChanged) {
                     game.updateCombatForView();
