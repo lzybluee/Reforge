@@ -125,13 +125,24 @@ public class ReplacementHandler {
         if (possibleReplacers.isEmpty()) {
             return ReplacementResult.NotReplaced;
         }
+        
+        int redirectToPlaneswalkerNum = 0;
+        List<ReplacementEffect> replacers = new ArrayList<ReplacementEffect>(possibleReplacers);
+        for(ReplacementEffect re : replacers) {
+        	if(re.toString().startsWith("Redirect damage to ") && re.getHostCard().isPlaneswalker()) {
+        		if(redirectToPlaneswalkerNum > 0) {
+        			possibleReplacers.remove(re);
+        		}
+        		redirectToPlaneswalkerNum++;
+        	}
+        }
 
         ReplacementEffect chosenRE = decider.getController().chooseSingleReplacementEffect("Choose a replacement effect to apply first.", possibleReplacers, runParams);
 
         possibleReplacers.remove(chosenRE);
 
         chosenRE.setHasRun(true);
-        ReplacementResult res = this.executeReplacement(runParams, chosenRE, decider, game);
+        ReplacementResult res = this.executeReplacement(runParams, chosenRE, decider, game, redirectToPlaneswalkerNum > 1);
         if (res == ReplacementResult.NotReplaced) {
             if (!possibleReplacers.isEmpty()) {
                 res = run(runParams);
@@ -157,7 +168,7 @@ public class ReplacementHandler {
      *            the replacement effect to run
      */
     private ReplacementResult executeReplacement(final Map<String, Object> runParams,
-        final ReplacementEffect replacementEffect, final Player decider, final Game game) {
+        final ReplacementEffect replacementEffect, final Player decider, final Game game, boolean redirectToPlaneswalkers) {
         final Map<String, String> mapParams = replacementEffect.getMapParams();
 
         SpellAbility effectSA = null;
@@ -202,9 +213,12 @@ public class ReplacementHandler {
 
             Card cardForUi = replacementEffect.getHostCard().getCardForUi();
             String effectDesc = replacementEffect.toString().replaceAll("CARDNAME", cardForUi.getName());
-            final String question = replacementEffect instanceof ReplaceDiscard
+            String question = replacementEffect instanceof ReplaceDiscard
                 ? String.format("Apply replacement effect of %s to %s?\r\n(%s)", cardForUi, runParams.get("Card").toString(), effectDesc)
                 : String.format("Apply replacement effect of %s?\r\n(%s)", cardForUi, effectDesc);
+            if(redirectToPlaneswalkers) {
+            	question = "Apply replacement effect?\r\n(Redirect damage to one of the planeswalkers.)";
+            }
             boolean confirmed = optDecider.getController().confirmReplacementEffect(replacementEffect, effectSA, question);
             if (!confirmed) {
                 return ReplacementResult.NotReplaced;

@@ -853,7 +853,10 @@ public class PlayerControllerHuman
      */
     @Override
     public boolean confirmReplacementEffect(final ReplacementEffect replacementEffect, final SpellAbility effectSA, final String question) {
-        return getGui().confirm(CardView.get(replacementEffect.getHostCard()), question);
+    	if(question.endsWith("(Redirect damage to one of the planeswalkers.)"))
+    		return getGui().confirm(null, question);
+    	else
+    		return getGui().confirm(CardView.get(replacementEffect.getHostCard()), question);
     }
 
     @Override
