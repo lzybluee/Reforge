@@ -78,7 +78,6 @@ import forge.game.card.CardPredicates.Presets;
 import forge.game.combat.AttackingBand;
 import forge.game.combat.Combat;
 import forge.game.cost.Cost;
-import forge.game.event.EventValueChangeType;
 import forge.game.event.GameEventCardAttachment;
 import forge.game.event.GameEventCardAttachment.AttachMethod;
 import forge.game.event.GameEventCardCounters;
@@ -87,9 +86,9 @@ import forge.game.event.GameEventCardDamaged.DamageType;
 import forge.game.event.GameEventCardPhased;
 import forge.game.event.GameEventCardStatsChanged;
 import forge.game.event.GameEventCardTapped;
-import forge.game.event.GameEventZone;
 import forge.game.keyword.KeywordsChange;
 import forge.game.player.Player;
+import forge.game.player.PlayerController;
 import forge.game.replacement.ReplaceMoved;
 import forge.game.replacement.ReplacementEffect;
 import forge.game.replacement.ReplacementResult;
@@ -5558,8 +5557,13 @@ public class Card extends GameEntity implements Comparable<Card> {
             cards.add(source);
             int damageToAdd = entry.getValue();
 
-            damageToAdd = replaceDamage(damageToAdd, source, true);
-            damageToAdd = preventDamage(damageToAdd, source, true);
+            if(getDecider().applyPreventBeforeReplace()) {
+            	damageToAdd = preventDamage(damageToAdd, source, true);
+	            damageToAdd = replaceDamage(damageToAdd, source, true);
+            } else {
+            	damageToAdd = replaceDamage(damageToAdd, source, true);
+            	damageToAdd = preventDamage(damageToAdd, source, true);
+            }
 
             map.put(source, damageToAdd);
         }
@@ -5848,6 +5852,11 @@ public class Card extends GameEntity implements Comparable<Card> {
             return 0;
         }
         return restDamage;
+    }
+    
+    @Override
+    public final PlayerController getDecider() {
+    	return getController().getController();
     }
 
     @Override

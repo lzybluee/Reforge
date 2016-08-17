@@ -2137,4 +2137,9 @@ public class PlayerControllerHuman
         hand.reorder(game.getCard(card), index);
         player.updateZoneForView(hand);
     }
+    
+    @Override
+    public boolean applyPreventBeforeReplace() {
+    	return FModel.getPreferences().getPrefBoolean(FPref.UI_PREVENT_BEFORE_REPLACE);
+    }
 }

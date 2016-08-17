@@ -245,4 +245,6 @@ public abstract class PlayerController {
     public AnteResult getAnteResult() {
         return game.getOutcome().anteResult.get(player);
     }
+    
+    public abstract boolean applyPreventBeforeReplace();
 }

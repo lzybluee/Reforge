@@ -22,6 +22,7 @@ import forge.game.card.CardCollection;
 import forge.game.card.CardCollectionView;
 import forge.game.event.GameEventCardAttachment;
 import forge.game.event.GameEventCardAttachment.AttachMethod;
+import forge.game.player.PlayerController;
 import forge.util.collect.FCollection;
 
 import java.util.Map;
@@ -55,8 +56,13 @@ public abstract class GameEntity extends GameObject implements IIdentifiable {
     public boolean addDamage(final int damage, final Card source) {
         int damageToDo = damage;
 
-        damageToDo = replaceDamage(damageToDo, source, false);
-        damageToDo = preventDamage(damageToDo, source, false);
+        if(getDecider().applyPreventBeforeReplace()) {
+            damageToDo = preventDamage(damageToDo, source, false);
+            damageToDo = replaceDamage(damageToDo, source, false);
+        } else {
+            damageToDo = replaceDamage(damageToDo, source, false);
+            damageToDo = preventDamage(damageToDo, source, false);
+        }
 
         return addDamageAfterPrevention(damageToDo, source, false, false);
     }
@@ -80,6 +86,8 @@ public abstract class GameEntity extends GameObject implements IIdentifiable {
     public abstract int replaceDamage(final int damage, final Card source, final boolean isCombat);
 
     public abstract int preventDamage(final int damage, final Card source, final boolean isCombat);
+    
+    public abstract PlayerController getDecider();
 
     public int getPreventNextDamage() {
         return preventNextDamage;

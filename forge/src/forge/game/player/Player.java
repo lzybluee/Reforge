@@ -670,6 +670,11 @@ public class Player extends GameEntity implements Comparable<Player> {
         }
         return restDamage;
     }
+    
+    @Override
+    public final PlayerController getDecider() {
+    	return getController();
+    }
 
     @Override
     public final int replaceDamage(final int damage, final Card source, final boolean isCombat) {
@@ -836,8 +841,13 @@ public class Player extends GameEntity implements Comparable<Player> {
     public final boolean addCombatDamage(final int damage, final Card source) {
         int damageToDo = damage;
 
-        damageToDo = replaceDamage(damageToDo, source, true);
-        damageToDo = preventDamage(damageToDo, source, true);
+        if(getDecider().applyPreventBeforeReplace()) {
+        	damageToDo = preventDamage(damageToDo, source, true);
+            damageToDo = replaceDamage(damageToDo, source, true);
+        } else {
+        	damageToDo = replaceDamage(damageToDo, source, true);
+            damageToDo = preventDamage(damageToDo, source, true);
+        }
 
         addDamageAfterPrevention(damageToDo, source, true, false); // damage prevention is already checked
 

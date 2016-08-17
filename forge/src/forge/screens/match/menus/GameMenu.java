@@ -48,6 +48,7 @@ public final class GameMenu {
         menu.add(new CardOverlaysMenu(matchUI).getMenu());
         menu.add(getMenuItem_AutoYields());
         menu.add(getMenuItem_SimpleStack());
+        menu.add(getMenuItem_PreventBeforeReplace());
         menu.addSeparator();
         menu.add(getMenuItem_ViewDeckList());
         menu.addSeparator();
@@ -72,6 +73,26 @@ public final class GameMenu {
     private static void toggleSimpleStack() {
         final boolean isSimpleStack = !prefs.getPrefBoolean(FPref.UI_SIMPLE_STACK);
         prefs.setPref(FPref.UI_SIMPLE_STACK, isSimpleStack);
+        prefs.save();
+    }
+    
+    private static SkinnedCheckBoxMenuItem getMenuItem_PreventBeforeReplace() {
+        SkinnedCheckBoxMenuItem menuItem = new SkinnedCheckBoxMenuItem("Prevent Before Replace");
+        menuItem.setState(prefs.getPrefBoolean(FPref.UI_PREVENT_BEFORE_REPLACE));
+        menuItem.addActionListener(getPreventBeforeReplaceAction());
+        return menuItem;
+    }
+    private static ActionListener getPreventBeforeReplaceAction() {
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+            	togglePreventBeforeReplace();
+            }
+        };
+    }
+    private static void togglePreventBeforeReplace() {
+        final boolean preventBeforeReplace = !prefs.getPrefBoolean(FPref.UI_PREVENT_BEFORE_REPLACE);
+        prefs.setPref(FPref.UI_PREVENT_BEFORE_REPLACE, preventBeforeReplace);
         prefs.save();
     }
     

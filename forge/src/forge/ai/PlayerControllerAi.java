@@ -911,4 +911,9 @@ public class PlayerControllerAi extends PlayerController {
     public void cancelAwaitNextInput() {
         // Do nothing
     }
+    
+    @Override
+    public boolean applyPreventBeforeReplace() {
+    	return true;
+    }
 }
