@@ -329,7 +329,7 @@ public class PlayerControllerHuman
     public Integer announceRequirements(final SpellAbility ability, final String announce, final boolean canChooseZero) {
         final int min = canChooseZero ? 0 : 1;
         return getGui().getInteger("Choose " + announce + " for " + ability.getHostCard().getName(),
-                min, Integer.MAX_VALUE, min + 9);
+                min, Integer.MAX_VALUE, min + 20);
     }
 
     @Override
