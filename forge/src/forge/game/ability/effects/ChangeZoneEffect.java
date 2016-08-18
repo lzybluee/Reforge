@@ -448,6 +448,9 @@ public class ChangeZoneEffect extends SpellAbilityEffect {
             // if Target isn't in the expected Zone, continue
 
             if (originZone == null || !origin.contains(originZone.getZoneType())) {
+                if (sa.hasParam("Shuffle") && "True".equals(sa.getParam("Shuffle"))) {
+                    tgtC.getOwner().shuffle(sa);
+                }
                 continue;
             }
 

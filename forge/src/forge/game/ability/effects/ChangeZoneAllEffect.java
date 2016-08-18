@@ -174,10 +174,14 @@ public class ChangeZoneAllEffect extends SpellAbilityEffect {
 
         // if Shuffle parameter exists, and any amount of cards were owned by
         // that player, then shuffle that library
-        if (sa.hasParam("Shuffle")) {
+        if (sa.hasParam("Shuffle") && "True".equals(sa.getParam("Shuffle"))) {
             for (Player p : game.getPlayers()) {
                 if (Iterables.any(cards, CardPredicates.isOwner(p))) {
                     p.shuffle(sa);
+                } else {
+                	if(destination == ZoneType.Library && tgtPlayers.contains(p)) {
+                		p.shuffle(sa);
+                	}
                 }
             }
         }
