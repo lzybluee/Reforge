@@ -84,7 +84,11 @@ public class RepeatEachEffect extends SpellAbilityEffect {
         if (loopOverCards) {
             // TODO (ArsenalNut 22 Dec 2012) Add logic to order cards for AI
             if (sa.hasParam("ChooseOrder") && repeatCards.size() >= 2) {
-                repeatCards = player.getController().orderMoveToZoneList(repeatCards, ZoneType.Stack);
+            	ZoneType chooseOrderZone = ZoneType.Stack;
+    			if (sa.hasParam("ChooseOrderZone")) {
+    				chooseOrderZone = ZoneType.listValueOf(sa.getParam("ChooseOrderZone")).get(0);
+                }
+                repeatCards = player.getController().orderMoveToZoneList(repeatCards, chooseOrderZone);
             }
 
             for (Card card : repeatCards) {
