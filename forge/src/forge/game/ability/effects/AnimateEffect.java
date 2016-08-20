@@ -333,6 +333,7 @@ public class AnimateEffect extends AnimateEffectBase {
                 c.addSpellAbility(revertSA);
             }
 
+            c.updateAbilityText();
             game.fireEvent(new GameEventCardStatsChanged(c));
         }
     } // animateResolve extends SpellEffect {
@@ -396,10 +397,34 @@ public class AnimateEffect extends AnimateEffectBase {
         } else if (toughness != null) {
             sb.append("toughness becomes ").append(toughness);
         } else{
-            sb.append("become");
-            if (tgts.size() == 1) {
-                sb.append("s ");
-            }
+        	if(sa.hasParam("Triggers")) {
+        		sb.append("gain");
+                if (tgts.size() == 1) {
+                    sb.append("s ");
+                }
+                final List<String> triggers = new ArrayList<String>();
+                if (sa.hasParam("Triggers")) {
+                    triggers.addAll(Arrays.asList(sa.getParam("Triggers").split(",")));
+                }
+                if (triggers.size() > 0) {
+                    for (final String t : triggers) {
+                        final String trigger = host.getSVar(t);
+                        if(trigger != null) {
+                        	String[] vars = trigger.split("\\|");
+                        	for(String v : vars) {
+                        		if(v.trim().startsWith("TriggerDescription$ ")) {
+                        			sb.append("\"" + v.replace("TriggerDescription$ ", "").replaceAll("CARDNAME", "this") + "\"");
+                        		}
+                        	}
+                        }
+                    }
+                }
+        	} else {
+                sb.append("become");
+                if (tgts.size() == 1) {
+                    sb.append("s ");
+                }
+        	}
         }
 
         if (colors.size() > 0) {
