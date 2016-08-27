@@ -41,6 +41,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 import forge.FThreads;
+import forge.Singletons;
 import forge.toolbox.FList;
 import forge.toolbox.FMouseAdapter;
 import forge.toolbox.FOptionPane;
@@ -135,6 +136,7 @@ public class ListChooser<T> {
         });
         this.lstChoices.addMouseListener(new FMouseAdapter() {
             @Override public void onLeftClick(final MouseEvent e) {
+            	Singletons.pause();
                 if (e.getClickCount() == 2) {
                     ListChooser.this.commit();
                 }

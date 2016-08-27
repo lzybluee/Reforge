@@ -35,6 +35,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 
+import forge.Singletons;
 import forge.UiCommand;
 import forge.assets.FSkinProp;
 import forge.gui.framework.ILocalRepaint;
@@ -116,6 +117,7 @@ public class FButton extends SkinnedButton implements ILocalRepaint, IButton {
 
             @Override
             public void mousePressed(final MouseEvent evt) {
+            	Singletons.pause();
                 if (isToggled() || !isEnabled()) { return; }
                 imgL = FSkin.getIcon(FSkinProp.IMG_BTN_DOWN_LEFT);
                 imgM = FSkin.getIcon(FSkinProp.IMG_BTN_DOWN_CENTER);

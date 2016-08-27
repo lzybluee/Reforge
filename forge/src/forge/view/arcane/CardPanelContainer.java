@@ -30,6 +30,7 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import forge.FThreads;
+import forge.Singletons;
 import forge.game.card.CardView;
 import forge.screens.match.CMatchUI;
 import forge.toolbox.FScrollPane;
@@ -115,6 +116,7 @@ public abstract class CardPanelContainer extends SkinnedPanel {
 
             @Override
             public void mousePressed(final MouseEvent evt) {
+            	Singletons.pause();
                 final int button = evt.getButton();
                 if (button < 1 || button > 3) {
                     return;

@@ -19,6 +19,7 @@ package forge;
 
 import forge.control.FControl;
 import forge.model.FModel;
+import forge.properties.ForgePreferences.FPref;
 import forge.view.FView;
 
 /**
@@ -28,6 +29,18 @@ public final class Singletons {
     private static boolean initialized = false;
     private static FView    view    = null;
     private static FControl control = null;
+    
+    public static boolean pause() {
+    	int delay = FModel.getPreferences().getPrefInt(FPref.DEV_CLICK_DELAY);
+    	if(delay > 0) {
+    		try {
+				Thread.sleep(delay);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+    	}
+    	return true;
+    }
 
     /**
      * IMPORTANT - does not return view frame!  Must call

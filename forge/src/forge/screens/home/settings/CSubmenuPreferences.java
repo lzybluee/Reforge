@@ -18,11 +18,15 @@ import forge.toolbox.FComboBox;
 import forge.toolbox.FComboBoxPanel;
 import forge.toolbox.FLabel;
 import forge.toolbox.FOptionPane;
+import forge.toolbox.FTextField;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
@@ -176,6 +180,7 @@ public enum CSubmenuPreferences implements ICDoc {
         initializeAiProfilesComboBox();
         initializeColorIdentityCombobox();
         initializePlayerNameButton();
+        initializeClickDelay();
     }
 
     /* (non-Javadoc)
@@ -348,5 +353,33 @@ public enum CSubmenuPreferences implements ICDoc {
                 setPlayerNameButtonText();
             }
         };
+    }
+    
+    private void initializeClickDelay() {
+    	final FTextField field = view.getTfClickDelay();
+    	field.setText(prefs.getPref(FPref.DEV_CLICK_DELAY));
+    	field.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+				int delay = -1;
+				try {
+					delay = Integer.parseInt(field.getText());
+				} catch (NumberFormatException e1) {
+					field.setText(prefs.getPref(FPref.DEV_CLICK_DELAY));
+				}
+				if(delay >= 0) {
+					prefs.setPref(FPref.DEV_CLICK_DELAY, delay + "");
+					prefs.save();
+				} else {
+					field.setText(prefs.getPref(FPref.DEV_CLICK_DELAY));
+				}
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+
+			}
+		});
     }
 }

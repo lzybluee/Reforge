@@ -91,6 +91,7 @@ public enum VSubmenuPreferences implements IVSubmenu<CSubmenuPreferences> {
     private final FComboBoxPanel<CloseAction> cbpCloseAction = new FComboBoxPanel<>("Close Action:");
     private final FComboBoxPanel<String> cbpAiProfiles = new FComboBoxPanel<>("AI Personality:");
     private final FComboBoxPanel<String> cbpDisplayCurrentCardColors = new FComboBoxPanel<>("Show Detailed Card Color:");
+    private final FTextField tfClickDelay = new FTextField.Builder().text("0").build();
 
     /**
      * Constructor.
@@ -192,6 +193,9 @@ public enum VSubmenuPreferences implements IVSubmenu<CSubmenuPreferences> {
 
         pnlPrefs.add(cbpCloseAction, "w 80%!, gap 10% 0 0 10px, span 2 1");
         pnlPrefs.add(new NoteLabel("Changes what happens when clicking the X button in the upper right."), regularConstraints);
+        
+        pnlPrefs.add(tfClickDelay, "w 100px!, gap 10% 0 0 10px, span 2 1");
+        pnlPrefs.add(new NoteLabel("Changes click delay."), regularConstraints);
 
         // Graphic Options
         pnlPrefs.add(new SectionLabel("Graphic Options"), sectionConstraints + ", gaptop 2%");
@@ -516,6 +520,10 @@ public enum VSubmenuPreferences implements IVSubmenu<CSubmenuPreferences> {
 
     public FComboBoxPanel<CloseAction> getCloseActionComboBoxPanel() {
         return cbpCloseAction;
+    }
+    
+    public FTextField getTfClickDelay() {
+        return tfClickDelay;
     }
 
     /** @return {@link javax.swing.JCheckBox} */

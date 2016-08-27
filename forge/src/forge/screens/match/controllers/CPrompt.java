@@ -27,6 +27,7 @@ import java.awt.event.FocusListener;
 import javax.swing.JButton;
 
 import forge.FThreads;
+import forge.Singletons;
 import forge.game.GameView;
 import forge.gui.framework.ICDoc;
 import forge.gui.framework.SDisplayUtil;
@@ -56,12 +57,14 @@ public class CPrompt implements ICDoc {
     private final ActionListener actCancel = new ActionListener() {
         @Override
         public void actionPerformed(final ActionEvent evt) {
+        	Singletons.pause();
             selectButtonCancel();
         }
     };
     private final ActionListener actOK = new ActionListener() {
         @Override
         public void actionPerformed(final ActionEvent evt) {
+        	Singletons.pause();
             selectButtonOk();
         }
     };
