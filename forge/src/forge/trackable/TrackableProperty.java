@@ -94,6 +94,8 @@ public enum TrackableProperty {
     PoisonCounters(TrackableTypes.IntegerType),
     MaxHandSize(TrackableTypes.IntegerType),
     HasUnlimitedHandSize(TrackableTypes.BooleanType),
+    LandsPlayedThisTurn(TrackableTypes.IntegerType),
+    SpellsCastThisTurn(TrackableTypes.IntegerType),
     NumDrawnThisTurn(TrackableTypes.IntegerType),
     Keywords(TrackableTypes.KeywordCollectionViewType, false),
     Commander(TrackableTypes.CardViewType),

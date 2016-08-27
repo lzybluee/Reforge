@@ -2064,9 +2064,11 @@ public class Player extends GameEntity implements Comparable<Player> {
     public final void addLandPlayedThisTurn() {
         landsPlayedThisTurn++;
         achievementTracker.landsPlayed++;
+        view.updateLandsPlayedThisTurn(this);
     }
     public final void resetLandsPlayedThisTurn() {
         landsPlayedThisTurn = 0;
+        view.updateLandsPlayedThisTurn(this);
     }
 
     public final int getSpellsCastThisTurn() {
@@ -2078,9 +2080,11 @@ public class Player extends GameEntity implements Comparable<Player> {
         if (spellsCastThisTurn > achievementTracker.maxStormCount) {
             achievementTracker.maxStormCount = spellsCastThisTurn;
         }
+        view.updateSpellsCastThisTurn(this);
     }
     public final void resetSpellsCastThisTurn() {
         spellsCastThisTurn = 0;
+        view.updateSpellsCastThisTurn(this);
     }
 
     public final int getLifeGainedThisTurn() {

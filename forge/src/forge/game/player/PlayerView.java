@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -177,6 +179,20 @@ public class PlayerView extends GameEntityView {
         return hasUnlimitedHandSize() ? "unlimited" : String.valueOf(getMaxHandSize());
     }
 
+    public int getLandsPlayedThisTurn() {
+        return get(TrackableProperty.LandsPlayedThisTurn);
+    }
+    void updateLandsPlayedThisTurn(Player p) {
+        set(TrackableProperty.LandsPlayedThisTurn, p.getLandsPlayedThisTurn());
+    }
+    
+    public int getSpellsCastThisTurn() {
+        return get(TrackableProperty.SpellsCastThisTurn);
+    }
+    void updateSpellsCastThisTurn(Player p) {
+        set(TrackableProperty.SpellsCastThisTurn, p.getSpellsCastThisTurn());
+    }
+
     public int getNumDrawnThisTurn() {
         return get(TrackableProperty.NumDrawnThisTurn);
     }
@@ -192,6 +208,22 @@ public class PlayerView extends GameEntityView {
         final ImmutableMultiset<String> kws = getKeywords();
         synchronized (kws) {
             allKws = Lists.newArrayList(kws.elementSet());
+
+            int adjustLand = 0;
+            Pattern pattern = Pattern.compile("AdjustLandPlays:(\\d+)");
+            for(String s : kws) {
+            	Matcher matcher = pattern.matcher(s);
+            	if(matcher.find()) {
+            		String num = matcher.group(1);
+            		int i = Integer.parseInt(num);
+            		adjustLand += i;
+            		allKws.remove(s);
+            	}
+            }
+            
+            if(adjustLand > 0) {
+            	allKws.add("AdjustLandPlays:" + adjustLand);
+            }
         }
         allKws.remove("CanSeeOpponentsFaceDownCards");
         return allKws;
@@ -363,6 +395,8 @@ public class PlayerView extends GameEntityView {
             details.add(String.format("Poison counters: %d", poison));
         }
         details.add(String.format("Cards in hand: %d/%s", getHandSize(), getMaxHandString()));
+        details.add(String.format("Lands played this turn: %d", getLandsPlayedThisTurn()));
+        details.add(String.format("Spells cast this turn: %d", getSpellsCastThisTurn()));
         details.add(String.format("Cards drawn this turn: %d", getNumDrawnThisTurn()));
         details.add(String.format("Damage prevention: %d", getPreventNextDamage()));
         final String keywords = Lang.joinHomogenous(getDisplayableKeywords());
