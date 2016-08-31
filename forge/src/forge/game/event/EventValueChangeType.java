@@ -8,5 +8,6 @@ public enum EventValueChangeType {
     Added,
     Removed,
     Cleared,
-    ComplexUpdate
+    ComplexUpdate,
+    Default
 }

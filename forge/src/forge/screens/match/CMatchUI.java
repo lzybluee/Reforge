@@ -51,6 +51,7 @@ import forge.game.GameEntityView;
 import forge.game.GameView;
 import forge.game.card.CardView;
 import forge.game.combat.CombatView;
+import forge.game.event.EventValueChangeType;
 import forge.game.phase.PhaseType;
 import forge.game.player.DelayedReveal;
 import forge.game.player.IHasIcon;
@@ -189,7 +190,7 @@ public final class CMatchUI
                         f.updateDetails();
                         f.updateZones();
                         f.updateManaPool();
-                        f.getTabletop().update();
+                        f.getTabletop().update(false);
                     }
                     for (final VHand h : getHandViews()) {
                         h.getLayoutControl().updateHand();
@@ -394,7 +395,7 @@ public final class CMatchUI
 
             final VField vField = getFieldViewFor(owner);
             if (setupPlayZone) {
-                vField.getTabletop().update();
+                vField.getTabletop().update(update.getType() == EventValueChangeType.ComplexUpdate);
             }
             if (updateHand) {
                 final VHand vHand = getHandFor(owner);

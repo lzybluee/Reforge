@@ -14,6 +14,7 @@ import forge.game.Game;
 import forge.game.card.Card;
 import forge.game.card.CardCollection;
 import forge.game.card.CardView;
+import forge.game.event.EventValueChangeType;
 import forge.game.event.GameEvent;
 import forge.game.event.GameEventAnteCardsSelected;
 import forge.game.event.GameEventAttackersDeclared;
@@ -184,13 +185,13 @@ public class FControlGameEventHandler extends IGameEventVisitor.Base<Void> {
     private Void updateZone(final Zone z) {
         if (z == null) { return null; }
 
-        return updateZone(z.getPlayer(), z.getZoneType());
+        return updateZone(z.getPlayer(), z.getZoneType(), EventValueChangeType.Default);
     }
-    private Void updateZone(final Player p, final ZoneType z) {
+    private Void updateZone(final Player p, final ZoneType z, final EventValueChangeType t) {
         if (p == null || z == null) { return null; }
 
         synchronized (zonesUpdate) {
-            zonesUpdate.add(new PlayerZoneUpdate(PlayerView.get(p), z));
+            zonesUpdate.add(new PlayerZoneUpdate(PlayerView.get(p), z, t));
         }
         return processEvent();
     }
@@ -212,7 +213,7 @@ public class FControlGameEventHandler extends IGameEventVisitor.Base<Void> {
         turnUpdate = event.turnOwner.getView();
         if (FModel.getPreferences().getPrefBoolean(FPref.UI_STACK_CREATURES) && event.turnOwner != null) {
             // anything except stack will get here
-            updateZone(event.turnOwner, ZoneType.Battlefield);
+            updateZone(event.turnOwner, ZoneType.Battlefield, EventValueChangeType.Default);
         }
         return processEvent();
     }
@@ -282,7 +283,7 @@ public class FControlGameEventHandler extends IGameEventVisitor.Base<Void> {
     public Void visit(final GameEventZone event) {
         if (event.player != null) {
             // anything except stack will get here
-            updateZone(event.player, event.zoneType);
+            updateZone(event.player, event.zoneType, event.mode);
             return processEvent();
         }
         return null;

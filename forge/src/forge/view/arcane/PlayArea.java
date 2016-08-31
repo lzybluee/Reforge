@@ -691,12 +691,12 @@ public class PlayArea extends CardPanelContainer implements CardPanelMouseListen
         return false;
     }
 
-    public void update() {
+    public void update(final boolean forceRefresh) {
         FThreads.assertExecutedByEdt(true);
-        recalculateCardPanels(model, zone);
+        recalculateCardPanels(model, zone, forceRefresh);
     }
 
-    private void recalculateCardPanels(final PlayerView model, final ZoneType zone) {
+    private void recalculateCardPanels(final PlayerView model, final ZoneType zone, final boolean forceRefresh) {
         final List<CardView> modelCopy;
         synchronized (model) {
             Iterable<CardView> cards = model.getCards(zone);
@@ -752,7 +752,7 @@ public class PlayArea extends CardPanelContainer implements CardPanelMouseListen
                 needLayoutRefresh = true;
             }
         }
-        if (needLayoutRefresh) {
+        if (needLayoutRefresh || forceRefresh) {
             doLayout();
         }
 
