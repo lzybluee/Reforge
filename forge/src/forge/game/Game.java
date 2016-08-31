@@ -410,6 +410,19 @@ public class Game {
             return cards;
         }
     }
+    
+    public synchronized CardCollectionView getCardsIn(final ZoneType zone, List<Player> players) {
+        if (zone == ZoneType.Stack) {
+            return getStackZone().getCards();
+        }
+        else {
+            CardCollection cards = new CardCollection();
+            for (final Player p : players) {
+                cards.addAll(p.getZone(zone).getCards());
+            }
+            return cards;
+        }
+    }
 
     public CardCollectionView getCardsIncludePhasingIn(final ZoneType zone) {
         if (zone == ZoneType.Stack) {

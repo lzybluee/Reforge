@@ -773,6 +773,11 @@ public class GameAction {
         final boolean refreeze = game.getStack().isFrozen();
         game.getStack().setFrozen(true);
         game.getTracker().freeze(); //prevent views flickering during while updating for state-based effects
+        
+        ArrayList<Player> players = new ArrayList<Player>();
+        for(final Player p : game.getPlayers()) {
+        	players.add(p);
+        }
 
         // check the game over condition early for win conditions such as Platinum Angel + Hurricane lethal for both players
         checkGameOverCondition();
@@ -781,7 +786,7 @@ public class GameAction {
         for (int q = 0; q < 9; q++) {
             boolean checkAgain = checkStaticAbilities(false, affectedCards);
 
-            for (final Player p : game.getPlayers()) {
+            for (final Player p : players) {
                 for (final ZoneType zt : ZoneType.values()) {
                     if (zt == ZoneType.Battlefield) {
                         continue;
@@ -795,7 +800,7 @@ public class GameAction {
             }
             List<Card> noRegCreats = null;
             List<Card> desCreats = null;
-            for (final Card c : game.getCardsIn(ZoneType.Battlefield)) {
+            for (final Card c : game.getCardsIn(ZoneType.Battlefield, players)) {
                 if (c.isCreature()) {
                     // Rule 704.5f - Put into grave (no regeneration) for toughness <= 0
                     if (c.getNetToughness() <= 0) {
@@ -859,7 +864,7 @@ public class GameAction {
                 checkAgain = true;
             }
 
-            for (Player p : game.getPlayers()) {
+            for (Player p : players) {
                 if (handleLegendRule(p)) {
                     checkAgain = true;
                 }
