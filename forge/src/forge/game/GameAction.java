@@ -1628,12 +1628,12 @@ public class GameAction {
                 }
                 p.shuffle(null);
             }
-        }
-
-        //Vancouver Mulligan
-        for(Player p : whoCanMulligan) {
-            if (p.getStartingHandSize() > p.getZone(ZoneType.Hand).size()) {
-                p.scry(1);
+        } else {
+            //Vancouver Mulligan
+            for(Player p : whoCanMulligan) {
+                if (p.getStartingHandSize() > p.getZone(ZoneType.Hand).size()) {
+                    p.scry(1, false);
+                }
             }
         }
     }

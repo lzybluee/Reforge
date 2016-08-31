@@ -39,7 +39,7 @@ public class ScryEffect extends SpellAbilityEffect {
 
         for (final Player p : tgtPlayers) {
             if ((tgt == null) || p.canBeTargetedBy(sa)) {
-                p.scry(num);
+                p.scry(num, true);
             }
         }
     }

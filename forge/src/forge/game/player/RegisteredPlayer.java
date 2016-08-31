@@ -156,7 +156,7 @@ public class RegisteredPlayer {
     	if (appliedVariants.contains(GameType.Planechase)) {
             start.planes = planes;
     	}
-    	if (vanguardAvatar != null) {
+    	if (appliedVariants.contains(GameType.Vanguard) && vanguardAvatar != null) {
             start.setStartingLife(start.getStartingLife() + vanguardAvatar.getRules().getLife());
             start.setStartingHand(start.getStartingHand() + vanguardAvatar.getRules().getHand());
             start.addCardsInCommand(vanguardAvatar);

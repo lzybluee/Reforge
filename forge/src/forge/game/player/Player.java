@@ -1048,7 +1048,7 @@ public class Player extends GameEntity implements Comparable<Player> {
         return drawCards(1);
     }
 
-    public void scry(final int numScry) {
+    public void scry(final int numScry, boolean needTrigger) {
         final CardCollection topN = new CardCollection();
         final PlayerZone library = getZone(ZoneType.Library);
         final int actualNumScry = Math.min(numScry, library.size());
@@ -1083,9 +1083,11 @@ public class Player extends GameEntity implements Comparable<Player> {
 
         getGame().fireEvent(new GameEventScry(this, numToTop, numToBottom));
 
-        final HashMap<String, Object> runParams = new HashMap<String, Object>();
-        runParams.put("Player", this);
-        getGame().getTriggerHandler().runTrigger(TriggerType.Scry, runParams, false);
+        if(needTrigger) {
+	        final HashMap<String, Object> runParams = new HashMap<String, Object>();
+	        runParams.put("Player", this);
+	        getGame().getTriggerHandler().runTrigger(TriggerType.Scry, runParams, false);
+        }
     }
 
     public boolean canMulligan() {

@@ -405,11 +405,6 @@ public abstract class GameLobby {
                 // Initialise variables for other variants
                 deck = deck == null ? rp.getDeck() : deck;
 
-                final CardPool avatarPool = deck.get(DeckSection.Avatar);
-                if (avatarPool != null) {
-                    vanguardAvatar = avatarPool.get(0);
-                }
-
                 Iterable<PaperCard> schemes = null;
                 Iterable<PaperCard> planes = null;
 
@@ -442,6 +437,10 @@ public abstract class GameLobby {
 
                 //Vanguard
                 if (variantTypes.contains(GameType.Vanguard)) {
+                    final CardPool avatarPool = deck.get(DeckSection.Avatar);
+                    if (avatarPool != null) {
+                        vanguardAvatar = avatarPool.get(0);
+                    }
                     if (vanguardAvatar == null) { //ERROR! null if avatar deselected on list
                         SOptionPane.showMessageDialog("No Vanguard avatar selected for " + name
                                 + ". Please choose one or disable the Vanguard variant");
