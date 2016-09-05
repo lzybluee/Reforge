@@ -432,31 +432,35 @@ public final class CMatchUI
 
     @Override
     public void updateCards(final Iterable<CardView> cards) {
-        for (final CardView c : cards) {
-            final ZoneType zone = c.getZone();
-            if (zone == null) { return; }
+        synchronized (this) {
+			for (final CardView c : cards) {
+				final ZoneType zone = c.getZone();
+				if (zone == null) {
+					return;
+				}
 
-            switch (zone) {
-            case Battlefield:
-                final VField battlefield = getFieldViewFor(c.getController());
-                if (battlefield != null) {
-                    battlefield.getTabletop().updateCard(c, false);
-                }
-                break;
-            case Hand:
-                final VHand hand = getHandFor(c.getController());
-                if (hand != null) {
-                    final CardPanel cp = hand.getHandArea().getCardPanel(c.getId());
-                    if (cp != null) {
-                        cp.setCard(c); //ensure card view updated
-                        cp.repaintOverlays();
-                    }
-                }
-                break;
-            default:
-                break;
-            }
-        }
+				switch (zone) {
+				case Battlefield:
+					final VField battlefield = getFieldViewFor(c.getController());
+					if (battlefield != null) {
+						battlefield.getTabletop().updateCard(c, false);
+					}
+					break;
+				case Hand:
+					final VHand hand = getHandFor(c.getController());
+					if (hand != null) {
+						final CardPanel cp = hand.getHandArea().getCardPanel(c.getId());
+						if (cp != null) {
+							cp.setCard(c); //ensure card view updated
+							cp.repaintOverlays();
+						}
+					}
+					break;
+				default:
+					break;
+				}
+			}
+		}
     }
 
     @Override
