@@ -217,6 +217,9 @@ public final class GameActionUtil {
                 sar.setVariables(sa.getRestrictions());
                 sar.setZone(null);
                 newSA.setRestrictions(sar);
+                if(activator != source.getController()) {
+                	newSA.setPlayedByOtherPlayer(true);
+                }
                 alternatives.add(newSA); 
             }
             if (payMana == PayManaCost.NO || payMana == PayManaCost.MAYBE) {
@@ -228,6 +231,9 @@ public final class GameActionUtil {
                 newSA.setBasicSpell(false);
                 newSA.setPayCosts(newSA.getPayCosts().copyWithNoMana());
                 newSA.setDescription(sa.getDescription() + " (without paying its mana cost)");
+                if(activator != source.getController()) {
+                	newSA.setPlayedByOtherPlayer(true);
+                }
                 alternatives.add(newSA); 
             }
         }

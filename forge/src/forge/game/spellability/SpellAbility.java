@@ -1321,4 +1321,14 @@ public abstract class SpellAbility extends CardTraitBase implements ISpellAbilit
 	public ManaCostBeingPaid getUsedToPayMana() {
 		return usedToPayMana;
 	}
+	
+    private boolean playedByOtherPlayer = false;
+    
+    public boolean isPlayedByOtherPlayer() {
+    	return playedByOtherPlayer;
+    }
+    
+    public void setPlayedByOtherPlayer(boolean b) {
+    	playedByOtherPlayer = b;
+    }
 }

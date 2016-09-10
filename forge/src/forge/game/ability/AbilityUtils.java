@@ -1527,7 +1527,7 @@ public class AbilityUtils {
         List<SpellAbility> sas = new ArrayList<SpellAbility>();
         for (SpellAbility s : tgtCard.getBasicSpells()) {
             final Spell newSA = (Spell) s.copy();
-            if(s.toString().startsWith("Fuse (") && tgtCard.getCastFrom() != ZoneType.Hand) {
+            if(s.toString().startsWith("Fuse (") && (tgtCard.getCastFrom() != ZoneType.Hand || tgtCard.getOwner() != controller)) {
                 continue;
             }
             newSA.setActivatingPlayer(controller);

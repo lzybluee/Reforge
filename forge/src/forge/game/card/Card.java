@@ -6649,15 +6649,18 @@ public class Card extends GameEntity implements Comparable<Card> {
         final List<SpellAbility> abilities = Lists.newArrayList();
         for (SpellAbility sa : getSpellAbilities()) {
         	if (sa.toString().startsWith("Fuse (")
-                    && player.getGame().getZoneOf(this).getZoneType() != ZoneType.Hand) {
+                    && (player.getGame().getZoneOf(this).getZoneType() != ZoneType.Hand || getOwner() != player)) {
                 continue;
             }
             //add alternative costs as additional spell abilities
-            if(!(sa.getHostCard().getZone().is(ZoneType.Exile) && player != sa.getHostCard().getOwner()))
-            {
-                abilities.add(sa);
+            abilities.add(sa);
+            final List<SpellAbility> altAbilities = GameActionUtil.getAlternativeCosts(sa, player);
+            for(SpellAbility ab : altAbilities) {
+            	if(ab.isPlayedByOtherPlayer()) {
+            		abilities.remove(sa);
+            	}
+            	abilities.add(ab);
             }
-            abilities.addAll(GameActionUtil.getAlternativeCosts(sa, player));
         }
         final CardPlayOption playOption = mayPlay(player);
         if (isFaceDown() && isInZone(ZoneType.Exile) && playOption != null) {

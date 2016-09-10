@@ -69,7 +69,7 @@ public class FloatingCardArea extends CardArea {
         final FloatingCardArea cardArea = _init(matchUI, player, zone);
         cardArea.showWindow(); 
     }
-    private static FloatingCardArea _init(final CMatchUI matchUI, final PlayerView player, final ZoneType zone) {
+    public static FloatingCardArea _init(final CMatchUI matchUI, final PlayerView player, final ZoneType zone) {
         final int key = getKey(player, zone);
         FloatingCardArea cardArea = floatingAreas.get(key);
         if (cardArea == null || cardArea.getMatchUI() != matchUI) {
@@ -99,7 +99,7 @@ public class FloatingCardArea extends CardArea {
         	window = _init(matchUI, card.getController(), card.getZone());
             cardPanel = window.getCardPanel(card.getId());
         }
-        return window.getCardPanel(card.getId());
+        return cardPanel;
     }
     public static void refresh(final PlayerView player, final ZoneType zone) {
         FloatingCardArea cardArea = floatingAreas.get(getKey(player, zone));

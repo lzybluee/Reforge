@@ -547,6 +547,11 @@ public final class CMatchUI
                     return panel;
                 }
             }
+            FloatingCardArea window = FloatingCardArea._init(this, card.getOwner(), ZoneType.Hand);
+            CardPanel panel = window.getCardPanel(card.getId());
+    		if(panel != null) {
+    			return panel;
+    		}
             break;
         case Command:
         case Exile:
