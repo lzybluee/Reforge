@@ -39,6 +39,7 @@ import forge.card.CardEdition;
 import forge.card.mana.ManaCost;
 import forge.game.card.CardView;
 import forge.game.card.CardView.CardStateView;
+import forge.game.player.PlayerView;
 import forge.gui.CardContainer;
 import forge.model.FModel;
 import forge.properties.ForgePreferences.FPref;
@@ -88,14 +89,14 @@ public class CardPanel extends SkinnedPanel implements CardContainer, IDisposabl
     private boolean isAnimationPanel;
     private int cardXOffset, cardYOffset, cardWidth, cardHeight;
     private boolean isSelected;
-    private boolean inFlashbackZone = false;
+    private PlayerView flashbackPlayer = null;
     
-    public boolean isInFlashbackZone() {
-    	return inFlashbackZone;
+    public PlayerView getFlashbackPlayer() {
+    	return flashbackPlayer;
     }
     
-    public void setInFlashbackZone(boolean b) {
-    	inFlashbackZone = b;
+    public void setFlashbackPlayer(PlayerView player) {
+    	flashbackPlayer = player;
     }
 
     public CardPanel(final CMatchUI matchUI, final CardView card0) {
