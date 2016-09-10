@@ -552,7 +552,7 @@ public final class CMatchUI
     		if(panel != null) {
     			return panel;
     		}
-            break;
+    		return FloatingCardArea.getCardPanel(this, card);
         case Command:
         case Exile:
         case Graveyard:
@@ -753,7 +753,7 @@ public final class CMatchUI
                 SDisplayUtil.showTab(getCPrompt().getView());
             } else {
                 final ZoneType zone = panel.getFlashbackPlayer() != null ? ZoneType.Flashback : hostCard.getZone();
-                if (ImmutableList.of(ZoneType.Command, ZoneType.Exile, ZoneType.Graveyard, ZoneType.Library, ZoneType.Flashback).contains(zone)) {
+                if (ImmutableList.of(ZoneType.Command, ZoneType.Exile, ZoneType.Graveyard, ZoneType.Library, ZoneType.Flashback, ZoneType.Hand).contains(zone)) {
                     FloatingCardArea.show(this, panel.getFlashbackPlayer() != null ? panel.getFlashbackPlayer() : hostCard.getController(), zone);
                 }
                 panel.setFlashbackPlayer(null);
