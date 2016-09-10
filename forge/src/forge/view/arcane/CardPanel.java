@@ -90,6 +90,7 @@ public class CardPanel extends SkinnedPanel implements CardContainer, IDisposabl
     private int cardXOffset, cardYOffset, cardWidth, cardHeight;
     private boolean isSelected;
     private PlayerView flashbackPlayer = null;
+    private boolean showPanel = false;
     
     public PlayerView getFlashbackPlayer() {
     	return flashbackPlayer;
@@ -97,6 +98,14 @@ public class CardPanel extends SkinnedPanel implements CardContainer, IDisposabl
     
     public void setFlashbackPlayer(PlayerView player) {
     	flashbackPlayer = player;
+    }
+    
+    public boolean showPanel() {
+    	return showPanel;
+    }
+    
+    public void setShowPanel(boolean b) {
+    	showPanel = b;
     }
 
     public CardPanel(final CMatchUI matchUI, final CardView card0) {

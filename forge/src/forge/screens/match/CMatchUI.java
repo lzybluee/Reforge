@@ -550,6 +550,7 @@ public final class CMatchUI
             FloatingCardArea window = FloatingCardArea._init(this, card.getOwner(), ZoneType.Hand);
             CardPanel panel = window.getCardPanel(card.getId());
     		if(panel != null) {
+    			panel.setShowPanel(true);
     			return panel;
     		}
     		return FloatingCardArea.getCardPanel(this, card);
@@ -753,10 +754,14 @@ public final class CMatchUI
                 SDisplayUtil.showTab(getCPrompt().getView());
             } else {
                 final ZoneType zone = panel.getFlashbackPlayer() != null ? ZoneType.Flashback : hostCard.getZone();
-                if (ImmutableList.of(ZoneType.Command, ZoneType.Exile, ZoneType.Graveyard, ZoneType.Library, ZoneType.Flashback, ZoneType.Hand).contains(zone)) {
+                if (ImmutableList.of(ZoneType.Command, ZoneType.Exile, ZoneType.Graveyard, ZoneType.Library, ZoneType.Flashback).contains(zone)) {
                     FloatingCardArea.show(this, panel.getFlashbackPlayer() != null ? panel.getFlashbackPlayer() : hostCard.getController(), zone);
                 }
+                if (zone == ZoneType.Hand && panel.showPanel()) {
+                	FloatingCardArea.show(this, hostCard.getOwner(), zone);
+                }
                 panel.setFlashbackPlayer(null);
+                panel.setShowPanel(false);
                 menuParent = panel.getParent();
                 x = triggerEvent.getX();
                 y = triggerEvent.getY();
