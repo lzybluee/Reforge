@@ -77,6 +77,17 @@ public abstract class AbstractGuiGame implements IGuiGame, IMayViewCards {
                 TrackableTypes.PlayerViewType.clearLookupDictionary();
                 TrackableTypes.StackItemViewType.clearLookupDictionary();
                 gameView0.updateObjLookup();
+            } else {
+            	autoPassUntilEndOfTurn.clear();
+            	autoYields.clear();
+            	triggersAlwaysAccept.clear();
+            	awaitNextInputTimer = new Timer();
+            	currentPlayer = null;
+            	gameControllers.clear();
+            	originalGameControllers.clear();
+            	highlightedCards.clear();
+            	highlightedPlayers.clear();
+            	spectator = null;
             }
             gameView = gameView0;
             return;
@@ -298,7 +309,7 @@ public abstract class AbstractGuiGame implements IGuiGame, IMayViewCards {
         return autoPassUntilEndOfTurn.contains(player);
     }
 
-    private final Timer awaitNextInputTimer = new Timer();
+    private Timer awaitNextInputTimer = new Timer();
     private TimerTask awaitNextInputTask;
 
     @Override
