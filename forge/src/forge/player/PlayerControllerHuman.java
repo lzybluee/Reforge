@@ -1831,7 +1831,7 @@ public class PlayerControllerHuman
                         final CounterType counter = getGui().oneOrNone("Which type of counter?", CounterType.values);
                         if (counter == null) { return; }
                         
-                        final Integer count = getGui().getInteger("How many counters?", 0, Integer.MAX_VALUE, 10);
+                        final Integer count = getGui().getInteger("How many counters?", 0, Integer.MAX_VALUE, 21);
                         if (count == null) { return; }
                         
 	                	final CardCollectionView cards = game.getCardsIn(ZoneType.Battlefield);
