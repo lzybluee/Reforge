@@ -204,6 +204,9 @@ public class WrappedAbility extends Ability {
             }
             sb.append(")");
         }
+        if(isTrigger() && sb.toString().startsWith("Return that card") && sa.getTriggeringObjects().get("Card") != null) {
+        	sb.append(" (" + sa.getTriggeringObjects().get("Card") + ")");
+        }
 
         return sb.toString();
     }
