@@ -91,7 +91,7 @@ public abstract class SpellAbilityEffect {
             sb.append(String.format(" (%s=%d)", svar, amount));
         }
 
-        return sb.toString();
+        return sb.toString().replaceAll(" -  - ", " - ");
     }
 
     /**

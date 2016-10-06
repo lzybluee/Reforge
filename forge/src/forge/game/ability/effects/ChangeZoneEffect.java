@@ -221,8 +221,17 @@ public class ChangeZoneEffect extends SpellAbilityEffect {
             // TODO Expand on this Description as more cards use it
             // for the non-targeted SAs when you choose what is returned on
             // resolution
-            sb.append("Return ").append(num).append(" ").append(type).append(" card(s) ");
+            sb.append("Return ").append(num).append(" ").append(type).append(" card(s) from ").append(origin);
             sb.append(" to your ").append(destination);
+        } else if (origin.equals("Graveyard")) {
+            // TODO Expand on this Description as more cards use it
+            // for the non-targeted SAs when you choose what is returned on
+            // resolution
+            sb.append("Return ").append(num).append(" ").append(type).append(" card(s) from ").append(origin);
+            sb.append(" to your ").append(destination);
+            if(sa.hasParam("AtRandom")) {
+            	sb.append(" at random");
+            }
         }
 
         return sb.toString();
