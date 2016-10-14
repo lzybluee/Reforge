@@ -48,11 +48,19 @@ public class CombatView extends TrackableObject {
     }
 
     public int getNumAttackers() {
-        return getAttackersWithDefenders().size();
+    	final int num;
+    	synchronized (this) {
+    		num = getAttackersWithDefenders().size();
+    	}
+        return num;
     }
 
     public boolean isAttacking(final CardView card) {
-        return getAttackersWithDefenders().containsKey(card);
+    	final boolean isAttack;
+    	synchronized (this) {
+    		isAttack = getAttackersWithDefenders().containsKey(card);
+    	}
+        return isAttack;
     }
 
     public Iterable<CardView> getAttackers() {
@@ -72,7 +80,11 @@ public class CombatView extends TrackableObject {
     }
 
     public GameEntityView getDefender(final CardView attacker) {
-        return getAttackersWithDefenders().get(attacker);
+    	final GameEntityView defender;
+    	synchronized (this) {
+    		defender = getAttackersWithDefenders().get(attacker);
+    	}
+        return defender;
     }
 
     public boolean isBlocking(final CardView card) {
@@ -97,7 +109,11 @@ public class CombatView extends TrackableObject {
      *         attacker is unblocked.
      */
     public FCollection<CardView> getBlockers(final CardView attacker) {
-        return getAttackersWithBlockers().get(attacker);
+    	final FCollection<CardView> blockers;
+    	synchronized (this) {
+    		blockers = getAttackersWithBlockers().get(attacker);
+    	}
+        return blockers;
     }
 
     /**
@@ -106,7 +122,11 @@ public class CombatView extends TrackableObject {
      *         attacker is unblocked (planning stage, for targeting overlay).
      */
     public FCollection<CardView> getPlannedBlockers(final CardView attacker) {
-        return getAttackersWithPlannedBlockers().get(attacker);
+    	final FCollection<CardView> blockers;
+    	synchronized (this) {
+    		blockers = getAttackersWithPlannedBlockers().get(attacker);
+    	}
+        return blockers;
     }
 
     /**
@@ -118,7 +138,11 @@ public class CombatView extends TrackableObject {
      * @return an {@link Iterable} of {@link CardView} objects, or {@code null}.
      */
     public FCollection<CardView> getBlockers(final FCollection<CardView> attackingBand) {
-        return getBandsWithBlockers().get(attackingBand);
+    	final FCollection<CardView> blockers;
+    	synchronized (this) {
+    		blockers = getBandsWithBlockers().get(attackingBand);
+    	}
+        return blockers;
     }
 
     /**
@@ -130,7 +154,11 @@ public class CombatView extends TrackableObject {
      * @return an {@link Iterable} of {@link CardView} objects, or {@code null}.
      */
     public FCollection<CardView> getPlannedBlockers(final FCollection<CardView> attackingBand) {
-        return getBandsWithPlannedBlockers().get(attackingBand);
+    	final FCollection<CardView> blockers;
+    	synchronized (this) {
+    		blockers = getBandsWithPlannedBlockers().get(attackingBand);
+    	}
+        return blockers;
     }
 
     public FCollection<CardView> getAttackersOf(final GameEntityView defender) {
@@ -173,13 +201,15 @@ public class CombatView extends TrackableObject {
             plannedBlockersCopy.addAll(plannedBlockers);
         }
 
-        for (final CardView attacker : attackingBandCopy) {
-            this.getAttackersWithDefenders().put(attacker, defender);
-            this.getAttackersWithBlockers().put(attacker, blockersCopy);
-            this.getAttackersWithPlannedBlockers().put(attacker, plannedBlockersCopy);
+        synchronized (this) {
+	        for (final CardView attacker : attackingBandCopy) {
+	            this.getAttackersWithDefenders().put(attacker, defender);
+	            this.getAttackersWithBlockers().put(attacker, blockersCopy);
+	            this.getAttackersWithPlannedBlockers().put(attacker, plannedBlockersCopy);
+	        }
+	        this.getBandsWithDefenders().put(attackingBandCopy, defender);
+	        this.getBandsWithBlockers().put(attackingBandCopy, blockersCopy);
+	        this.getBandsWithPlannedBlockers().put(attackingBandCopy, plannedBlockersCopy);
         }
-        this.getBandsWithDefenders().put(attackingBandCopy, defender);
-        this.getBandsWithBlockers().put(attackingBandCopy, blockersCopy);
-        this.getBandsWithPlannedBlockers().put(attackingBandCopy, plannedBlockersCopy);
     }
 }
