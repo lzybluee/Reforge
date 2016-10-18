@@ -164,18 +164,28 @@ public class HumanPlaySpellAbility {
                 manapool.restoreColorReplacements();
             }
             
-            List<SpellAbility> payingAbilities = ability.getPayingManaAbilities();
-            for (final SpellAbility am : payingAbilities) {
-                for (final CostPart part : am.getPayCosts().getCostParts()) {
-                    if (part instanceof CostPartWithList) {
-                        ((CostPartWithList) part).resetLists();
-                    }
-                }
-            }
-            ability.getPayingManaAbilities().clear();
+            clearPayingManaAbilities(ability);
         }
         
         return true;
+    }
+    
+    private final void clearPayingManaAbilities(SpellAbility ability) {
+    	List<SpellAbility> payingAbilities = ability.getPayingManaAbilities();
+    	
+    	for (final SpellAbility sa : payingAbilities) {
+            for (final CostPart part : sa.getPayCosts().getCostParts()) {
+                if (part instanceof CostPartWithList) {
+                    ((CostPartWithList) part).resetLists();
+                }
+            }
+        }
+
+        for (final SpellAbility sa : payingAbilities) {
+        	clearPayingManaAbilities(sa);
+        }
+
+        payingAbilities.clear();
     }
 
     private final boolean setupTargets() {
