@@ -111,10 +111,11 @@ public class CostPutCounter extends CostPartWithList {
     public final void refund(final Card source) {
         if(this.payCostFromSource())
             source.subtractCounter(this.counter, this.lastPaidAmount);
-        else
+        else {
             for (final Card c : this.getCardList()) {
                 c.subtractCounter(this.counter, 1);
             }
+        }
     }
 
     /*

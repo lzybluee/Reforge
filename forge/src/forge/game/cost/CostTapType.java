@@ -91,7 +91,7 @@ public class CostTapType extends CostPartWithList {
         for (final Card c : cardList) {
             c.setTapped(false);
         }
-        cardList.clear();
+        resetLists();
     }
 
     /*

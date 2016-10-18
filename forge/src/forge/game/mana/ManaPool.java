@@ -27,6 +27,8 @@ import forge.card.MagicColor;
 import forge.card.mana.ManaCostShard;
 import forge.game.GlobalRuleChange;
 import forge.game.card.Card;
+import forge.game.cost.CostPart;
+import forge.game.cost.CostPartWithList;
 import forge.game.event.EventValueChangeType;
 import forge.game.event.GameEventCardStatsChanged;
 import forge.game.event.GameEventManaPool;
@@ -332,6 +334,11 @@ public class ManaPool implements Iterable<Mana> {
         for (final SpellAbility am : payingAbilities) {
             // undo paying abilities if we can
             am.undo();
+            for (final CostPart part : am.getPayCosts().getCostParts()) {
+                if (part instanceof CostPartWithList) {
+                    ((CostPartWithList) part).resetLists();
+                }
+            }
         }
 
         for (final SpellAbility am : payingAbilities) {

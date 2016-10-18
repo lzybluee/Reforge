@@ -18,6 +18,7 @@
 package forge.player;
 
 import java.util.Collections;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -31,7 +32,9 @@ import forge.game.GameObject;
 import forge.game.ability.AbilityUtils;
 import forge.game.card.Card;
 import forge.game.card.CardPlayOption;
+import forge.game.cost.CostPart;
 import forge.game.cost.CostPartMana;
+import forge.game.cost.CostPartWithList;
 import forge.game.cost.CostPayment;
 import forge.game.mana.ManaPool;
 import forge.game.player.Player;
@@ -159,6 +162,15 @@ public class HumanPlaySpellAbility {
             }
             if (manaConversion) {
                 manapool.restoreColorReplacements();
+            }
+            
+            List<SpellAbility> payingAbilities = ability.getPayingManaAbilities();
+            for (final SpellAbility am : payingAbilities) {
+                for (final CostPart part : am.getPayCosts().getCostParts()) {
+                    if (part instanceof CostPartWithList) {
+                        ((CostPartWithList) part).resetLists();
+                    }
+                }
             }
             ability.getPayingManaAbilities().clear();
         }
