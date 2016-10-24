@@ -235,7 +235,10 @@ public class GuiDesktop implements IGuiBase {
 			}
 		});
         fc.setSelectedFile(defaultFile);
-        fc.showSaveDialog(null);
+        final int rc = fc.showSaveDialog(null);
+        if(rc != JFileChooser.APPROVE_OPTION) {
+        	return null;
+        }
         return fc.getSelectedFile();
     }
 
