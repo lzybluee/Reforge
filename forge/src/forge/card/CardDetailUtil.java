@@ -15,6 +15,7 @@ import forge.game.card.Card;
 import forge.game.card.CardUtil;
 import forge.game.card.CardView;
 import forge.game.card.CardView.CardStateView;
+import forge.game.zone.ZoneType;
 import forge.game.card.CounterType;
 import forge.item.InventoryItemFromSet;
 import forge.item.PaperCard;
@@ -234,7 +235,7 @@ public class CardDetailUtil {
 
     public static String formatCardId(final CardStateView card) {
         final String id = card.getDisplayId();
-        return id.isEmpty() ? id : "[" + id + "]";
+        return id.isEmpty() ? id : "[" + id + "]" + ((card.getCard().getZone() == ZoneType.Battlefield && card.getCard().isFirstTurnControlled()) ? "*" : "");
     }
 
     public static String formatCurrentCardColors(final CardStateView state) {
