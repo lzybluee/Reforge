@@ -378,6 +378,16 @@ public class Game {
             p.setMindSlaveMaster(null); // for correct totals
         }
 
+        CardCollection cards = new CardCollection();
+        for (final Player p : allPlayers) {
+            cards.addAll(p.getZone(ZoneType.Battlefield).getCards());
+        }
+        for(Card c : cards) {
+        	if(c.isFaceDown()) {
+        		getAction().revealAll(new CardCollection(c), c.getOwner(), true, "Reveal face-down card: ");
+        	}
+        }
+
         for (Player p : getPlayers()) {
             p.onGameOver();
         }

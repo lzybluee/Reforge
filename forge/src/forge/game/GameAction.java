@@ -1437,6 +1437,23 @@ public class GameAction {
             p.getController().reveal(cards, zt, cardOwner, messagePrefix);
         }
     }
+    
+    public void revealAll(CardCollectionView cards, Player cardOwner, boolean dontRevealToOwner, String messagePrefix) {
+        Card firstCard = Iterables.getFirst(cards, null);
+        if (firstCard == null) {
+            return;
+        }
+        revealAll(cards, game.getZoneOf(firstCard).getZoneType(), cardOwner, dontRevealToOwner, messagePrefix);
+    }
+    
+    public void revealAll(CardCollectionView cards, ZoneType zt, Player cardOwner, boolean dontRevealToOwner, String messagePrefix) {
+        for (Player p : game.getRegisteredPlayers()) {
+            if (dontRevealToOwner && cardOwner == p) {
+                continue;
+            }
+            p.getController().reveal(cards, zt, cardOwner, messagePrefix);
+        }
+    }
 
     public void revealAnte(String title, Multimap<Player, PaperCard> removedAnteCards) {
         for (Player p : game.getPlayers()) {
