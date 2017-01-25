@@ -860,10 +860,6 @@ public class GameAction {
                 }
             }
 
-            if (game.getTriggerHandler().runWaitingTriggers()) {
-                checkAgain = true;
-            }
-
             for (Player p : players) {
                 if (handleLegendRule(p)) {
                     checkAgain = true;
@@ -875,12 +871,18 @@ public class GameAction {
             }
             // 704.5m World rule
             checkAgain |= handleWorldRule();
+            
+            if (game.getTriggerHandler().runWaitingTriggers()) {
+                checkAgain = true;
+            }
 
             if (game.getCombat() != null) {
                 game.getCombat().removeAbsentCombatants();
             }
             if (!checkAgain) {
                 break; // do not continue the loop
+            } else {
+            	game.getTriggerHandler().resetActiveTriggers();
             }
         } // for q=0;q<9
 
