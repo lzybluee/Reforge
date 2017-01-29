@@ -150,6 +150,11 @@ public abstract class SpellAbilityEffect {
                 : AbilityUtils.getDefinedCards(sa.getHostCard(), sa.getParam(definedParam), sa);
     }
 
+    public final static boolean isTargetSelf(final SpellAbility sa) {
+    	final boolean useTargets = sa.usesTargeting() && sa.getTargets() != null && (sa.getTargets().isTargetingAnyCard() || sa.getTargets().getTargets().isEmpty());
+        return useTargets ? false : AbilityUtils.isDefinedSelf(sa.getHostCard(), sa.getParam("Defined"), sa);
+    }
+
     // Players
     protected final static FCollection<Player> getTargetPlayers(final SpellAbility sa) {                                       return getPlayers(false, "Defined",    sa); }
     protected final static FCollection<Player> getTargetPlayers(final SpellAbility sa, final String definedParam) {            return getPlayers(false, definedParam, sa); }

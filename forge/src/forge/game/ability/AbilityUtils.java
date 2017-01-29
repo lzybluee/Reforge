@@ -59,6 +59,16 @@ public class AbilityUtils {
 
         return counterType;
     }
+    
+    public static boolean isDefinedSelf(final Card hostCard, final String def, final SpellAbility sa) {
+        final String defined = (def == null) ? "Self" : applyAbilityTextChangeEffects(def, sa); // default to Self
+
+        if (defined.equals("Self")) {
+            return true;
+        }
+        
+        return false;
+    }
 
     // should the three getDefined functions be merged into one? Or better to
     // have separate?

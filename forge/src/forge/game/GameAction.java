@@ -283,6 +283,11 @@ public class GameAction {
         // but how to query for input here and continue later while the callers assume synchronous result?
         zoneTo.add(copied, position);
 
+        if(c.stayInOriginalZone) {
+        	c.stayInOriginalZone = false;
+        	System.out.println("stayInOriginalZone: change zone while on stack!");
+        }
+
         if (fromBattlefield) {
             c.setZone(zoneTo);
             c.setDamage(0); //clear damage after a card leaves the battlefield
@@ -393,7 +398,7 @@ public class GameAction {
                 copied.setState(CardStateName.Original, true);
             }
         }
-        
+
         if (c.isToken() && zoneTo.is(ZoneType.Library)) {
             zoneTo.remove(c);
         }

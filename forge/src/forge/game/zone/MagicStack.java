@@ -40,6 +40,7 @@ import forge.game.GameObject;
 import forge.game.ability.AbilityFactory;
 import forge.game.ability.AbilityUtils;
 import forge.game.ability.ApiType;
+import forge.game.ability.SpellAbilityEffect;
 import forge.game.card.Card;
 import forge.game.card.CardCollection;
 import forge.game.card.CardFactoryUtil;
@@ -246,6 +247,10 @@ public class MagicStack /* extends MyObservable */ implements Iterable<SpellAbil
                 // Remember the ChoiceName here for later handling
                 source.addRemembered(sp.getSubAbility().getParam("ChoiceName"));
             }
+        }
+
+        if (SpellAbilityEffect.isTargetSelf(sp)) {
+        	source.stayInOriginalZone = true;
         }
 
         //cancel auto-pass for all opponents of activating player
@@ -665,6 +670,13 @@ public class MagicStack /* extends MyObservable */ implements Iterable<SpellAbil
         }
         else if (sa.getTargetCard() != null) {
             fizzle = !CardFactoryUtil.isTargetStillValid(sa, sa.getTargetCard());
+        }
+        else if (SpellAbilityEffect.isTargetSelf(sa)) {
+        	if(!source.stayInOriginalZone) {
+        		fizzle = true;
+        	} else {
+        		fizzle = parentFizzled;
+        	}
         }
         else {
             // Set fizzle to the same as the parent if there's no target info
