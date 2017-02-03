@@ -285,7 +285,9 @@ public class GameAction {
 
         if(c.stayInOriginalZone) {
         	c.stayInOriginalZone = false;
-        	System.out.println("stayInOriginalZone: change zone while on stack!");
+        	if(!(zoneFrom.is(ZoneType.Stack))) {
+            	System.out.println("stayInOriginalZone: source card change zone while the ability is on stack!");
+        	}
         }
 
         if (fromBattlefield) {
