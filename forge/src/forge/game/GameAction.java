@@ -198,7 +198,7 @@ public class GameAction {
                 }
 
                 copied = CardFactory.copyCard(c, false);
-
+                copied.setTimestamp(game.getNextTimestamp());
                 copied.setUnearthed(c.isUnearthed());
                 copied.setTapped(false);
                 for (final Trigger trigger : copied.getTriggers()) {
@@ -282,13 +282,6 @@ public class GameAction {
         // "enter the battlefield as a copy" - apply code here
         // but how to query for input here and continue later while the callers assume synchronous result?
         zoneTo.add(copied, position);
-
-        if(c.stayInOriginalZone) {
-        	c.stayInOriginalZone = false;
-        	if(!(zoneFrom.is(ZoneType.Stack))) {
-            	System.out.println("stayInOriginalZone: source card change zone while the ability is on stack!");
-        	}
-        }
 
         if (fromBattlefield) {
             c.setZone(zoneTo);

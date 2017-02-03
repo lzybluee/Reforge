@@ -281,7 +281,6 @@ public class Card extends GameEntity implements Comparable<Card> {
     
     private boolean isCardFlag;
     public Card originalCard;
-    public boolean stayInOriginalZone;
 
     // Enumeration for CMC request types
     public enum SplitCMCMode {

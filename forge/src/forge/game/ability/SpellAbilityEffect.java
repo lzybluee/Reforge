@@ -151,7 +151,7 @@ public abstract class SpellAbilityEffect {
     }
 
     public final static boolean isTargetSelf(final SpellAbility sa) {
-    	final boolean useTargets = sa.usesTargeting() && sa.getTargets() != null && (sa.getTargets().isTargetingAnyCard() || sa.getTargets().getTargets().isEmpty());
+    	final boolean useTargets = sa.usesTargeting() && sa.getTargets() != null;
         return useTargets ? false : AbilityUtils.isDefinedSelf(sa.getHostCard(), sa.getParam("Defined"), sa);
     }
 

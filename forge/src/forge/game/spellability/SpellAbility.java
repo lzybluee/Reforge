@@ -138,6 +138,7 @@ public abstract class SpellAbility extends CardTraitBase implements ISpellAbilit
     private TargetChoices targetChosen = new TargetChoices();
 
     private SpellAbilityView view;
+    private long timestamp = -1024;
 
     protected SpellAbility(final Card iSourceCard, final Cost toPay) {
         this(iSourceCard, toPay, null);
@@ -1330,5 +1331,13 @@ public abstract class SpellAbility extends CardTraitBase implements ISpellAbilit
     
     public void setPlayedByOtherPlayer(boolean b) {
     	playedByOtherPlayer = b;
+    }
+    
+    public long getTimestamp() {
+    	return timestamp;
+    }
+    
+    public void setTimestamp(long ts) {
+    	timestamp = ts;
     }
 }
