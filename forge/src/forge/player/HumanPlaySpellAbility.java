@@ -173,11 +173,9 @@ public class HumanPlaySpellAbility {
     private final void clearPayingManaAbilities(SpellAbility ability) {
     	List<SpellAbility> payingAbilities = ability.getPayingManaAbilities();
     	
-    	for (final SpellAbility sa : payingAbilities) {
-            for (final CostPart part : sa.getPayCosts().getCostParts()) {
-                if (part instanceof CostPartWithList) {
-                    ((CostPartWithList) part).resetLists();
-                }
+        for (final CostPart part : ability.getPayCosts().getCostParts()) {
+            if (part instanceof CostPartWithList) {
+                ((CostPartWithList) part).resetLists();
             }
         }
 
