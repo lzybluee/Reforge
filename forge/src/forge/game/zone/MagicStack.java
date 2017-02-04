@@ -249,7 +249,7 @@ public class MagicStack /* extends MyObservable */ implements Iterable<SpellAbil
             }
         }
 
-        if (SpellAbilityEffect.isTargetSelf(sp)) {
+        if (SpellAbilityEffect.isMoveSelf(sp)) {
         	sp.setTimestamp(source.getTimestamp());
         }
 
@@ -671,11 +671,11 @@ public class MagicStack /* extends MyObservable */ implements Iterable<SpellAbil
         else if (sa.getTargetCard() != null) {
             fizzle = !CardFactoryUtil.isTargetStillValid(sa, sa.getTargetCard());
         }
-        else if (SpellAbilityEffect.isTargetSelf(sa)) {
+        else if (SpellAbilityEffect.isMoveSelf(sa)) {
         	Card current = game.getCardState(source);
         	if(sa.getTimestamp() >= -1 && current != null && sa.getTimestamp() != current.getTimestamp()) {
         		fizzle = true;
-        		System.out.println("Ability is fizzled because source card had left its original zone once.");
+        		System.out.println("Ability is fizzled because the source card had left its original zone once.");
         	} else {
         		fizzle = parentFizzled;
         	}

@@ -150,9 +150,9 @@ public abstract class SpellAbilityEffect {
                 : AbilityUtils.getDefinedCards(sa.getHostCard(), sa.getParam(definedParam), sa);
     }
 
-    public final static boolean isTargetSelf(final SpellAbility sa) {
+    public final static boolean isMoveSelf(final SpellAbility sa) {
     	final boolean useTargets = sa.usesTargeting() && sa.getTargets() != null;
-        return useTargets ? false : AbilityUtils.isDefinedSelf(sa.getHostCard(), sa.getParam("Defined"), sa);
+        return useTargets ? false : AbilityUtils.isMoveSelf(sa.getHostCard(), sa.getParam("Defined"), sa);
     }
 
     // Players

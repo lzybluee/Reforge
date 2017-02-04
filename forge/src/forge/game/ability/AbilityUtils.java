@@ -19,6 +19,7 @@ import forge.game.spellability.SpellAbility;
 import forge.game.spellability.SpellAbilityRestriction;
 import forge.game.spellability.SpellAbilityStackInstance;
 import forge.game.spellability.TargetChoices;
+import forge.game.trigger.WrappedAbility;
 import forge.game.zone.ZoneType;
 import forge.util.Expressions;
 import forge.util.collect.FCollection;
@@ -60,11 +61,16 @@ public class AbilityUtils {
         return counterType;
     }
     
-    public static boolean isDefinedSelf(final Card hostCard, final String def, final SpellAbility sa) {
+    public static boolean isMoveSelf(final Card hostCard, final String def, final SpellAbility sa) {
         final String defined = (def == null) ? "Self" : applyAbilityTextChangeEffects(def, sa); // default to Self
 
         if (defined.equals("Self")) {
-            return true;
+        	if(sa instanceof WrappedAbility) {
+        		WrappedAbility wrap = (WrappedAbility)sa;
+        		return wrap.getWrappedAbility().getApi() == ApiType.ChangeZone;
+        	} else {
+        		return sa.getApi() == ApiType.ChangeZone;
+        	}
         }
         
         return false;
