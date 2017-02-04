@@ -149,10 +149,15 @@ public abstract class SpellAbilityEffect {
         return useTargets ? new CardCollection(sa.getTargets().getTargetCards()) 
                 : AbilityUtils.getDefinedCards(sa.getHostCard(), sa.getParam(definedParam), sa);
     }
-
-    public final static boolean isMoveSelf(final SpellAbility sa) {
+    
+    public final static boolean addStackTimestamp(final SpellAbility sa) {
     	final boolean useTargets = sa.usesTargeting() && sa.getTargets() != null;
-        return useTargets ? false : AbilityUtils.isMoveSelf(sa.getHostCard(), sa.getParam("Defined"), sa);
+        return useTargets ? false : AbilityUtils.addStackTimestamp(sa.getHostCard(), sa.getParam("Defined"), sa);
+    }
+    
+    public final static boolean checkStackTimestamp(final SpellAbility sa) {
+    	final boolean useTargets = sa.usesTargeting() && sa.getTargets() != null;
+        return useTargets ? false : AbilityUtils.checkStackTimestamp(sa.getHostCard(), sa.getParam("Defined"), sa);
     }
 
     // Players

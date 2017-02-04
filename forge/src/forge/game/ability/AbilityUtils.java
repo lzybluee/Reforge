@@ -61,19 +61,83 @@ public class AbilityUtils {
         return counterType;
     }
     
-    public static boolean isMoveSelf(final Card hostCard, final String def, final SpellAbility sa) {
-        final String defined = (def == null) ? "Self" : applyAbilityTextChangeEffects(def, sa); // default to Self
+    private static boolean isApiTypeNeedTimestamp(ApiType apiType) {
+    	return apiType == ApiType.Animate || apiType == ApiType.ChangeZone || apiType == ApiType.DealDamage ||
+    			apiType == ApiType.Debuff || apiType == ApiType.Destroy || apiType == ApiType.Fight ||
+    			apiType == ApiType.GainControl || apiType == ApiType.Phases || apiType == ApiType.Pump ||
+    			apiType == ApiType.PutCounter || apiType == ApiType.RemoveCounter || apiType == ApiType.Tap ||
+    			apiType == ApiType.Untap;
+    }
+    
+    public static boolean addStackTimestamp(final Card hostCard, final String def, final SpellAbility sa) {
+        boolean ret = false;
 
+        if(sa instanceof WrappedAbility) {
+    		WrappedAbility wrap = (WrappedAbility)sa;
+    		if(!isApiTypeNeedTimestamp(wrap.getApi())) {
+    			return false;
+    		}
+    	} else {
+    		if(!isApiTypeNeedTimestamp(sa.getApi())) {
+    			return false;
+    		}
+    	}
+        
+        final String defined = (def == null) ? "Self" : applyAbilityTextChangeEffects(def, sa);
+        
         if (defined.equals("Self")) {
-        	if(sa instanceof WrappedAbility) {
-        		WrappedAbility wrap = (WrappedAbility)sa;
-        		return wrap.getWrappedAbility().getApi() == ApiType.ChangeZone;
-        	} else {
-        		return sa.getApi() == ApiType.ChangeZone;
-        	}
+        	sa.setTimestamp(hostCard.getTimestamp());
+        	ret = true;
+        } else if (defined.startsWith("Triggered") && (sa != null)) {
+        	final SpellAbility root = sa.getRootAbility();
+            if (!defined.contains("LKICopy")) {
+                final Object crd = root.getTriggeringObject(defined.substring(9));
+                if (crd instanceof Card) {
+                    Card c = hostCard.getGame().getCardState((Card) crd);
+                    sa.setTimestamp(c.getTimestamp());
+                    ret = true;
+                }
+            }
         }
         
-        return false;
+        return ret;
+    }
+    
+    public static boolean checkStackTimestamp(final Card hostCard, final String def, final SpellAbility sa) {
+        boolean ret = false;
+
+        if(sa instanceof WrappedAbility) {
+    		WrappedAbility wrap = (WrappedAbility)sa;
+    		if(!isApiTypeNeedTimestamp(wrap.getApi())) {
+    			return false;
+    		}
+    	} else {
+    		if(!isApiTypeNeedTimestamp(sa.getApi())) {
+    			return false;
+    		}
+    	}
+        
+        final String defined = (def == null) ? "Self" : applyAbilityTextChangeEffects(def, sa);
+        
+        if (defined.equals("Self")) {
+        	Card current = hostCard.getGame().getCardState(hostCard);
+        	if(sa.getTimestamp() >= -1 && current != null && sa.getTimestamp() != current.getTimestamp()) {
+        		ret = true;
+        	}
+        } else if (defined.startsWith("Triggered") && (sa != null)) {
+        	final SpellAbility root = sa.getRootAbility();
+            if (!defined.contains("LKICopy")) {
+                final Object crd = root.getTriggeringObject(defined.substring(9));
+                if (crd instanceof Card) {
+                    Card current = hostCard.getGame().getCardState((Card) crd);
+                	if(sa.getTimestamp() >= -1 && current != null && sa.getTimestamp() != current.getTimestamp()) {
+                		ret = true;
+                	}
+                }
+            }
+        }
+        
+        return ret;
     }
 
     // should the three getDefined functions be merged into one? Or better to

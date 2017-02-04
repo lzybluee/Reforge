@@ -248,10 +248,8 @@ public class MagicStack /* extends MyObservable */ implements Iterable<SpellAbil
                 source.addRemembered(sp.getSubAbility().getParam("ChoiceName"));
             }
         }
-
-        if (SpellAbilityEffect.isMoveSelf(sp)) {
-        	sp.setTimestamp(source.getTimestamp());
-        }
+        
+        SpellAbilityEffect.addStackTimestamp(sp);
 
         //cancel auto-pass for all opponents of activating player
         //when a new non-triggered ability is put on the stack
@@ -671,14 +669,9 @@ public class MagicStack /* extends MyObservable */ implements Iterable<SpellAbil
         else if (sa.getTargetCard() != null) {
             fizzle = !CardFactoryUtil.isTargetStillValid(sa, sa.getTargetCard());
         }
-        else if (SpellAbilityEffect.isMoveSelf(sa)) {
-        	Card current = game.getCardState(source);
-        	if(sa.getTimestamp() >= -1 && current != null && sa.getTimestamp() != current.getTimestamp()) {
-        		fizzle = true;
-        		System.out.println("Ability is fizzled because the source card had left its original zone once.");
-        	} else {
-        		fizzle = parentFizzled;
-        	}
+        else if (SpellAbilityEffect.checkStackTimestamp(sa)) {
+    		fizzle = true;
+    		System.out.println("Ability is fizzled because the source card had left its original zone once.");
         }
         else {
             // Set fizzle to the same as the parent if there's no target info
