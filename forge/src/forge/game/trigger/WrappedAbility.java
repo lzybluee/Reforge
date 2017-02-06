@@ -423,4 +423,14 @@ public class WrappedAbility extends Ability {
             th.registerDelayedTrigger(deltrig);
         }
     }
+    
+    @Override
+    public boolean checkTimestampForNontarget(Card card) {
+    	return sa.checkTimestampForNontarget(card);
+    }
+    
+    @Override
+    public void saveTimestampForNontarget(CardCollection cards) {
+    	sa.saveTimestampForNontarget(cards);
+    }
 }

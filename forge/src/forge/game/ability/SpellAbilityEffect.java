@@ -146,18 +146,24 @@ public abstract class SpellAbilityEffect {
     private static CardCollection getCards(final boolean definedFirst, final String definedParam, final SpellAbility sa) {
         final boolean useTargets = sa.usesTargeting() && (!definedFirst || !sa.hasParam(definedParam))
                 && sa.getTargets() != null && (sa.getTargets().isTargetingAnyCard() || sa.getTargets().getTargets().isEmpty());
-        return useTargets ? new CardCollection(sa.getTargets().getTargetCards()) 
+        CardCollection cards =  useTargets ? new CardCollection(sa.getTargets().getTargetCards()) 
                 : AbilityUtils.getDefinedCards(sa.getHostCard(), sa.getParam(definedParam), sa);
+        
+        CardCollection ret = new CardCollection();
+        ret.addAll(cards);
+        for(Card c : cards) {
+        	if(!sa.checkTimestampForNontarget(c)) {
+        		System.out.println("The object has left its original zone when the ability was added to stack. Remove " + c + " from target cards");
+        		ret.remove(c);
+        	}
+        }
+        
+        return ret;
     }
     
-    public final static boolean addStackTimestamp(final SpellAbility sa) {
+    public final static boolean saveAbilityTimestamp(final SpellAbility sa) {
     	final boolean useTargets = sa.usesTargeting() && sa.getTargets() != null;
-        return useTargets ? false : AbilityUtils.addStackTimestamp(sa.getHostCard(), sa.getParam("Defined"), sa);
-    }
-    
-    public final static boolean checkStackTimestamp(final SpellAbility sa) {
-    	final boolean useTargets = sa.usesTargeting() && sa.getTargets() != null;
-        return useTargets ? false : AbilityUtils.checkStackTimestamp(sa.getHostCard(), sa.getParam("Defined"), sa);
+        return useTargets ? false : AbilityUtils.saveTimestampForNontargetCard(sa.getHostCard(), sa.getParam("Defined"), sa);
     }
 
     // Players

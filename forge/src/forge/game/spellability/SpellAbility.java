@@ -138,7 +138,7 @@ public abstract class SpellAbility extends CardTraitBase implements ISpellAbilit
     private TargetChoices targetChosen = new TargetChoices();
 
     private SpellAbilityView view;
-    private long timestamp = -1024;
+    private HashMap<Card, Long> timestamps = new HashMap<Card, Long>();
 
     protected SpellAbility(final Card iSourceCard, final Cost toPay) {
         this(iSourceCard, toPay, null);
@@ -1333,11 +1333,23 @@ public abstract class SpellAbility extends CardTraitBase implements ISpellAbilit
     	playedByOtherPlayer = b;
     }
     
-    public long getTimestamp() {
-    	return timestamp;
+    public boolean checkTimestampForNontarget(Card card) {
+    	if(timestamps.containsKey(card)) {
+    		long timestamp = timestamps.get(card);
+    		Card current = card.getGame().getCardState(card);
+    		if(current != null) {
+        		return timestamp == current.getTimestamp();
+    		}
+    	}
+    	return true;
     }
-    
-    public void setTimestamp(long ts) {
-    	timestamp = ts;
+
+    public void saveTimestampForNontarget(CardCollection cards) {
+    	for(Card c : cards) {
+    		Card current = c.getGame().getCardState(c);
+    		if(current != null) {
+    			timestamps.put(c, c.getTimestamp());
+    		}
+    	}
     }
 }
