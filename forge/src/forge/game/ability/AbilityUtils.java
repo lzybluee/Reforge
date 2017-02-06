@@ -71,23 +71,31 @@ public class AbilityUtils {
     
     public static boolean addStackTimestamp(final Card hostCard, final String def, final SpellAbility sa) {
         boolean ret = false;
+        boolean changeZone = false;
 
         if(sa instanceof WrappedAbility) {
     		WrappedAbility wrap = (WrappedAbility)sa;
     		if(!isApiTypeNeedTimestamp(wrap.getApi())) {
     			return false;
+    		} else if(wrap.getApi() == ApiType.ChangeZone) {
+    			changeZone = true;
     		}
     	} else {
     		if(!isApiTypeNeedTimestamp(sa.getApi())) {
     			return false;
+    		} else if(sa.getApi() == ApiType.ChangeZone) {
+    			changeZone = true;
     		}
     	}
         
         final String defined = (def == null) ? "Self" : applyAbilityTextChangeEffects(def, sa);
         
-        if (defined.equals("Self")) {
-        	sa.setTimestamp(hostCard.getTimestamp());
-        	ret = true;
+        if (defined.equals("Self") && changeZone) {
+        	Map<String, String> params = sa.getMapParams();
+        	if(params.containsKey("AB") && !params.containsKey("ChangeType") && !params.containsKey("ValidTgts")) {
+            	sa.setTimestamp(hostCard.getTimestamp());
+            	ret = true;
+        	}
         } else if (defined.startsWith("Triggered") && (sa != null)) {
         	final SpellAbility root = sa.getRootAbility();
             if (!defined.contains("LKICopy")) {
