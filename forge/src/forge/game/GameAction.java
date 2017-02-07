@@ -1350,8 +1350,8 @@ public class GameAction {
             return null;
         }
 
-        boolean persist = (c.hasKeyword("Persist") && c.getCounters(CounterType.M1M1) == 0) && !c.isToken();
-        boolean undying = (c.hasKeyword("Undying") && c.getCounters(CounterType.P1P1) == 0) && !c.isToken();
+        boolean persist = (c.hasKeyword("Persist") && c.getCounters(CounterType.M1M1) == 0);
+        boolean undying = (c.hasKeyword("Undying") && c.getCounters(CounterType.P1P1) == 0);
 
         final Card newCard = moveToGraveyard(c);
 
