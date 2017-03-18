@@ -67,8 +67,6 @@ public class AbilityUtils {
     			apiType == ApiType.ChangeText ||
     			apiType == ApiType.ChangeZone ||
     			apiType == ApiType.GainControl ||
-    			apiType == ApiType.CopyPermanent ||
-    			apiType == ApiType.CopySpellAbility ||
     			apiType == ApiType.PutCounter ||
     			apiType == ApiType.RemoveCounter ||
     			apiType == ApiType.Debuff ||
