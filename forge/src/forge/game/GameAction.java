@@ -55,6 +55,8 @@ import forge.game.zone.PlayerZoneBattlefield;
 import forge.game.zone.Zone;
 import forge.game.zone.ZoneType;
 import forge.item.PaperCard;
+import forge.model.FModel;
+import forge.properties.ForgePreferences.FPref;
 import forge.util.Aggregates;
 import forge.util.CollectionSuppliers;
 import forge.util.Expressions;
@@ -1546,7 +1548,13 @@ public class GameAction {
         boolean isFirstGame = lastGameOutcome == null;
         if (isFirstGame) {
             game.fireEvent(new GameEventFlipCoin()); // Play the Flip Coin sound
-            goesFirst = Aggregates.random(game.getPlayers());
+            if(FModel.getPreferences().getPref(FPref.UI_START_PLAYER).equals("1")) {
+            	goesFirst = Aggregates.random(game.getHumanPlayers());
+            } else if(FModel.getPreferences().getPref(FPref.UI_START_PLAYER).equals("2")) {
+            	goesFirst = Aggregates.random(game.getAiPlayers());
+            } else {
+                goesFirst = Aggregates.random(game.getPlayers());
+            }
         } else {
             for (Player p : game.getPlayers()) {
                 if (!lastGameOutcome.isWinner(p.getLobbyPlayer())) {

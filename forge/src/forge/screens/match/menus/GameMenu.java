@@ -16,6 +16,7 @@ import forge.properties.ForgePreferences.FPref;
 import forge.screens.match.CMatchUI;
 import forge.screens.match.VAutoYields;
 import forge.screens.match.controllers.CDock.ArcState;
+import forge.screens.match.controllers.CDock.StartPlayerOption;
 import forge.toolbox.FSkin.SkinIcon;
 import forge.toolbox.FSkin.SkinnedCheckBoxMenuItem;
 import forge.toolbox.FSkin.SkinnedMenu;
@@ -37,6 +38,7 @@ public final class GameMenu {
     private static boolean showIcons;
 
     public JMenu getMenu() {
+    	matchUI.getCDock().loadPreferences();
         final JMenu menu = new JMenu("Game");
         menu.setMnemonic(KeyEvent.VK_G);
         menu.add(getMenuItem_Undo());
@@ -50,6 +52,7 @@ public final class GameMenu {
         menu.add(getMenuItem_SimpleStack());
         menu.add(getMenuItem_PreventBeforeReplace());
         menu.add(getMenuItem_SkipRestoreDeck());
+        menu.add(getMenuItem_StartPlayer());
         menu.addSeparator();
         menu.add(getMenuItem_ViewDeckList());
         menu.add(getMenuItem_ViewOpponentDeckList());
@@ -246,6 +249,42 @@ public final class GameMenu {
                 prefs.save();
                 matchUI.getCDock().setArcState(arcState);
                 setTargetingArcMenuIcon((SkinnedRadioButtonMenuItem)e.getSource());
+            }
+        };
+    }
+    
+    private SkinnedMenu getMenuItem_StartPlayer() {
+        final SkinnedMenu menu = new SkinnedMenu("Start Player");
+        final ButtonGroup group = new ButtonGroup();
+
+        SkinnedRadioButtonMenuItem menuItem;
+        menuItem = getStartPlayerRadioButton("Random", StartPlayerOption.RANDOM);
+        group.add(menuItem);
+        menu.add(menuItem);
+        menuItem = getStartPlayerRadioButton("Player", StartPlayerOption.PLAYER);
+        group.add(menuItem);
+        menu.add(menuItem);
+        menuItem = getStartPlayerRadioButton("Opponent", StartPlayerOption.OPPONENT);
+        group.add(menuItem);
+        menu.add(menuItem);
+
+        return menu;
+    }
+    
+    private SkinnedRadioButtonMenuItem getStartPlayerRadioButton(final String caption, final StartPlayerOption option) {
+        final SkinnedRadioButtonMenuItem menuItem = new SkinnedRadioButtonMenuItem(caption);
+        menuItem.setSelected(option == matchUI.getCDock().getStartPlayerOption());
+        menuItem.addActionListener(getStartPlayerButtonAction(option));
+        return menuItem;
+    }
+    
+    private ActionListener getStartPlayerButtonAction(final StartPlayerOption option) {
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                prefs.setPref(FPref.UI_START_PLAYER, String.valueOf(option.ordinal()));
+                prefs.save();
+                matchUI.getCDock().setStartPlayerOption(option);
             }
         };
     }

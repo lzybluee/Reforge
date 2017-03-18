@@ -43,6 +43,7 @@ import forge.toolbox.FSkin;
 public class CDock implements ICDoc {
 
     private ArcState arcState;
+    private StartPlayerOption startPlayerOption;
     private final Iterator<ArcState> arcStateIterator = Iterators.cycle(ArcState.values());
 
     private final CMatchUI matchUI;
@@ -53,6 +54,7 @@ public class CDock implements ICDoc {
     }
 
     public enum ArcState { OFF, MOUSEOVER, ON; }
+    public enum StartPlayerOption { RANDOM, PLAYER, OPPONENT; }
 
     public VDock getView() {
         return view;
@@ -73,6 +75,18 @@ public class CDock implements ICDoc {
      */
     public ArcState getArcState() {
         return arcState;
+    }
+    
+    public StartPlayerOption getStartPlayerOption() {
+    	return startPlayerOption;
+    }
+    
+    public void loadPreferences() {
+        final Integer arcState = Ints.tryParse(FModel.getPreferences().getPref(FPref.UI_TARGETING_OVERLAY));
+        setArcState(ArcState.values()[arcState == null ? 0 : arcState.intValue()]);
+        
+        final Integer firstPlayer = Ints.tryParse(FModel.getPreferences().getPref(FPref.UI_START_PLAYER));
+        setStartPlayerOption(StartPlayerOption.values()[firstPlayer == null ? 0 : firstPlayer.intValue()]);
     }
 
     /** @param state0 int */
@@ -97,6 +111,9 @@ public class CDock implements ICDoc {
 
         FModel.getPreferences().setPref(FPref.UI_TARGETING_OVERLAY, String.valueOf(arcState.ordinal()));
         FModel.getPreferences().save();
+        
+        FModel.getPreferences().setPref(FPref.UI_START_PLAYER, String.valueOf(startPlayerOption.ordinal()));
+        FModel.getPreferences().save();
     }
 
     /** Toggle targeting overlay painting. */
@@ -111,6 +128,10 @@ public class CDock implements ICDoc {
         arcState = state;
         while (arcStateIterator.next() != arcState) { /* Put the iterator to the correct value */ };
     }
+    
+    public void setStartPlayerOption(StartPlayerOption option) {
+    	startPlayerOption = option;
+    }
 
     @Override
     public void register() {
@@ -122,10 +143,7 @@ public class CDock implements ICDoc {
     @SuppressWarnings("serial")
     @Override
     public void initialize() {
-        final String temp = FModel.getPreferences()
-                .getPref(FPref.UI_TARGETING_OVERLAY);
-        final Integer arcState = Ints.tryParse(temp);
-        setArcState(ArcState.values()[arcState == null ? 0 : arcState.intValue()]);
+    	loadPreferences();
         refreshArcStateDisplay();
 
         view.getBtnConcede().setCommand(new UiCommand() {

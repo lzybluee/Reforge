@@ -35,6 +35,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
 import com.google.common.eventbus.EventBus;
 
+import forge.ai.LobbyPlayerAi;
 import forge.card.CardRarity;
 import forge.card.CardType.Supertype;
 import forge.game.card.Card;
@@ -66,6 +67,7 @@ import forge.game.trigger.TriggerType;
 import forge.game.zone.MagicStack;
 import forge.game.zone.Zone;
 import forge.game.zone.ZoneType;
+import forge.player.LobbyPlayerHuman;
 import forge.trackable.Tracker;
 import forge.util.Aggregates;
 import forge.util.collect.FCollection;
@@ -224,6 +226,26 @@ public class Game {
      */
     public final FCollectionView<Player> getPlayers() {
         return ingamePlayers;
+    }
+    
+    public final FCollectionView<Player> getHumanPlayers() {
+    	FCollection<Player> players = new FCollection<Player>();
+    	for(Player p : ingamePlayers) {
+    		if(p.getLobbyPlayer() instanceof LobbyPlayerHuman) {
+    			players.add(p);
+    		}
+    	}
+        return players;
+    }
+    
+    public final FCollectionView<Player> getAiPlayers() {
+    	FCollection<Player> players = new FCollection<Player>();
+    	for(Player p : ingamePlayers) {
+    		if(p.getLobbyPlayer() instanceof LobbyPlayerAi) {
+    			players.add(p);
+    		}
+    	}
+        return players;
     }
 
     /**

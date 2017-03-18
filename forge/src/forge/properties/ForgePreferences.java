@@ -68,6 +68,7 @@ public class ForgePreferences extends PreferencesStore<ForgePreferences.FPref> {
         UI_SIMPLE_STACK ("true"),
         UI_PREVENT_BEFORE_REPLACE ("true"),
         UI_SKIP_RESTORE_DECK ("true"),
+        UI_START_PLAYER ("0"),
         UI_ENABLE_SOUNDS ("true"),
         UI_ENABLE_MUSIC ("true"),
         UI_ALT_SOUND_SYSTEM ("false"),
