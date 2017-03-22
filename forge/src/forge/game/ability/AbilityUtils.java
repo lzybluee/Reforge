@@ -425,6 +425,9 @@ public class AbilityUtils {
             if (amount.startsWith("Cost")) {
                 return 0;
             }
+            if (amount.equals("DragonPresence")) {
+                return 0;
+            }
             // Nothing to do here if value is missing or blank
             System.err.printf("SVar '%s' not defined in Card (%s)%n", amount, card.getName());
             return 0;
