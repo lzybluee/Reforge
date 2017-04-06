@@ -22,6 +22,7 @@ import forge.quest.data.QuestPreferences;
 import forge.quest.data.QuestPreferences.DifficultyPrefs;
 import forge.quest.io.QuestDuelReader;
 import forge.util.CollectionSuppliers;
+import forge.util.MyRandom;
 import forge.util.maps.EnumMapOfLists;
 import forge.util.maps.MapOfLists;
 import forge.util.storage.IStorage;
@@ -147,8 +148,7 @@ public class QuestEventDuelManager {
 
     /** */
     public void randomizeOpponents() {
-        final long seed = new Random().nextLong();
-        final Random r = new Random(seed);
+        final Random r = MyRandom.getRandom();
         for(QuestEventDifficulty qd : sortedDuels.keySet()) {
             List<QuestEventDuel> list = (List<QuestEventDuel>) sortedDuels.get(qd); 
             Collections.shuffle(list, r);

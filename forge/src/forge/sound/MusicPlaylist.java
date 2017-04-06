@@ -5,6 +5,7 @@ import java.io.FilenameFilter;
 import java.util.Random;
 
 import forge.properties.ForgeConstants;
+import forge.util.MyRandom;
 
 public enum MusicPlaylist {
     MENUS("menus/"),
@@ -13,7 +14,7 @@ public enum MusicPlaylist {
     private final String subDir;
     private int mostRecentTrackIdx = -1;
     private String[] filenames;
-    private final Random randomGenerator = new Random();
+    private final Random randomGenerator = MyRandom.getRandom();
 
     private MusicPlaylist(String subDir0) {
         subDir = subDir0;

@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -70,6 +69,7 @@ import forge.game.zone.ZoneType;
 import forge.player.LobbyPlayerHuman;
 import forge.trackable.Tracker;
 import forge.util.Aggregates;
+import forge.util.MyRandom;
 import forge.util.collect.FCollection;
 import forge.util.collect.FCollectionView;
 import forge.util.Visitor;
@@ -713,7 +713,7 @@ public class Game {
                 onePlayerHasTimeShifted = false;
             }
             
-            CardRarity anteRarity = validRarities.get(new Random().nextInt(validRarities.size()));
+            CardRarity anteRarity = validRarities.get(MyRandom.getRandom().nextInt(validRarities.size()));
             
             System.out.println("Rarity chosen for ante: " + anteRarity.name());
             
@@ -743,7 +743,7 @@ public class Game {
                 library.removeAll((Collection<?>)toRemove);
                 
                 if (library.size() > 0) { //Make sure that matches were found. If not, use the original method to choose antes
-                    Card ante = library.get(new Random().nextInt(library.size()));
+                    Card ante = library.get(MyRandom.getRandom().nextInt(library.size()));
                     anteed.put(player, ante);
                 } else {
                     chooseRandomCardsForAnte(player, anteed);
