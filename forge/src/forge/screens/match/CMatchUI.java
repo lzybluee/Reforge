@@ -341,9 +341,15 @@ public final class CMatchUI
         final List<VHand> allHands = getHandViews();
         return idx < 0 || idx >= allHands.size() ? null : allHands.get(idx);
     }
+    
+    public void setFrontCard(final CardView c) {
+    	cDetailPicture.setShowFront(true);
+        this.setCard(c, false);
+    }
 
     @Override
     public void setCard(final CardView c) {
+    	cDetailPicture.setShowFront(false);
         this.setCard(c, false);
     }
 
@@ -356,6 +362,7 @@ public final class CMatchUI
     }
 
     public void setCard(final InventoryItem item) {
+    	cDetailPicture.setShowFront(false);
         cDetailPicture.showItem(item);
     }
 

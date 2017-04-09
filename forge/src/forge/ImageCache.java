@@ -88,6 +88,11 @@ public class ImageCache {
         final String key = card.getCurrentState().getImageKey(viewers);
         return scaleImage(key, width, height, true);
     }
+    
+    public static BufferedImage getFrontImage(final CardView card, final int width, final int height) {
+        final String key = card.getCurrentState().getImageKey(null);
+        return scaleImage(key, width, height, true);
+    }
 
     /**
      * retrieve an image from the cache.  returns null if the image is not found in the cache

@@ -13,6 +13,8 @@ public interface IMayViewCards {
      * @return whether {@code c} can be shown.
      */
     boolean mayView(CardView c);
+    
+    boolean mayViewFront(CardView c);
 
     /**
      * @param c
@@ -25,6 +27,11 @@ public interface IMayViewCards {
     public static final IMayViewCards ALL = new IMayViewCards() {
         @Override
         public boolean mayView(final CardView c) {
+            return true;
+        }
+        
+        @Override
+        public boolean mayViewFront(final CardView c) {
             return true;
         }
 

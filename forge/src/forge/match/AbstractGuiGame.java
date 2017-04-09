@@ -180,6 +180,17 @@ public abstract class AbstractGuiGame implements IGuiGame, IMayViewCards {
         }
         return c.canBeShownToAny(getLocalPlayers());
     }
+    
+    @Override
+    public boolean mayViewFront(final CardView c) {
+        if (!hasLocalPlayers()) {
+            return true; //if not in game, card can be shown
+        }
+        if (getGameController().mayLookAtAllCards()) {
+            return true;
+        }
+        return c.canBeShownToAny(null);
+    }
 
     @Override
     public boolean mayFlip(final CardView cv) {

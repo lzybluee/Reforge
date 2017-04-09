@@ -139,7 +139,7 @@ public class VStack implements IVDoc<CStack> {
             //update the Card Picture/Detail when the spell is added to the stack
             if (isFirst) {
                 isFirst = false;
-                controller.getMatchUI().setCard(item.getSourceCard());
+                controller.getMatchUI().setFrontCard(item.getSourceCard());
             }
         }
 
@@ -204,7 +204,7 @@ public class VStack implements IVDoc<CStack> {
                     if (matchUI != null) {
                         matchUI.clearPanelSelections();
                         if (item.getSourceCard() != null) {
-                            matchUI.setCard(item.getSourceCard());
+                            matchUI.setFrontCard(item.getSourceCard());
                             matchUI.setPanelSelection(item.getSourceCard());
                         }
                     }
@@ -255,7 +255,7 @@ public class VStack implements IVDoc<CStack> {
             final Graphics2D g2d = (Graphics2D) g;
 
             //draw image for source card
-            final BufferedImage img = ImageCache.getImage(item.getSourceCard(), controller.getMatchUI().getLocalPlayers(), CARD_WIDTH, CARD_HEIGHT);
+            final BufferedImage img = ImageCache.getFrontImage(item.getSourceCard(), CARD_WIDTH, CARD_HEIGHT);
             if (img != null) {
                 g2d.drawImage(img, null, PADDING, PADDING);
             }
