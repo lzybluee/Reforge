@@ -373,7 +373,7 @@ public class PlayArea extends CardPanelContainer implements CardPanelMouseListen
         //final CardStackRow creaturesRegular = new CardStackRow(this.getCardPanels(), RowType.CreatureNonToken);
         //final CardStackRow collectedCreatures = collectAllCreatures();
         final CardStackRow creatures = new CardStackRow(this.getCardPanels(), RowType.CreatureNonToken);
-        final CardStackRow others = new CardStackRow(this.getCardPanels(), RowType.Other);
+        final CardStackRow others = new CardStackRow(this.getCardPanels(), RowType.OtherNonToken);
         
         if (!makeTokenRow) {
             for (CardStack s : tokens) {
@@ -857,7 +857,8 @@ public class PlayArea extends CardPanelContainer implements CardPanelMouseListen
         Land,
         Creature,
         CreatureNonToken,
-        Other;
+        Other,
+        OtherNonToken;
 
         public boolean isGoodFor(final CardStateView stateView) {
             switch (this) {
@@ -865,6 +866,7 @@ public class PlayArea extends CardPanelContainer implements CardPanelMouseListen
             case Creature:          return stateView.isCreature();
             case CreatureNonToken:  return stateView.isCreature() && !stateView.getCard().isToken();
             case Other:             return !stateView.isLand() && !stateView.isCreature();
+            case OtherNonToken:     return !stateView.isLand() && !stateView.isCreature() && !stateView.getCard().isToken();
             default:                throw new RuntimeException("Unhandled type: " + this);
             }
         }
