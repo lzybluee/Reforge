@@ -2,6 +2,10 @@ package forge.screens.match;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JButton;
 
@@ -55,6 +59,23 @@ public class ControlWinLose {
                 ((JButton) e.getSource()).setEnabled(false);
             }
         });
+        
+        view.getBtnQuit().addMouseListener(new MouseAdapter() {
+        	@Override
+            public void mousePressed(final MouseEvent e) {
+                if(e.getButton() == MouseEvent.BUTTON3) {
+                	File file = new File("run-forge-debug.bat");
+                	if(file.exists()) {
+	                	try {
+							Runtime.getRuntime().exec("\"" + file.getAbsolutePath() + "\"");
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+	                	System.exit(0);
+                	}
+                }
+            }
+		});
     }
 
     /** Action performed when "continue" button is pressed in default win/lose UI. */
