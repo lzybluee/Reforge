@@ -63,7 +63,7 @@ public class ControlWinLose {
         
         view.getBtnQuit().addMouseListener(new MouseAdapter() {
         	@Override
-            public void mousePressed(final MouseEvent e) {
+            public void mouseReleased(final MouseEvent e) {
                 if(e.getButton() == MouseEvent.BUTTON3) {
                 	File file = new File("run-forge-debug.bat");
                 	if(file.exists()) {

@@ -204,6 +204,16 @@ public class FNavigationBar extends FTitleBarBase {
             @Override
             public void mousePressed(final MouseEvent e) {
             	if(e.getButton() == MouseEvent.BUTTON3) {
+            		return;
+            	}
+                if (btnForge.isEnabled() && System.currentTimeMillis() - timeMenuHidden > 250) { //time comparsion needed clicking button a second time to hide menu
+                    showForgeMenu(true);
+                }
+            }
+            
+            @Override
+            public void mouseReleased(final MouseEvent e) {
+            	if(e.getButton() == MouseEvent.BUTTON3) {
                 	File file = new File("run-forge-debug.bat");
                 	if(file.exists()) {
 	                	try {
@@ -215,9 +225,6 @@ public class FNavigationBar extends FTitleBarBase {
                 	} else {
                 		RestartUtil.restartApplication(null, false);
                 	}
-                }
-                if (btnForge.isEnabled() && System.currentTimeMillis() - timeMenuHidden > 250) { //time comparsion needed clicking button a second time to hide menu
-                    showForgeMenu(true);
                 }
             }
         });
