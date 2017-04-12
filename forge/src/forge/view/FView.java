@@ -228,7 +228,7 @@ public enum FView {
                         btnOk.addActionListener(new ActionListener() {
                             @Override public void actionPerformed(final ActionEvent e) {
                                 if (remainingFiles.isEmpty()) {
-                                    RestartUtil.restartApplication(null);
+                                    RestartUtil.restartApplication(null, true);
                                 } else {
                                     System.exit(0);
                                 }

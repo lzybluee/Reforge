@@ -12,6 +12,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import javax.swing.Icon;
@@ -26,6 +28,7 @@ import javax.swing.border.EmptyBorder;
 import com.google.common.collect.Lists;
 
 import forge.Singletons;
+import forge.control.RestartUtil;
 import forge.gui.framework.FScreen;
 import forge.gui.framework.ILocalRepaint;
 import forge.menus.ForgeMenu;
@@ -200,6 +203,19 @@ public class FNavigationBar extends FTitleBarBase {
         btnForge.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(final MouseEvent e) {
+            	if(e.getButton() == MouseEvent.BUTTON3) {
+                	File file = new File("run-forge-debug.bat");
+                	if(file.exists()) {
+	                	try {
+							Runtime.getRuntime().exec("\"" + file.getAbsolutePath() + "\"");
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+	                	System.exit(0);
+                	} else {
+                		RestartUtil.restartApplication(null, false);
+                	}
+                }
                 if (btnForge.isEnabled() && System.currentTimeMillis() - timeMenuHidden > 250) { //time comparsion needed clicking button a second time to hide menu
                     showForgeMenu(true);
                 }

@@ -218,7 +218,7 @@ public enum CSubmenuPreferences implements ICDoc {
             prefs.reset();
             prefs.save();
             update();
-            RestartUtil.restartApplication(null);
+            RestartUtil.restartApplication(null, true);
         }
     }
 

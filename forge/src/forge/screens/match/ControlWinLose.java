@@ -10,6 +10,7 @@ import java.io.IOException;
 import javax.swing.JButton;
 
 import forge.Singletons;
+import forge.control.RestartUtil;
 import forge.game.GameView;
 import forge.gui.SOverlayUtils;
 import forge.gui.framework.FScreen;
@@ -72,6 +73,8 @@ public class ControlWinLose {
 							e1.printStackTrace();
 						}
 	                	System.exit(0);
+                	} else {
+                		RestartUtil.restartApplication(null, false);
                 	}
                 }
             }

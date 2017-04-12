@@ -134,7 +134,7 @@ public final class ForgeMenu {
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                RestartUtil.restartApplication(null);
+                RestartUtil.restartApplication(null, true);
             }
         };
     }

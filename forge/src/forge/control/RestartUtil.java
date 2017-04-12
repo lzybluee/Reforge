@@ -22,8 +22,8 @@ public class RestartUtil {
      * Restart the current Java application.
      * @param runBeforeRestart some custom code to be run before restarting
      */
-    public static void restartApplication(final Runnable runBeforeRestart) {
-        if (!Singletons.getControl().canExitForge(true)) {
+    public static void restartApplication(final Runnable runBeforeRestart, boolean confirm) {
+        if (confirm && !Singletons.getControl().canExitForge(true)) {
             return;
         }
         try {
