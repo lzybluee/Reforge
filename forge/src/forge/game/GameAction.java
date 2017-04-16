@@ -622,9 +622,9 @@ public class GameAction {
         checkStaticAbilities(true, new CardCollection());
     }
     public final boolean checkStaticAbilities(final boolean runEvents, final Set<Card> affectedCards) {
-        if (game.isGameOver()) {
-            return false;
-        }
+        //if (game.isGameOver()) {
+        //    return false;
+        //}
 
         // remove old effects
         game.getStaticEffects().clearStaticEffects(affectedCards);
