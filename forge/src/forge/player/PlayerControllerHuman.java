@@ -445,7 +445,8 @@ public class PlayerControllerHuman
         if (delayedReveal != null) {
             tempShow(delayedReveal.getCards());
         }
-        final GameEntityView result = getGui().chooseSingleEntityForEffect(title, GameEntityView.getEntityCollection(optionList), delayedReveal, isOptional, getLocalPlayerView());
+        final GameEntityView result = getGui().chooseSingleEntityForEffect(title, GameEntityView.getEntityCollection(optionList), delayedReveal,
+                  isOptional, getLocalPlayerView(), 1);
         endTempShowCards();
 
         if (result instanceof CardView) {
@@ -1513,9 +1514,13 @@ public class PlayerControllerHuman
                 tempShow(delayedReveal.getCards());
             }
             final GameEntityView result = getGui().chooseSingleEntityForEffect("[" + (i+1) + "] " + selectPrompt, GameEntityView.getEntityCollection(optionList), 
-            		i == 0 ? delayedReveal : null, isOptional, getLocalPlayerView());
+            		i == 0 ? delayedReveal : null, isOptional, getLocalPlayerView(), changeNum);
             endTempShowCards();
-
+            
+            if(changeNum == 0) {
+            	break;
+            }
+            
             boolean redo = false;
         	if(result == null) {
         		if (optionList.isEmpty()) {
