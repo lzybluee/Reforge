@@ -122,6 +122,11 @@ public class CloneEffect extends SpellAbilityEffect {
             // must copy abilities before first so cloned added abilities are handled correctly
             CardFactory.copyCopiableAbilities(cardToCopy, tgtCard);
         } else {
+            if (tgtCard.getCurrentStateName() == CardStateName.Cloned) { // cloning again
+                tgtCard.switchStates(CardStateName.Cloned, origState, false);
+                tgtCard.setState(origState, false);
+                tgtCard.clearStates(CardStateName.Cloned, false);
+            }
             //copy Original state to Cloned
             tgtCard.addAlternateState(CardStateName.Cloned, false);
             if (tgtCard.isFlipCard()) {
