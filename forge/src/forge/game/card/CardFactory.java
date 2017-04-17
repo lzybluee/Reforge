@@ -480,8 +480,8 @@ public class CardFactory {
     		copyState(from, CardStateName.Flipped, to, CardStateName.Flipped);
     	} else if (fromIsTransformedCard) {
             copyState(from, CardStateName.Transformed, to, CardStateName.Original);
-        } else {
-            copyState(from, from.getCurrentStateName(), to, to.getCurrentStateName());
+        } else if(from != to || from.getCurrentStateName() != to.getCurrentStateName()) {
+	        copyState(from, from.getCurrentStateName(), to, to.getCurrentStateName());
         }
     }
     
@@ -508,10 +508,9 @@ public class CardFactory {
     	if (fromIsFlipCard) {
     		copyAbilities(from, CardStateName.Original, to, to.getCurrentStateName());
     		copyAbilities(from, CardStateName.Flipped, to, CardStateName.Flipped);
-        }
-        else if (fromIsTransformedCard) {
+        } else if (fromIsTransformedCard) {
     		copyAbilities(from, CardStateName.Transformed, to, CardStateName.Original);
-    	} else {
+    	} else if(from != to || from.getCurrentStateName() != to.getCurrentStateName()) {
     		copyAbilities(from, from.getCurrentStateName(), to, to.getCurrentStateName());
     	}
     }
@@ -588,7 +587,7 @@ public class CardFactory {
      * @param to the {@link Card} to copy to.
      * @param toState the {@link CardStateName} of {@code to} to copy to.
      */
-    private static void copyAbilities(final Card from, final CardStateName fromState, final Card to, final CardStateName toState) {
+    public static void copyAbilities(final Card from, final CardStateName fromState, final Card to, final CardStateName toState) {
         final CardState fromCharacteristics = from.getState(fromState);
         final CardStateName oldToState = to.getCurrentStateName();
         if (!to.getStates().contains(toState)) {

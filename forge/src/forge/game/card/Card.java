@@ -133,6 +133,7 @@ public class Card extends GameEntity implements Comparable<Card> {
     private CardState currentState;
     private CardStateName currentStateName = CardStateName.Original;
     private CardStateName preFaceDownState = CardStateName.Original;
+    private CardStateName originalStateName = CardStateName.Original;
 
     private ZoneType castFrom = null;
 
@@ -427,6 +428,14 @@ public class Card extends GameEntity implements Comparable<Card> {
 
     public CardStateName getCurrentStateName() {
         return currentStateName;
+    }
+
+    public void setOriginalStateName(final CardStateName state) {
+    	originalStateName = state;
+    }
+
+    public CardStateName getOriginalStateName() {
+    	return originalStateName;
     }
 
     public void switchStates(final CardStateName from, final CardStateName to, boolean updateView) {

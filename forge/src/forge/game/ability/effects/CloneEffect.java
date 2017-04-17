@@ -103,7 +103,8 @@ public class CloneEffect extends SpellAbilityEffect {
         final String originalName = tgtCard.getName();
         final boolean copyingSelf = (tgtCard == cardToCopy);
         final boolean isTransformed = cardToCopy.getCurrentStateName() == CardStateName.Transformed;
-        final CardStateName origState = isTransformed || cardToCopy.isFaceDown() ? CardStateName.Original : cardToCopy.getCurrentStateName();
+        final CardStateName origState = (isTransformed || cardToCopy.isFaceDown()) ? CardStateName.Original : 
+        	(cardToCopy.getCurrentStateName() == CardStateName.Cloned ? cardToCopy.getOriginalStateName() : cardToCopy.getCurrentStateName());
 
         if (!copyingSelf) {
             if (tgtCard.isCloned()) { // cloning again
@@ -115,20 +116,26 @@ public class CloneEffect extends SpellAbilityEffect {
             tgtCard.addAlternateState(CardStateName.Cloner, false);
             tgtCard.switchStates(origState, CardStateName.Cloner, false);
             tgtCard.setState(origState, false);
+            
+            CardFactory.copyCopiableCharacteristics(cardToCopy, tgtCard);
+
+            // must copy abilities before first so cloned added abilities are handled correctly
+            CardFactory.copyCopiableAbilities(cardToCopy, tgtCard);
         } else {
             //copy Original state to Cloned
             tgtCard.addAlternateState(CardStateName.Cloned, false);
-            tgtCard.switchStates(origState, CardStateName.Cloned, false);
             if (tgtCard.isFlipCard()) {
-                tgtCard.setState(CardStateName.Original, false);
+            	CardFactory.copyState(cardToCopy, CardStateName.Original, tgtCard, CardStateName.Cloned);
+            	CardFactory.copyAbilities(cardToCopy, CardStateName.Original, tgtCard, CardStateName.Cloned);
+            	tgtCard.setOriginalStateName(CardStateName.Original);
+            } else {
+            	CardFactory.copyState(cardToCopy, origState, tgtCard, CardStateName.Cloned);
+            	CardFactory.copyAbilities(cardToCopy, origState, tgtCard, CardStateName.Cloned);
+            	tgtCard.setOriginalStateName(origState);
             }
+            tgtCard.setState(CardStateName.Cloned, false);
         }
 
-        CardFactory.copyCopiableCharacteristics(cardToCopy, tgtCard);
-
-        // must copy abilities before first so cloned added abilities are handled correctly
-        CardFactory.copyCopiableAbilities(cardToCopy, tgtCard);
-        
         // add extra abilities as granted by the copy effect
         addExtraCharacteristics(tgtCard, sa, origSVars);
 
@@ -148,11 +155,6 @@ public class CloneEffect extends SpellAbilityEffect {
             flippedState.setImageKey(imageFileName);
         }
 
-        //Clean up copy of cloned state
-        if (copyingSelf) {
-            tgtCard.clearStates(CardStateName.Cloned, false);
-        }
-
         //game.getTriggerHandler().registerActiveTrigger(tgtCard, false);
 
         //keep the Clone card image for the cloned card
@@ -161,7 +163,16 @@ public class CloneEffect extends SpellAbilityEffect {
         tgtCard.updateStateForView();
 
         //Clear Remembered and Imprint lists
+        final ArrayList<Object> remembered = new ArrayList<Object>();
+        for (final Object obj : tgtCard.getRemembered()) {
+        	remembered.add(obj);
+        }
         tgtCard.clearRemembered();
+        
+        final ArrayList<Card> imprinted = new ArrayList<Card>();
+        for (final Card card : tgtCard.getImprintedCards()) {
+        	imprinted.add(card);
+        }
         tgtCard.clearImprintedCards();
 
         // check if clone is now an Aura that needs to be attached
@@ -182,6 +193,22 @@ public class CloneEffect extends SpellAbilityEffect {
                         cloneCard.clearStates(CardStateName.Cloner, false);
                         cloneCard.updateStateForView();
                         game.fireEvent(new GameEventCardStatsChanged(cloneCard));
+                    }
+                    if(cloneCard.getCurrentStateName() == CardStateName.Cloned) {
+                        cloneCard.setState(origState, false);
+                        cloneCard.clearStates(CardStateName.Cloned, false);
+                        cloneCard.updateStateForView();
+                        game.fireEvent(new GameEventCardStatsChanged(cloneCard));
+                    }
+                    if(remembered != null) {
+                    	for (final Object obj : remembered) {
+                    		cloneCard.addRemembered(obj);
+                        }
+                    }
+                    if(imprinted != null) {
+                    	for (final Card card : imprinted) {
+                    		cloneCard.addImprintedCard(card);
+                        }
                     }
                 }
             };
