@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 import java.util.Stack;
@@ -54,6 +55,7 @@ import forge.game.event.GameEventSpellRemovedFromStack;
 import forge.game.event.GameEventSpellResolved;
 import forge.game.player.Player;
 import forge.game.player.PlayerController.ManaPaymentPurpose;
+import forge.game.replacement.ReplaceMoved;
 import forge.game.replacement.ReplacementEffect;
 import forge.game.replacement.ReplacementHandler;
 import forge.game.replacement.ReplacementLayer;
@@ -574,42 +576,63 @@ public class MagicStack /* extends MyObservable */ implements Iterable<SpellAbil
 
         if (source.isCopiedSpell() || sa.isAbility()) {
             // do nothing
-        }
-        else if ((source.hasKeyword("Move CARDNAME to your hand as it resolves") || sa.isBuyBackAbility()) && !fizzle) {
-            // Handle cards that need to be moved differently
-            // TODO: replacement effects: Rebound, Buyback and Soulfire Grand Master
-            source.removeAllExtrinsicKeyword("Move CARDNAME to your hand as it resolves");
-            game.getAction().moveToHand(source);
-        }
-        else if (sa.isFlashBackAbility()) {
-            game.getAction().exile(source);
-            sa.setFlashBackAbility(false);
-        }
-        else if (source.hasKeyword("Rebound")
-                && !fizzle
-                && source.getCastFrom() == ZoneType.Hand
-                && game.getZoneOf(source).is(ZoneType.Stack)
-                && source.getOwner().equals(source.getController())) //"If you cast this spell from your hand"
-        {
-            //Move rebounding card to exile
-            source = game.getAction().exile(source);
+        } else {
+        	boolean moveToHand = (source.hasKeyword("Move CARDNAME to your hand as it resolves") || sa.isBuyBackAbility()) && !fizzle;
+        	boolean rebound = source.hasKeyword("Rebound")
+                    && !fizzle
+                    && source.getCastFrom() == ZoneType.Hand
+                    && game.getZoneOf(source).is(ZoneType.Stack)
+                    && source.getOwner().equals(source.getController());
+        	
+        	if (moveToHand && rebound) {
+        		Map<String, String> moveToHandMap = new HashMap<String, String>();
+        		moveToHandMap.put("Description", "Put the card into your hand as it resolves.");
+        		ReplacementEffect moveToHandReplace = new ReplaceMoved(moveToHandMap, source, false);
+        		Map<String, String> reboundMap = new HashMap<String, String>();
+        		reboundMap.put("Description", "Rebound - If you cast this spell from your hand, exile it as it resolves. At the beginning of your next upkeep, you may cast this card from exile without paying its mana cost.");
+        		ReplacementEffect reboundReplace = new ReplaceMoved(reboundMap, source, false);
+        		List<ReplacementEffect> list = new ArrayList<>();
+        		list.add(moveToHandReplace);
+        		list.add(reboundReplace);
+        		ReplacementEffect chosen = source.getController().getController().chooseSingleReplacementEffect("Choose a replacement effect.", list, null);
+        		if(chosen == moveToHandReplace)
+        			rebound = false;
+        		else
+        			moveToHand = false;
+        	}
+        	
+        	if (moveToHand) {
+                // Handle cards that need to be moved differently
+                // TODO: replacement effects: Rebound, Buyback and Soulfire Grand Master
+                source.removeAllExtrinsicKeyword("Move CARDNAME to your hand as it resolves");
+                game.getAction().moveToHand(source);
+            }
+            else if (sa.isFlashBackAbility()) {
+                game.getAction().exile(source);
+                sa.setFlashBackAbility(false);
+            }
+            else if (rebound) //"If you cast this spell from your hand"
+            {
+                //Move rebounding card to exile
+                source = game.getAction().exile(source);
 
-            source.setSVar("ReboundAbilityTrigger", "DB$ Play | Defined$ Self "
-                    + "| WithoutManaCost$ True | Optional$ True");
+                source.setSVar("ReboundAbilityTrigger", "DB$ Play | Defined$ Self "
+                        + "| WithoutManaCost$ True | Optional$ True");
 
-            //Setup a Rebound-trigger
-            final Trigger reboundTrigger = forge.game.trigger.TriggerHandler.parseTrigger("Mode$ Phase "
-                    + "| Phase$ Upkeep | ValidPlayer$ You | OptionalDecider$ You | Execute$ ReboundAbilityTrigger "
-                    + "| TriggerDescription$ At the beginning of your next upkeep, you may cast " + source.toString()
-                    + " without paying it's manacost.", source, true);
+                //Setup a Rebound-trigger
+                final Trigger reboundTrigger = forge.game.trigger.TriggerHandler.parseTrigger("Mode$ Phase "
+                        + "| Phase$ Upkeep | ValidPlayer$ You | OptionalDecider$ You | Execute$ ReboundAbilityTrigger "
+                        + "| TriggerDescription$ At the beginning of your next upkeep, you may cast " + source.toString()
+                        + " without paying it's manacost.", source, true);
 
-            game.getTriggerHandler().registerDelayedTrigger(reboundTrigger);
-        }
-        else if (!source.isCopiedSpell() &&
-                (source.isInstant() || source.isSorcery() || fizzle) &&
-                source.isInZone(ZoneType.Stack)) {
-            // If Spell and still on the Stack then let it goto the graveyard or replace its own movement
-            game.getAction().moveToGraveyard(source);
+                game.getTriggerHandler().registerDelayedTrigger(reboundTrigger);
+            }
+            else if (!source.isCopiedSpell() &&
+                    (source.isInstant() || source.isSorcery() || fizzle) &&
+                    source.isInZone(ZoneType.Stack)) {
+                // If Spell and still on the Stack then let it goto the graveyard or replace its own movement
+                game.getAction().moveToGraveyard(source);
+            }
         }
     }
 
