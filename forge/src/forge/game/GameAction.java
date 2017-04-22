@@ -61,7 +61,6 @@ import forge.util.Aggregates;
 import forge.util.CollectionSuppliers;
 import forge.util.Expressions;
 import forge.util.collect.FCollection;
-import forge.util.collect.FCollectionView;
 import forge.util.ThreadUtil;
 import forge.util.Visitor;
 import forge.util.maps.HashMapOfLists;
@@ -1042,8 +1041,7 @@ public class GameAction {
     public void checkGameOverCondition() {
         // award loses as SBE
         List<Player> losers = null;
-        FCollectionView<Player> allPlayers = game.getPlayers();
-        for (Player p : allPlayers) {
+        for (Player p : game.getPlayers()) {
             if (p.checkLoseCondition()) { // this will set appropriate outcomes
                 // Run triggers
                 if (losers == null) {
@@ -1078,11 +1076,12 @@ public class GameAction {
             }
             break;
         }
-
-        // need a separate loop here, otherwise ConcurrentModificationException is raised
+        
+        FCollection<Player> allPlayers = new FCollection<Player>(game.getPlayers());
+        
         if (losers != null) {
             for (Player p : losers) {
-                game.onPlayerLost(p);
+            	allPlayers.remove(p);
             }
         }
 
@@ -1106,6 +1105,12 @@ public class GameAction {
                 reason = GameEndReason.AllOpposingTeamsLost;
             }
             else {
+            	// need a separate loop here, otherwise ConcurrentModificationException is raised
+                if (losers != null) {
+                    for (Player p : losers) {
+                        game.onPlayerLost(p);
+                    }
+                }
                 return;
             }
         }
