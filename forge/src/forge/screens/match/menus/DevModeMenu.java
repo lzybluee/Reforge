@@ -71,29 +71,29 @@ public class DevModeMenu implements ActionListener, IDevListener {
     public JMenu getMenu() {
         final JMenu menu = new JMenu("Dev");
         menu.setMnemonic(KeyEvent.VK_D);
-        menu.add(getMenuItem(DevMenuItem.GENERATE_MANA));
-        menu.add(getMenuItem(DevMenuItem.TUTOR_FOR_CARD));
+        menu.add(getMenuItem(DevMenuItem.DEV_CORNER));
         menu.addSeparator();
+        menu.add(getMenuItem(DevMenuItem.GENERATE_MANA));
+        menu.addSeparator();
+        menu.add(getMenuItem(DevMenuItem.TUTOR_FOR_CARD));
         menu.add(getMenuItem(DevMenuItem.ADD_CARD_TO_HAND));
         menu.add(getMenuItem(DevMenuItem.ADD_CARD_TO_PLAY));
         menu.addSeparator();
         menu.add(getMenuItem(DevMenuItem.SET_PLAYER_LIFE));
         menu.add(getMenuItem(DevMenuItem.WIN_GAME));
         menu.addSeparator();
-        menu.add(getMenuItem(DevMenuItem.SETUP_GAME_STATE));
-        menu.add(getMenuItem(DevMenuItem.DUMP_GAME_STATE));
-        menu.addSeparator();
-        menu.add(playUnlimitedLands = getCheckboxMenuItem(DevMenuItem.PLAY_UNLIMITED_LANDS));
-        menu.add(viewAll = getCheckboxMenuItem(DevMenuItem.VIEW_ALL));
         menu.add(getMenuItem(DevMenuItem.ADD_COUNTER));
-        menu.addSeparator();
         menu.add(getMenuItem(DevMenuItem.TAP_PERMANENT));
         menu.add(getMenuItem(DevMenuItem.UNTAP_PERMANENT));
+        menu.addSeparator();
+        menu.add(getMenuItem(DevMenuItem.SETUP_GAME_STATE));
+        menu.add(getMenuItem(DevMenuItem.DUMP_GAME_STATE));
         menu.addSeparator();
         menu.add(getMenuItem(DevMenuItem.RIGGED_PLANAR_ROLL));
         menu.add(getMenuItem(DevMenuItem.PLANESWALK_TO));
         menu.addSeparator();
-        menu.add(getMenuItem(DevMenuItem.DEV_CORNER));
+        menu.add(playUnlimitedLands = getCheckboxMenuItem(DevMenuItem.PLAY_UNLIMITED_LANDS));
+        menu.add(viewAll = getCheckboxMenuItem(DevMenuItem.VIEW_ALL));
         return menu;
     }
 
