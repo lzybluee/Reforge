@@ -165,6 +165,8 @@ public class Game {
     public Game(List<RegisteredPlayer> players0, GameRules rules0, Match match0) { /* no more zones to map here */
         rules = rules0;
         match = match0;
+        
+    	MyRandom.updateSeed(players0, match0.getPlayedGames().size() + 1);
 
         spabCache.put(PLAY_LAND_SURROGATE.getId(), PLAY_LAND_SURROGATE);
 
