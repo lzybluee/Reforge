@@ -1551,24 +1551,25 @@ public class GameAction {
             return players.get(0);
         }
 
-        String matchPlayer = "Lose player -> ";
+        String matchPlayer = "Start player -> ";
         boolean isFirstGame = lastGameOutcome == null;
         if (isFirstGame) {
             game.fireEvent(new GameEventFlipCoin()); // Play the Flip Coin sound
             if(FModel.getPreferences().getPref(FPref.UI_START_PLAYER).equals("1")) {
             	goesFirst = Aggregates.random(game.getHumanPlayers());
-            	matchPlayer = "Human first -> ";
+            	matchPlayer = "Player start -> ";
             } else if(FModel.getPreferences().getPref(FPref.UI_START_PLAYER).equals("2")) {
             	goesFirst = Aggregates.random(game.getAiPlayers());
-            	matchPlayer = "AI first -> ";
+            	matchPlayer = "Opponent start -> ";
             } else {
                 goesFirst = Aggregates.random(game.getPlayers());
-                matchPlayer = "Random player -> ";
+                matchPlayer = "Random player start -> ";
             }
         } else {
             for (Player p : game.getPlayers()) {
                 if (!lastGameOutcome.isWinner(p.getLobbyPlayer())) {
                     goesFirst = p;
+                    matchPlayer = "Loser start -> ";
                     break;
                 }
             }

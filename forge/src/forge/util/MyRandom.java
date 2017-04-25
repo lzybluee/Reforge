@@ -127,10 +127,12 @@ public class MyRandom {
     	byte[] loadSeed = loadSeed();
     	if(loadSeed == null) {
     		currentSeed = SecureRandom.getSeed(16);
+    		matchDesc = "";
     	} else {
     		currentSeed = loadSeed;
+    		matchDesc = "Loaded seed -> ";
     	}
-    	matchDesc = players.get(0).getDeck().getName() + "|" + players.get(1).getDeck().getName() + "|" + match;
+    	matchDesc += players.get(0).getDeck().getName() + "|" + players.get(1).getDeck().getName() + "|" + match;
     	random = new SecureRandom(currentSeed);
     }
 
