@@ -49,6 +49,7 @@ import forge.quest.data.QuestData;
 import forge.quest.data.QuestPreferences.DifficultyPrefs;
 import forge.quest.data.QuestPreferences.QPref;
 import forge.quest.io.QuestChallengeReader;
+import forge.util.MyRandom;
 import forge.util.storage.IStorage;
 import forge.util.storage.StorageBase;
 
@@ -523,7 +524,7 @@ public class QuestController {
                 }
             }
 
-            Collections.shuffle(unlockedChallengeIds);
+            Collections.shuffle(unlockedChallengeIds, MyRandom.getRandom());
 
             maxChallenges = Math.min(maxChallenges, unlockedChallengeIds.size());
 

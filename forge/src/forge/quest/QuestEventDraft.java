@@ -43,6 +43,7 @@ import forge.model.FModel;
 import forge.player.GamePlayerUtil;
 import forge.quest.data.QuestPreferences.QPref;
 import forge.quest.io.ReadPriceList;
+import forge.util.MyRandom;
 import forge.util.NameGenerator;
 import forge.util.TextUtil;
 import forge.util.storage.IStorage;
@@ -747,7 +748,7 @@ public class QuestEventDraft {
             return null;
         }
 
-        Collections.shuffle(possibleBlocks);
+        Collections.shuffle(possibleBlocks, MyRandom.getRandom());
         return getDraftOrNull(quest, possibleBlocks.get(0));
 
     }
@@ -771,7 +772,7 @@ public class QuestEventDraft {
             }
         } else {
             final List<String> possibleSetCombinations = getSetCombos(block);
-            Collections.shuffle(possibleSetCombinations);
+            Collections.shuffle(possibleSetCombinations, MyRandom.getRandom());
             event.boosterConfiguration = possibleSetCombinations.get(0);
         }
 
@@ -788,7 +789,7 @@ public class QuestEventDraft {
         players.add("6");
         players.add("7");
 
-        Collections.shuffle(players);
+        Collections.shuffle(players, MyRandom.getRandom());
 
         for (int i = 0; i < players.size(); i++) {
             event.standings[i] = players.get(i);

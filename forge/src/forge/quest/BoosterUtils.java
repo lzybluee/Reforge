@@ -135,7 +135,7 @@ public final class BoosterUtils {
                     preferredColors.clear();
                     int numberOfColors = COLOR_COUNT_PROBABILITIES[(int) (Math.random() * COLOR_COUNT_PROBABILITIES.length)];
                     if (numberOfColors < 6) {
-                        Collections.shuffle(possibleColors);
+                        Collections.shuffle(possibleColors, MyRandom.getRandom());
                         for (int i = 0; i < numberOfColors; i++) {
                             preferredColors.add(possibleColors.get(i));
                         }
@@ -287,7 +287,7 @@ public final class BoosterUtils {
 
         final int size = allowedColors == null ? 0 : allowedColors.size();
         if (allowedColors != null) {
-            Collections.shuffle(allowedColors);
+            Collections.shuffle(allowedColors, MyRandom.getRandom());
         }
 
         int cntMade = 0, iAttempt = 0;

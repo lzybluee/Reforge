@@ -595,7 +595,7 @@ public final class QuestUtilCards {
             editions.add(e);
         }
 
-        Collections.shuffle(editions);
+        Collections.shuffle(editions, MyRandom.getRandom());
 
         int numberOfBoxes = Math.min(Math.max(count / 2, 1), editions.size());
 

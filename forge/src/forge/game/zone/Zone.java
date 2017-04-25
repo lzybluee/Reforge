@@ -23,6 +23,7 @@ import forge.game.Game;
 import forge.game.card.Card;
 import forge.game.card.CardCollection;
 import forge.game.card.CardCollectionView;
+import forge.game.card.CardLists;
 import forge.game.event.EventValueChangeType;
 import forge.game.event.GameEventZone;
 import forge.game.player.Player;
@@ -199,7 +200,7 @@ public class Zone implements java.io.Serializable, Iterable<Card> {
     }
 
     public void shuffle() {
-        Collections.shuffle(cardList);
+        CardLists.shuffle(cardList);
         onChanged();
     }
 
