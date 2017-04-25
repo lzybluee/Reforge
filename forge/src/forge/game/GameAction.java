@@ -1552,6 +1552,7 @@ public class GameAction {
         }
 
         boolean randomStart = false;
+        boolean lastDraw = false;
         String startPlayer = "Start player -> ";
         boolean isFirstGame = lastGameOutcome == null;
         if (isFirstGame) {
@@ -1569,6 +1570,7 @@ public class GameAction {
             }
         } else {
         	if(lastGameOutcome.getWinningPlayer() == null) {
+        		lastDraw = true;
         		if(game.getMatch().getLastStarter() == null) {
         			randomStart = true;
         			goesFirst = Aggregates.random(game.getPlayers());
@@ -1613,7 +1615,7 @@ public class GameAction {
                 p.getController().awaitNextInput(); //show "Waiting for opponent..." while first player chooses whether to go first or keep their hand
             }
         }
-        goesFirst = goesFirst.getController().chooseStartingPlayer(isFirstGame);
+        goesFirst = goesFirst.getController().chooseStartingPlayer(isFirstGame, lastDraw);
         return goesFirst;
     }
 

@@ -547,17 +547,21 @@ public class PlayerControllerHuman
     }
 
     @Override
-    public Player chooseStartingPlayer(final boolean isFirstGame) {
+    public Player chooseStartingPlayer(final boolean isFirstGame, final boolean lastDraw) {
         if (game.getPlayers().size() == 2) {
-            final String prompt = String.format("%s, you %s\n\nWould you like to play or draw?",
-                    player.getName(), isFirstGame ? " have won the coin toss." : " lost the last game.");
+            final String prompt = lastDraw ?
+            		"Last game is draw.\n\nWould you like to play or draw?"
+            		: String.format("%s, you %s\n\nWould you like to play or draw?",
+            				player.getName(), isFirstGame ? " have won the coin toss." : " lost the last game.");
             final InputConfirm inp = new InputConfirm(this, prompt, "Play", "Draw");
             inp.showAndWait();
             return inp.getResult() ? this.player : this.player.getOpponents().get(0);
         }
         else {
-            final String prompt = String.format("%s, you %s\n\nWho would you like to start this game? (Click on the portrait.)",
-                    player.getName(), isFirstGame ? " have won the coin toss." : " lost the last game.");
+            final String prompt = lastDraw ?
+            		"Last game is draw.\n\nWho would you like to start this game? (Click on the portrait.)"
+            		: String.format("%s, you %s\n\nWho would you like to start this game? (Click on the portrait.)",
+            				player.getName(), isFirstGame ? " have won the coin toss." : " lost the last game.");
             final InputSelectEntitiesFromList<Player> input = new InputSelectEntitiesFromList<Player>(this, 1, 1, new FCollection<Player>(game.getPlayersInTurnOrder()));
             input.setMessage(prompt);
             input.showAndWait();

@@ -220,7 +220,7 @@ public class PlayerControllerAi extends PlayerController {
     }
 
     @Override
-    public Player chooseStartingPlayer(boolean isFirstGame) {
+    public Player chooseStartingPlayer(boolean isFirstGame, boolean lastDraw) {
         return this.player; // AI is brave :)
     }
 
