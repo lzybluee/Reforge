@@ -44,6 +44,16 @@ public class Match {
 
     private final List<GameOutcome> gamesPlayed = new ArrayList<GameOutcome>();
     private final List<GameOutcome> gamesPlayedRo;
+    
+    private LobbyPlayer lastStarter = null;
+    
+    public void setLastStarter(LobbyPlayer starter) {
+    	lastStarter = starter;
+    }
+    
+    public LobbyPlayer getLastStarter() {
+    	return lastStarter;
+    }
 
     public Match(final GameRules rules0, final List<RegisteredPlayer> players0, final String title) {
         gamesPlayedRo = Collections.unmodifiableList(gamesPlayed);

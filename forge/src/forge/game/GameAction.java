@@ -1551,28 +1551,46 @@ public class GameAction {
             return players.get(0);
         }
 
-        String matchPlayer = "Start player -> ";
+        boolean randomStart = false;
+        String startPlayer = "Start player -> ";
         boolean isFirstGame = lastGameOutcome == null;
         if (isFirstGame) {
             game.fireEvent(new GameEventFlipCoin()); // Play the Flip Coin sound
             if(FModel.getPreferences().getPref(FPref.UI_START_PLAYER).equals("1")) {
             	goesFirst = Aggregates.random(game.getHumanPlayers());
-            	matchPlayer = "Player start -> ";
+            	startPlayer = "Player start -> ";
             } else if(FModel.getPreferences().getPref(FPref.UI_START_PLAYER).equals("2")) {
             	goesFirst = Aggregates.random(game.getAiPlayers());
-            	matchPlayer = "Opponent start -> ";
+            	startPlayer = "Opponent start -> ";
             } else {
+            	randomStart = true;
                 goesFirst = Aggregates.random(game.getPlayers());
-                matchPlayer = "Random player start -> ";
+                startPlayer = "Random player start -> ";
             }
         } else {
-            for (Player p : game.getPlayers()) {
-                if (!lastGameOutcome.isWinner(p.getLobbyPlayer())) {
-                    goesFirst = p;
-                    matchPlayer = "Loser start -> ";
-                    break;
+        	if(lastGameOutcome.getWinningPlayer() == null) {
+        		if(game.getMatch().getLastStarter() == null) {
+        			randomStart = true;
+        			goesFirst = Aggregates.random(game.getPlayers());
+        			startPlayer = "New random player start -> ";
+        		} else {
+        			for (Player p : game.getPlayers()) {
+        				if(p.getLobbyPlayer() == game.getMatch().getLastStarter()) {
+        					goesFirst = p;
+                			startPlayer = "Last player start -> ";
+        					break;
+        				}
+        			}
+        		}
+        	} else {
+                for (Player p : game.getPlayers()) {
+                    if (!lastGameOutcome.isWinner(p.getLobbyPlayer())) {
+                        goesFirst = p;
+                        startPlayer = "Loser start -> ";
+                        break;
+                    }
                 }
-            }
+        	}
         }
 
         if (goesFirst == null) {
@@ -1580,9 +1598,15 @@ public class GameAction {
             // Noone of them has lost, so cannot decide who goes first .
             goesFirst = game.getPlayers().get(0); // does not really matter who plays first - it's controlled from the same computer.
         }
+        
+        if(randomStart) {
+        	game.getMatch().setLastStarter(null);
+        } else {
+        	game.getMatch().setLastStarter(goesFirst.getLobbyPlayer());
+        }
 
-        matchPlayer += goesFirst.getName();
-        MyRandom.saveSeed(matchPlayer);
+        startPlayer += goesFirst.getName();
+        MyRandom.saveSeed(startPlayer);
 
         for (Player p : game.getPlayers()) {
             if (p != goesFirst) {
