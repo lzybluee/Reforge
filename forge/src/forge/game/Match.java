@@ -156,7 +156,10 @@ public class Match {
     public Multiset<RegisteredPlayer> getGamesWon() {
         final Multiset<RegisteredPlayer> won = HashMultiset.create(players.size());
         for (final GameOutcome go : gamesPlayedRo) {
-            won.add(go.getWinningPlayer().getRegisteredPlayer());
+        	Player winner = go.getWinningPlayer();
+        	if(winner != null) {
+                won.add(go.getWinningPlayer().getRegisteredPlayer());
+        	}
         }
         return won;
     }
