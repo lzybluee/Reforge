@@ -916,4 +916,8 @@ public class PlayerControllerAi extends PlayerController {
     public boolean applyPreventBeforeReplace() {
     	return true;
     }
+    
+    @Override
+    public void showCardDetail(Card card) {
+    }
 }

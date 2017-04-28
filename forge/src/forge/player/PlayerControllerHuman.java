@@ -482,7 +482,7 @@ public class PlayerControllerHuman
         }
 
         // Show the card that asked for this choice
-        getGui().setCard(CardView.get(sa.getHostCard()));
+        getGui().setPaperCard(CardView.get(sa.getHostCard()));
 
         // Human is supposed to read the message and understand from it what to choose
         return getGui().one(title, spells);
@@ -2154,5 +2154,10 @@ public class PlayerControllerHuman
     @Override
     public boolean applyPreventBeforeReplace() {
     	return FModel.getPreferences().getPrefBoolean(FPref.UI_PREVENT_BEFORE_REPLACE);
+    }
+    
+    @Override
+    public void showCardDetail(Card card) {
+    	getGui().setPaperCard(CardView.get(card));
     }
 }

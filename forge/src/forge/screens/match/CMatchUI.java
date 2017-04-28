@@ -342,7 +342,7 @@ public final class CMatchUI
         return idx < 0 || idx >= allHands.size() ? null : allHands.get(idx);
     }
     
-    public void setFrontCard(final CardView c) {
+    public void setPaperCard(final CardView c) {
     	cDetailPicture.setShowFront(true);
         this.setCard(c, false);
     }

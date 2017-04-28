@@ -247,4 +247,6 @@ public abstract class PlayerController {
     }
     
     public abstract boolean applyPreventBeforeReplace();
+    
+    public abstract void showCardDetail(Card card);
 }
