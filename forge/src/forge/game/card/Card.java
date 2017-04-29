@@ -3081,6 +3081,10 @@ public class Card extends GameEntity implements Comparable<Card> {
             if (ck.getKeywords() != null) {
                 keywords.addAll(ck.getKeywords());
             }
+            
+            if(getCantHaveOrGainKeyword() != null) {
+            	keywords.removeAll(getCantHaveOrGainKeyword());
+            }
         }
         return keywords;
     }
