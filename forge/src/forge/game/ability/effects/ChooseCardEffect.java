@@ -103,6 +103,19 @@ public class ChooseCardEffect extends SpellAbilityEffect {
                 		collection.addAll(choices);
                 	}
                     String title = sa.hasParam("ChoiceTitle") ? sa.getParam("ChoiceTitle") : "Choose a card ";
+                    if(title.contains(" for PLAYERNAME")) {
+                    	boolean replaced = false;
+                    	for(Object o : host.getRemembered()) {
+                    		if(o instanceof Player) {
+                    			title = title.replace("PLAYERNAME", ((Player)o).getName());
+                    			replaced = true;
+                            	break;
+                    		}
+                    	}
+                    	if(!replaced) {
+                    		title = title.replace(" for PLAYERNAME", "");
+                    	}
+                    }
                     chosen.addAll(p.getController().chooseCardsForEffect(collection, sa, title, minAmount, validAmount, !sa.hasParam("Mandatory")));
                 }
             }
