@@ -131,12 +131,10 @@ public class VStack implements IVDoc<CStack> {
         scroller.removeAll();
 
         boolean isFirst = true;
-        int index = 0;
         for (final StackItemView item : items) {
             final StackInstanceTextArea tar = new StackInstanceTextArea(item);
-            index++;
-            
-            scroller.add(tar, "pushx, growx" + (isFirst ? "" : ", gaptop 2px") + (index == items.size() ? ", gapbottom 20px" : ""));
+
+            scroller.add(tar, "pushx, growx" + (isFirst ? "" : ", gaptop 2px"));
 
             //update the Card Picture/Detail when the spell is added to the stack
             if (isFirst) {
@@ -195,7 +193,7 @@ public class VStack implements IVDoc<CStack> {
             setLineWrap(true);
             setFont(FSkin.getFont(12));
             setWrapStyleWord(true);
-            setMinimumSize(new Dimension(CARD_WIDTH + 2 * PADDING, CARD_HEIGHT + 2 * PADDING));
+            setPreferredSize(new Dimension(CARD_WIDTH + 2 * PADDING, CARD_HEIGHT + 2 * PADDING));
 
             addMouseListener(new MouseAdapter() {
                 @Override
