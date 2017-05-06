@@ -131,10 +131,12 @@ public class VStack implements IVDoc<CStack> {
         scroller.removeAll();
 
         boolean isFirst = true;
+        int index = 0;
         for (final StackItemView item : items) {
             final StackInstanceTextArea tar = new StackInstanceTextArea(item);
-
-            scroller.add(tar, "pushx, growx" + (isFirst ? "" : ", gaptop 2px"));
+            index++;
+            
+            scroller.add(tar, "pushx, growx" + (isFirst ? "" : ", gaptop 2px") + (index == items.size() ? ", gapbottom 20px" : ""));
 
             //update the Card Picture/Detail when the spell is added to the stack
             if (isFirst) {
