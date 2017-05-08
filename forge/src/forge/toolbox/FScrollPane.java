@@ -25,6 +25,7 @@ import forge.toolbox.FSkin.SkinnedScrollPane;
 public class FScrollPane extends SkinnedScrollPane {
     private static final SkinColor arrowColor = FSkin.getColor(FSkin.Colors.CLR_TEXT);
     private final ArrowButton[] arrowButtons;
+    private boolean skipPaintFlag;
 
     public FScrollPane(final boolean showBorder0) {
         this(null, showBorder0);
@@ -87,10 +88,19 @@ public class FScrollPane extends SkinnedScrollPane {
         this.getVerticalScrollBar().setValue(0);
     }
 
+    public void setSkipPaint(boolean flag) {
+        skipPaintFlag = flag;
+    }
+
     @Override
     public void paint(final Graphics g) {
         super.paint(g);
         if (arrowButtons == null) { return; }
+
+        if (skipPaintFlag) {
+        	skipPaintFlag = false;
+        	return;
+        }
 
         //determine which buttons should be visible
         final boolean[] visible = new boolean[] { false, false, false, false };

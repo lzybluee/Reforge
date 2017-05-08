@@ -64,6 +64,7 @@ public class VStack implements IVDoc<CStack> {
     // Fields used with interface IVDoc
     private DragCell parentCell;
     private final DragTab tab = new DragTab("Stack");
+    private boolean skipPaintFlag;
 
     // Top-level containers
     private final FScrollPanel scroller = new FScrollPanel(new MigLayout("insets 0, gap 0, wrap"), true,
@@ -142,6 +143,8 @@ public class VStack implements IVDoc<CStack> {
                 controller.getMatchUI().setPaperCard(item.getSourceCard());
             }
         }
+
+        skipPaintFlag = true;
 
         scroller.revalidate();
         scroller.repaint();
@@ -250,6 +253,15 @@ public class VStack implements IVDoc<CStack> {
 
         @Override
         public void paintComponent(final Graphics g) {
+            if(skipPaintFlag) {
+            	skipPaintFlag = false;
+            	scroller.setSkipPaint(true);
+            	return;
+            } else {
+            	skipPaintFlag = false;
+            	scroller.setSkipPaint(false);
+            }
+            
             super.paintComponent(g);
 
             final Graphics2D g2d = (Graphics2D) g;
