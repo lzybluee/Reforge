@@ -16,6 +16,7 @@ import forge.game.card.Card;
 import forge.game.card.CardCollectionView;
 import forge.game.card.CardFactory;
 import forge.game.card.CardLists;
+import forge.game.event.GameEventCardStatsChanged;
 import forge.game.event.GameEventCombatChanged;
 import forge.game.player.Player;
 import forge.game.spellability.SpellAbility;
@@ -235,6 +236,8 @@ public class CopyPermanentEffect extends SpellAbilityEffect {
                         }
                     }
 
+                    copyInPlay.updateAbilityText();
+                    game.fireEvent(new GameEventCardStatsChanged(copyInPlay));
                 }
                 
                 if (sa.hasParam("AtEOT")) {
