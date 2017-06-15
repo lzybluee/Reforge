@@ -162,9 +162,12 @@ public class AnimateEffect extends AnimateEffectBase {
                 for (final SpellAbility ab : c.getSpellAbilities()) {
                     if (removeAll || (ab.isAbility() && clearAbilities)
                             || (ab.isSpell() && clearSpells)) {
-                        c.removeSpellAbility(ab);
                         removedAbilities.add(ab);
                     }
+                }
+                
+                for(final SpellAbility ab : removedAbilities) {
+                	c.removeSpellAbility(ab);
                 }
             }
 
